@@ -84,16 +84,49 @@
       </div>
     </section>
 
+    <!-- ============ PROFILE BANNER ============ -->
+    <section class="section wrap" style="padding-top: 0; padding-bottom: 32px;">
+      <div id="gh-profile-banner"></div>
+    </section>
+
+    <!-- ============ CLOUDFLARE LIVE DEPLOYMENTS ============ -->
+    <section class="section wrap cf-section" style="padding-top: 10px; padding-bottom: 48px;">
+      <div class="section-head reveal">
+        <div>
+          <p class="eyebrow"><i aria-hidden="true"></i> Production Infrastructure</p>
+          <h2>Live Edge Deployments.</h2>
+        </div>
+        <p id="cf-status">Connecting to Cloudflare Pages edge deployments…</p>
+      </div>
+      <div class="cf-projects-grid" id="cf-projects-grid" aria-live="polite"></div>
+    </section>
+
     <!-- ============ REPOS ============ -->
-    <section class="section wrap repo-section">
+    <section class="section wrap repo-section" style="padding-top: 10px;">
       <div class="section-head reveal">
         <div>
           <p class="eyebrow"><i aria-hidden="true"></i> Live from GitHub</p>
-          <h2>Public repositories.</h2>
+          <h2>Public Repositories &amp; Code.</h2>
         </div>
         <p id="repo-status">Loading public repositories…</p>
       </div>
+
+      <!-- Controls: Search & Language Filters -->
+      <div class="repo-controls-bar">
+        <div class="repo-search-wrap">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="repo-search-icon" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="search" id="repo-search-input" placeholder="Search repositories by name, language or keywords…" aria-label="Search repositories">
+        </div>
+        <div class="repo-filter-tags" id="repo-filter-tags"></div>
+      </div>
+
       <div class="repo-grid" id="repo-grid" aria-live="polite"></div>
+
+      <div style="text-align: center; margin-top: 36px;">
+        <button type="button" id="btn-show-more-repos" class="btn btn-outline" style="display: none; padding: 12px 28px; font-size: 13px; font-weight: 600; cursor: pointer;">
+          View All Repositories ↗
+        </button>
+      </div>
     </section>
 
     <!-- ============ STATEMENT ============ -->

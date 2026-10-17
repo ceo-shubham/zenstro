@@ -592,6 +592,174 @@
         width: 100%;
       }
     }
+
+    /* Precision Showcase & Cloudflare Management Console */
+    .showcase-panel {
+      background: #ffffff;
+      border: 1px solid #e4e4e7;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+    .showcase-banner {
+      padding: 20px 24px;
+      border-bottom: 1px solid #e4e4e7;
+      background: #fafafa;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .showcase-banner-info h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #09090b;
+      margin: 0 0 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .showcase-banner-info p {
+      font-size: 13px;
+      color: #71717a;
+      margin: 0;
+      line-height: 1.45;
+    }
+    .showcase-banner-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .showcase-config-strip {
+      padding: 14px 24px;
+      background: #ffffff;
+      border-bottom: 1px solid #f4f4f5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 13px;
+    }
+    .showcase-ctrl-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .showcase-select {
+      padding: 6px 12px;
+      font-size: 13px;
+      border: 1px solid #e4e4e7;
+      border-radius: 6px;
+      background: #fafafa;
+      color: #09090b;
+      font-family: inherit;
+      outline: none;
+    }
+    .showcase-select:focus {
+      border-color: #09090b;
+    }
+    .showcase-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .showcase-table th {
+      padding: 10px 18px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      color: #71717a;
+      background: #fafafa;
+      border-bottom: 1px solid #e4e4e7;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      font-family: var(--mono);
+    }
+    .showcase-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid #f4f4f5;
+      vertical-align: top;
+    }
+    .showcase-table tr:hover td {
+      background: #fafafa;
+    }
+    .showcase-desc-input {
+      width: 100%;
+      min-height: 48px;
+      padding: 8px 10px;
+      font-size: 12.5px;
+      line-height: 1.4;
+      font-family: inherit;
+      border: 1px solid #e4e4e7;
+      border-radius: 6px;
+      background: #ffffff;
+      color: #09090b;
+      resize: vertical;
+      box-sizing: border-box;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .showcase-desc-input:focus {
+      border-color: #2563eb;
+      background: #ffffff;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+    }
+    .showcase-title-input {
+      width: 100%;
+      padding: 7px 10px;
+      font-size: 13px;
+      font-family: inherit;
+      border: 1px solid #e4e4e7;
+      border-radius: 6px;
+      background: #ffffff;
+      color: #09090b;
+      box-sizing: border-box;
+      margin-bottom: 6px;
+      outline: none;
+    }
+    .showcase-title-input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+    }
+    .showcase-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      user-select: none;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .showcase-toggle input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      accent-color: #2563eb;
+    }
+    .showcase-toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #09090b;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: toastFadeIn 0.2s ease-out;
+    }
+    @keyframes toastFadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body class="admin-body">
@@ -694,6 +862,12 @@
         </button>
         <button class="view-tab-btn" data-tab="trash" type="button" onclick="window.switchTab('trash')">
           Delete Bin <span class="tab-counter" id="tab-count-trash">0</span>
+        </button>
+        <button class="view-tab-btn" data-tab="github" type="button" onclick="window.switchTab('github')" style="margin-left:8px; border-left:1px solid #e4e4e7;">
+          GitHub Repos <span class="tab-counter" id="tab-count-github">41</span>
+        </button>
+        <button class="view-tab-btn" data-tab="cloudflare" type="button" onclick="window.switchTab('cloudflare')">
+          Cloudflare Projects <span class="tab-counter" id="tab-count-cf">2</span>
         </button>
       </div>
 
@@ -1043,7 +1217,7 @@
       }
 
       // Tab Management
-      let currentTab = 'all'; // 'all', 'form', 'email', 'sent', 'trash'
+      let currentTab = 'all'; // 'all', 'form', 'email', 'sent', 'trash', 'github', 'cloudflare'
       function switchTab(tabName, statusFilter) {
         currentTab = tabName;
         if (statusFilter !== undefined && filterStatus) {
@@ -1056,6 +1230,39 @@
             b.classList.remove('active');
           }
         });
+
+        const filterTopicEl = document.getElementById('filter-topic');
+        const filterStatusEl = document.getElementById('filter-status');
+        const btnAddLeadEl = document.getElementById('btn-open-add-lead');
+        const btnExportCsvEl = document.getElementById('btn-export-csv');
+        const searchInputEl = document.getElementById('search-input');
+        const routingInfoEl = document.querySelector('.routing-info-text');
+
+        if (tabName === 'github' || tabName === 'cloudflare') {
+          if (filterTopicEl) filterTopicEl.style.display = 'none';
+          if (filterStatusEl) filterStatusEl.style.display = 'none';
+          if (btnAddLeadEl) btnAddLeadEl.style.display = 'none';
+          if (btnExportCsvEl) btnExportCsvEl.style.display = 'none';
+          if (btnEmptyTrash) btnEmptyTrash.style.display = 'none';
+          if (routingInfoEl) routingInfoEl.style.display = 'none';
+          if (searchInputEl) {
+            searchInputEl.value = '';
+            searchInputEl.placeholder = tabName === 'github'
+              ? 'Filter repositories by name or language…'
+              : 'Filter Cloudflare deployments…';
+          }
+          if (!showcaseState.loaded) {
+            fetchShowcaseData();
+          }
+        } else {
+          if (filterTopicEl) filterTopicEl.style.display = '';
+          if (filterStatusEl) filterStatusEl.style.display = '';
+          if (btnAddLeadEl) btnAddLeadEl.style.display = '';
+          if (btnExportCsvEl) btnExportCsvEl.style.display = '';
+          if (routingInfoEl) routingInfoEl.style.display = '';
+          if (searchInputEl) searchInputEl.placeholder = 'Filter by client name, email, company or keyword…';
+        }
+
         render();
       }
       window.switchTab = switchTab;
@@ -1065,6 +1272,425 @@
           switchTab(tabBtn.dataset.tab);
         });
       });
+
+      // ============ SHOWCASE & CLOUDFLARE MANAGEMENT ============
+      let showcaseState = {
+        loaded: false,
+        githubProfile: null,
+        githubRepos: [],
+        cloudflareProjects: [],
+        config: {
+          githubMaxDisplay: 12,
+          cloudflareMaxDisplay: 8,
+          repoOverrides: {},
+          cfOverrides: {}
+        },
+        lastSyncedAt: null,
+        syncing: false,
+        saving: false
+      };
+
+      function showAdminToast(msg, isSuccess = true) {
+        const existing = document.getElementById('admin-showcase-toast');
+        if (existing) existing.remove();
+        const toast = document.createElement('div');
+        toast.id = 'admin-showcase-toast';
+        toast.className = 'showcase-toast';
+        toast.innerHTML = `<span style="color:${isSuccess ? '#10b981' : '#f59e0b'}; font-weight:800;">${isSuccess ? '✓' : 'ℹ'}</span> ${escapeHtml(msg)}`;
+        document.body.appendChild(toast);
+        setTimeout(() => { if (toast.parentNode) toast.remove(); }, 3500);
+      }
+
+      async function fetchShowcaseData() {
+        try {
+          const res = await fetch('/api/projects');
+          if (res.ok) {
+            const data = await res.json();
+            showcaseState.githubProfile = data.githubProfile;
+            showcaseState.githubRepos = data.githubRepos || [];
+            showcaseState.cloudflareProjects = data.cloudflareProjects || [];
+            if (data.config) {
+              showcaseState.config = Object.assign({}, showcaseState.config, data.config);
+              if (!showcaseState.config.repoOverrides) showcaseState.config.repoOverrides = {};
+              if (!showcaseState.config.cfOverrides) showcaseState.config.cfOverrides = {};
+            }
+            showcaseState.lastSyncedAt = data.lastSyncedAt;
+            showcaseState.loaded = true;
+
+            const ghBadge = document.getElementById('tab-count-github');
+            if (ghBadge) ghBadge.textContent = showcaseState.githubRepos.length;
+            const cfBadge = document.getElementById('tab-count-cf');
+            if (cfBadge) cfBadge.textContent = showcaseState.cloudflareProjects.length;
+
+            if (currentTab === 'github' || currentTab === 'cloudflare') {
+              render();
+            }
+          }
+        } catch (e) {
+          console.warn('Showcase fetch error:', e);
+        }
+      }
+
+      async function syncShowcaseData() {
+        showcaseState.syncing = true;
+        render();
+        try {
+          const res = await fetch('/api/projects', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'sync' })
+          });
+          if (res.ok) {
+            const data = await res.json();
+            showcaseState.githubProfile = data.githubProfile;
+            showcaseState.githubRepos = data.githubRepos || [];
+            showcaseState.cloudflareProjects = data.cloudflareProjects || [];
+            if (data.config) showcaseState.config = Object.assign({}, showcaseState.config, data.config);
+            showcaseState.lastSyncedAt = data.lastSyncedAt;
+            showAdminToast(`Freshly synced ${showcaseState.githubRepos.length} GitHub repos & ${showcaseState.cloudflareProjects.length} Cloudflare deployments!`);
+          } else {
+            showAdminToast('Sync request completed with warnings.', false);
+          }
+        } catch (e) {
+          showAdminToast('Could not sync: ' + e.message, false);
+        } finally {
+          showcaseState.syncing = false;
+          render();
+        }
+      }
+      window.syncShowcaseData = syncShowcaseData;
+
+      async function saveShowcaseSettings() {
+        showcaseState.saving = true;
+        render();
+        try {
+          const payload = {
+            action: 'save_config',
+            githubMaxDisplay: Number(showcaseState.config.githubMaxDisplay) || 12,
+            cloudflareMaxDisplay: Number(showcaseState.config.cloudflareMaxDisplay) || 8,
+            repoOverrides: showcaseState.config.repoOverrides || {},
+            cfOverrides: showcaseState.config.cfOverrides || {}
+          };
+          const res = await fetch('/api/projects', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          if (res.ok) {
+            showAdminToast('Showcase configuration saved and synced to Cloudflare Edge KV!');
+          } else {
+            showAdminToast('Settings saved locally. Server returned status ' + res.status, false);
+          }
+        } catch (e) {
+          showAdminToast('Saved locally. Edge sync notice: ' + e.message, false);
+        } finally {
+          showcaseState.saving = false;
+          render();
+        }
+      }
+      window.saveShowcaseSettings = saveShowcaseSettings;
+
+      window.toggleRepoVisibility = function (name, isVisible) {
+        showcaseState.config.repoOverrides[name] = showcaseState.config.repoOverrides[name] || {};
+        showcaseState.config.repoOverrides[name].hidden = !isVisible;
+        render();
+      };
+
+      window.updateRepoDesc = function (name, val) {
+        showcaseState.config.repoOverrides[name] = showcaseState.config.repoOverrides[name] || {};
+        showcaseState.config.repoOverrides[name].description = val.trim();
+      };
+
+      window.resetRepoDesc = function (name, orig) {
+        showcaseState.config.repoOverrides[name] = showcaseState.config.repoOverrides[name] || {};
+        showcaseState.config.repoOverrides[name].description = orig;
+        render();
+      };
+
+      window.updateGithubMax = function (val) {
+        showcaseState.config.githubMaxDisplay = Number(val);
+        render();
+      };
+
+      window.toggleCfVisibility = function (name, isVisible) {
+        showcaseState.config.cfOverrides[name] = showcaseState.config.cfOverrides[name] || {};
+        showcaseState.config.cfOverrides[name].hidden = !isVisible;
+        render();
+      };
+
+      window.updateCfTitle = function (name, val) {
+        showcaseState.config.cfOverrides[name] = showcaseState.config.cfOverrides[name] || {};
+        showcaseState.config.cfOverrides[name].title = val.trim();
+      };
+
+      window.updateCfDesc = function (name, val) {
+        showcaseState.config.cfOverrides[name] = showcaseState.config.cfOverrides[name] || {};
+        showcaseState.config.cfOverrides[name].description = val.trim();
+      };
+
+      window.updateCloudflareMax = function (val) {
+        showcaseState.config.cloudflareMaxDisplay = Number(val);
+        render();
+      };
+
+      function renderGitHubShowcase(search) {
+        const repos = showcaseState.githubRepos || [];
+        const overrides = showcaseState.config.repoOverrides || {};
+        const maxDisplay = showcaseState.config.githubMaxDisplay || 12;
+
+        if (!showcaseState.loaded && repos.length === 0) {
+          container.innerHTML = `
+            <div class="zero-state">
+              <h4>Loading repositories from GitHub…</h4>
+              <p>Fetching public repositories from @ceo-shubham via Cloudflare Edge KV…</p>
+            </div>
+          `;
+          return;
+        }
+
+        const filtered = repos.filter(r => {
+          if (!search) return true;
+          const nameMatch = (r.name || '').toLowerCase().includes(search);
+          const langMatch = (r.language || '').toLowerCase().includes(search);
+          const descMatch = (overrides[r.name]?.description || r.description || '').toLowerCase().includes(search);
+          return nameMatch || langMatch || descMatch;
+        });
+
+        const visibleCount = repos.filter(r => !overrides[r.name]?.hidden).length;
+
+        let html = `
+          <div class="showcase-panel">
+            <div class="showcase-banner">
+              <div class="showcase-banner-info">
+                <h3>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                  GitHub Public Repositories (@ceo-shubham)
+                </h3>
+                <p>Connected live to GitHub API. Only public non-fork repos appear here. Any new repo pushed to GitHub is automatically discovered. Edit custom 2-line descriptions and toggle visibility.</p>
+              </div>
+              <div class="showcase-banner-actions">
+                <button type="button" class="btn-console-outline" onclick="window.syncShowcaseData()" ${showcaseState.syncing ? 'disabled' : ''}>
+                  ${showcaseState.syncing ? 'Syncing…' : 'Sync from GitHub ↻'}
+                </button>
+                <button type="button" class="btn-console-primary" onclick="window.saveShowcaseSettings()" ${showcaseState.saving ? 'disabled' : ''}>
+                  ${showcaseState.saving ? 'Saving…' : 'Save Showcase Settings'}
+                </button>
+              </div>
+            </div>
+
+            <div class="showcase-config-strip">
+              <div class="showcase-ctrl-group">
+                <strong>Display Limit on Website:</strong>
+                <select class="showcase-select" id="sel-gh-max" onchange="window.updateGithubMax(this.value)">
+                  <option value="6" ${maxDisplay === 6 ? 'selected' : ''}>6 Repositories</option>
+                  <option value="9" ${maxDisplay === 9 ? 'selected' : ''}>9 Repositories</option>
+                  <option value="12" ${maxDisplay === 12 ? 'selected' : ''}>12 Repositories (Default)</option>
+                  <option value="18" ${maxDisplay === 18 ? 'selected' : ''}>18 Repositories</option>
+                  <option value="24" ${maxDisplay === 24 ? 'selected' : ''}>24 Repositories</option>
+                  <option value="36" ${maxDisplay === 36 ? 'selected' : ''}>36 Repositories</option>
+                  <option value="100" ${maxDisplay >= 100 ? 'selected' : ''}>All Public Repos</option>
+                </select>
+                <span style="color:#71717a; margin-left:8px;">Currently visible on site: <strong>${visibleCount}</strong> of ${repos.length}</span>
+              </div>
+              <div style="font-size:12px; color:#71717a;">
+                Last Synced: <code>${showcaseState.lastSyncedAt ? new Date(showcaseState.lastSyncedAt).toLocaleTimeString() : 'Recently'}</code>
+              </div>
+            </div>
+
+            <table class="showcase-table">
+              <thead>
+                <tr>
+                  <th style="width:120px; text-align:center;">Show on Site</th>
+                  <th style="width:250px;">Repository</th>
+                  <th>Custom 2-Line Description</th>
+                  <th style="width:90px; text-align:right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${filtered.map(repo => {
+                  const ov = overrides[repo.name] || {};
+                  const isHidden = !!ov.hidden;
+                  const customDesc = ov.description !== undefined ? ov.description : (repo.description || '');
+
+                  return `
+                    <tr style="${isHidden ? 'opacity:0.55; background:#fafafa;' : ''}">
+                      <td style="text-align:center; vertical-align:middle;">
+                        <label class="showcase-toggle">
+                          <input type="checkbox" ${isHidden ? '' : 'checked'} onchange="window.toggleRepoVisibility('${escapeHtml(repo.name)}', this.checked)">
+                          <span style="font-size:11px; font-family:var(--mono);">${isHidden ? 'Hidden' : 'Visible'}</span>
+                        </label>
+                      </td>
+                      <td>
+                        <div style="font-weight:700; font-size:14px; margin-bottom:4px;">
+                          <a href="${escapeHtml(repo.html_url)}" target="_blank" rel="noopener" style="color:#09090b; text-decoration:none;">
+                            ${escapeHtml(repo.name)} <span style="font-size:12px; color:#71717a;">↗</span>
+                          </a>
+                        </div>
+                        <div style="display:flex; gap:8px; align-items:center; font-size:11px; font-family:var(--mono); color:#71717a;">
+                          <span style="background:#f4f4f5; border:1px solid #e4e4e7; padding:1px 6px; border-radius:4px; color:#1d4ed8; font-weight:700;">
+                            ${escapeHtml(repo.language || 'Code')}
+                          </span>
+                          <span>★ ${Number(repo.stars || 0)}</span>
+                        </div>
+                      </td>
+                      <td>
+                        <textarea 
+                          class="showcase-desc-input" 
+                          placeholder="Enter clean 2-line description for this repository..."
+                          rows="2"
+                          oninput="window.updateRepoDesc('${escapeHtml(repo.name)}', this.value)"
+                        >${escapeHtml(customDesc)}</textarea>
+                        ${repo.description ? `<div style="font-size:11px; color:#a1a1aa; margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">GitHub original: ${escapeHtml(repo.description)}</div>` : ''}
+                      </td>
+                      <td style="text-align:right; vertical-align:middle;">
+                        <button type="button" class="btn-micro" onclick="window.resetRepoDesc('${escapeHtml(repo.name)}', '${escapeHtml(repo.description || '')}')" title="Reset description to original">
+                          Reset
+                        </button>
+                      </td>
+                    </tr>
+                  `;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
+        container.innerHTML = html;
+      }
+
+      function renderCloudflareShowcase(search) {
+        const projects = showcaseState.cloudflareProjects || [];
+        const overrides = showcaseState.config.cfOverrides || {};
+        const maxDisplay = showcaseState.config.cloudflareMaxDisplay || 8;
+
+        if (!showcaseState.loaded && projects.length === 0) {
+          container.innerHTML = `
+            <div class="zero-state">
+              <h4>Loading deployments from Cloudflare…</h4>
+              <p>Querying Cloudflare Pages API for account 3c62fd7b101cb45266bcca6237c80f58…</p>
+            </div>
+          `;
+          return;
+        }
+
+        const filtered = projects.filter(p => {
+          if (!search) return true;
+          const nameMatch = (p.name || '').toLowerCase().includes(search);
+          const domainMatch = (p.domains || []).some(d => d.toLowerCase().includes(search));
+          const titleMatch = (overrides[p.name]?.title || '').toLowerCase().includes(search);
+          return nameMatch || domainMatch || titleMatch;
+        });
+
+        const visibleCount = projects.filter(p => !overrides[p.name]?.hidden).length;
+
+        let html = `
+          <div class="showcase-panel">
+            <div class="showcase-banner">
+              <div class="showcase-banner-info">
+                <h3>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+                  Cloudflare Edge Deployments (Account: 3c62fd7b101cb45266bcca6237c80f58)
+                </h3>
+                <p>Live Pages deployments & custom domains. Any newly deployed Cloudflare project automatically syncs here. Manage live links and descriptions for the website.</p>
+              </div>
+              <div class="showcase-banner-actions">
+                <button type="button" class="btn-console-outline" onclick="window.syncShowcaseData()" ${showcaseState.syncing ? 'disabled' : ''}>
+                  ${showcaseState.syncing ? 'Syncing…' : 'Sync from Cloudflare ↻'}
+                </button>
+                <button type="button" class="btn-console-primary" onclick="window.saveShowcaseSettings()" ${showcaseState.saving ? 'disabled' : ''}>
+                  ${showcaseState.saving ? 'Saving…' : 'Save Showcase Settings'}
+                </button>
+              </div>
+            </div>
+
+            <div class="showcase-config-strip">
+              <div class="showcase-ctrl-group">
+                <strong>Display Limit on Website:</strong>
+                <select class="showcase-select" id="sel-cf-max" onchange="window.updateCloudflareMax(this.value)">
+                  <option value="2" ${maxDisplay === 2 ? 'selected' : ''}>2 Deployments</option>
+                  <option value="4" ${maxDisplay === 4 ? 'selected' : ''}>4 Deployments</option>
+                  <option value="6" ${maxDisplay === 6 ? 'selected' : ''}>6 Deployments</option>
+                  <option value="8" ${maxDisplay === 8 ? 'selected' : ''}>8 Deployments (Default)</option>
+                  <option value="12" ${maxDisplay === 12 ? 'selected' : ''}>12 Deployments</option>
+                  <option value="20" ${maxDisplay >= 20 ? 'selected' : ''}>All Deployments</option>
+                </select>
+                <span style="color:#71717a; margin-left:8px;">Currently visible on site: <strong>${visibleCount}</strong> of ${projects.length}</span>
+              </div>
+              <div style="font-size:12px; color:#71717a;">
+                Edge Status: <code style="color:#059669; font-weight:700;">● KV &amp; Global Anycast Active</code>
+              </div>
+            </div>
+
+            <table class="showcase-table">
+              <thead>
+                <tr>
+                  <th style="width:120px; text-align:center;">Show on Site</th>
+                  <th style="width:280px;">Project &amp; Live Domains</th>
+                  <th>Display Title &amp; 2-Line Description</th>
+                  <th style="width:130px; text-align:right;">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${filtered.map(p => {
+                  const ov = overrides[p.name] || {};
+                  const isHidden = !!ov.hidden;
+                  const title = ov.title !== undefined ? ov.title : (p.name === 'zenstro' ? 'ZENSTRO — Digital Engineering Studio' : (p.name === 'typ' ? 'TYP Platform — Client Portal & Automation' : p.name.toUpperCase()));
+                  const defaultDesc = p.name === 'zenstro' 
+                    ? 'Official production platform for ZENSTRO. Deployed on Cloudflare Pages with Edge Workers, Cloudflare KV storage, and automated webhook routing.'
+                    : 'Enterprise system and client workflow automation suite deployed on Cloudflare global edge infrastructure.';
+                  const desc = ov.description !== undefined ? ov.description : defaultDesc;
+                  const liveUrl = p.primary_url || ('https://' + (p.domains[0] || p.subdomain));
+
+                  return `
+                    <tr style="${isHidden ? 'opacity:0.55; background:#fafafa;' : ''}">
+                      <td style="text-align:center; vertical-align:middle;">
+                        <label class="showcase-toggle">
+                          <input type="checkbox" ${isHidden ? '' : 'checked'} onchange="window.toggleCfVisibility('${escapeHtml(p.name)}', this.checked)">
+                          <span style="font-size:11px; font-family:var(--mono);">${isHidden ? 'Hidden' : 'Visible'}</span>
+                        </label>
+                      </td>
+                      <td>
+                        <div style="font-weight:700; font-size:15px; margin-bottom:4px;">
+                          ${escapeHtml(p.name)}
+                          <span style="font-size:10px; font-family:var(--mono); background:#fff7ed; color:#f97316; border:1px solid #fed7aa; padding:2px 6px; border-radius:4px; margin-left:6px;">Pages</span>
+                        </div>
+                        <div style="margin-bottom:6px;">
+                          <a href="${escapeHtml(liveUrl)}" target="_blank" rel="noopener" style="font-size:12px; font-family:var(--mono); color:#1d4ed8; text-decoration:none; font-weight:600;">
+                            ${escapeHtml(liveUrl.replace(/^https?:\/\//, ''))} <span style="font-size:11px;">↗</span>
+                          </a>
+                        </div>
+                        <div style="font-size:11px; color:#71717a;">
+                          Subdomain: <code>${escapeHtml(p.subdomain || '')}</code>
+                        </div>
+                      </td>
+                      <td>
+                        <input 
+                          type="text" 
+                          class="showcase-title-input" 
+                          placeholder="Display Title on Website"
+                          value="${escapeHtml(title)}"
+                          oninput="window.updateCfTitle('${escapeHtml(p.name)}', this.value)"
+                        >
+                        <textarea 
+                          class="showcase-desc-input" 
+                          placeholder="Enter clean 2-line description for this deployment..."
+                          rows="2"
+                          oninput="window.updateCfDesc('${escapeHtml(p.name)}', this.value)"
+                        >${escapeHtml(desc)}</textarea>
+                      </td>
+                      <td style="text-align:right; vertical-align:middle;">
+                        <span style="display:inline-flex; align-items:center; gap:5px; font-size:11px; font-family:var(--mono); color:#059669; background:#ecfdf5; border:1px solid #a7f3d0; padding:3px 8px; border-radius:4px;">
+                          <span class="pulse-dot" style="width:6px; height:6px;"></span> Active Edge
+                        </span>
+                      </td>
+                    </tr>
+                  `;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
+        container.innerHTML = html;
+      }
 
       // UI Elements
       const container = document.getElementById('inquiries-list');
@@ -1231,6 +1857,18 @@
           btnEmptyTrash.textContent = `Empty Trash (${trashCount})`;
         } else {
           btnEmptyTrash.style.display = 'none';
+        }
+
+        // ============ TAB: GITHUB REPOSITORIES SHOWCASE ============
+        if (currentTab === 'github') {
+          renderGitHubShowcase(search);
+          return;
+        }
+
+        // ============ TAB: CLOUDFLARE DEPLOYMENTS SHOWCASE ============
+        if (currentTab === 'cloudflare') {
+          renderCloudflareShowcase(search);
+          return;
         }
 
         // ============ TAB: DELETE BIN (TRASH) ============
@@ -2135,7 +2773,10 @@
       // Startup: 2. Initial render
       render();
 
-      // Startup: 3. Cloudflare KV sync and continuous polling
+      // Startup: 3. Fetch Showcase & Cloudflare Data
+      fetchShowcaseData();
+
+      // Startup: 4. Cloudflare KV sync and continuous polling
       syncWithCloudflare();
       setInterval(syncWithCloudflare, 25000);
     })();
