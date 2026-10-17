@@ -1,0 +1,32 @@
+/* Public configuration only.
+   Never put private API tokens in this file. */
+window.ZENSTRO_CONFIG = {
+  githubUsername: "ceo-shubham",
+  instagramUrl: "https://www.instagram.com/ceo_shubham/",
+  linkedinCompanyUrl: "https://www.linkedin.com/company/134694292",
+  linkedinProfileUrl: "https://www.linkedin.com/in/ceo-shubham/",
+
+  /* Authorized Admin Emails for Google Login (Admin Panel) */
+  adminEmails: [
+    "sub08pathak@gmail.com",
+    "officialzyanix@gmail.com",
+    "shubhamowen@gmail.com",
+    "anshikashar1008@gmail.com",
+    "ceo.shubhampathak@gmail.com"
+  ],
+
+  /* Google OAuth 2.0 Client ID for Google Identity Services */
+  googleClientId: "193810371236-jli2ml7qh8qedqmat8o0hrms8uavhr6s.apps.googleusercontent.com",
+
+  /* Admin Notification Email:
+     When an inquiry is submitted, an automated email notification is sent to this address. */
+  notificationEmail: "ceo.shubhampathak@gmail.com",
+
+  /* Resend Email Configuration (Handled securely via Cloudflare Pages API / env.RESEND_API_KEY) */
+  resendApiKey: "",
+  resendFrom: "ZENSTRO Admin <admin@zenstro.space>",
+  resendSubdomainFrom: "ZENSTRO Admin <admin@mail.zenstro.space>",
+
+  /* Custom Formspree / Webhook endpoint (optional) */
+  formspreeEndpoint: ""
+};

@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pricing &amp; 30/30/40 Milestone Model — ZENSTRO | 7-Day Guarantee</title>
+  <meta name="description" content="Transparent, affordable technology pricing and risk-free 30/30/40 milestone payments. 7-Day delivery guarantee, signed MVP scope protection, zero complaints.">
+  <link rel="canonical" href="https://zenstro.space/pricing.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ZENSTRO">
+  <meta property="og:title" content="Pricing &amp; 30/30/40 Milestone Model — ZENSTRO">
+  <meta property="og:description" content="Affordable pricing, 7-day delivery guarantee, and pay only when satisfied. Explore ZENSTRO's transparent milestone models.">
+  <meta property="og:url" content="https://zenstro.space/pricing.html">
+  <meta property="og:image" content="https://zenstro.space/logo.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=4">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=4">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=4">
+  <link rel="shortcut icon" href="favicon.ico?v=4">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=8.0">
+  <script src="config.js"></script>
+  <style>
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin: 48px 0 64px;
+    }
+    .pricing-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: 36px 28px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+    }
+    .pricing-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08);
+    }
+    .pricing-card.featured {
+      border-color: var(--accent-primary);
+      box-shadow: 0 10px 30px -10px rgba(37, 99, 235, 0.15);
+      background: linear-gradient(180deg, #ffffff 0%, #f8faff 100%);
+    }
+    .pricing-badge {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: var(--accent-primary);
+      color: #ffffff;
+      font: 700 11px var(--mono);
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .pricing-category {
+      font: 700 12px var(--mono);
+      color: var(--accent-primary);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 8px;
+    }
+    .pricing-card h3 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+    .pricing-card p.tier-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 24px;
+      min-height: 44px;
+    }
+    .pricing-rate {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text-primary);
+      font-family: var(--sans);
+      margin-bottom: 4px;
+    }
+    .pricing-rate-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: var(--mono);
+      margin-bottom: 24px;
+      display: block;
+    }
+    .pricing-features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 32px 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .pricing-features li {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      line-height: 1.5;
+    }
+    .pricing-features li strong {
+      color: var(--text-primary);
+    }
+    .pricing-features li::before {
+      content: '✓';
+      color: #16a34a;
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .milestone-strip {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+      margin: 48px 0;
+    }
+    .milestone-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 28px;
+    }
+    @media (max-width: 840px) {
+      .milestone-cards { grid-template-columns: 1fr; }
+    }
+    .milestone-step-card {
+      background: #ffffff;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+    }
+    .milestone-step-pct {
+      font: 800 28px var(--mono);
+      color: var(--accent-primary);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .milestone-step-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+    .milestone-step-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="noise" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap nav-bar">
+      <a class="brand" href="index.html" aria-label="ZENSTRO — home">
+        <img src="logo.png" alt="ZENSTRO" width="60" height="36">
+        <span class="brand-name">ZENSTRO</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
+      <nav id="nav-links" aria-label="Primary">
+        <a href="services.html">Capabilities</a>
+        <a href="about.html">Why ZENSTRO</a>
+        <a href="pricing.html" aria-current="page">Pricing</a>
+        <a href="faq.html">FAQ</a>
+        <a href="projects.html">Work</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="insights.html">Insights</a>
+        <a class="nav-login-link" href="login.html" id="global-login-btn">
+          <svg width="14" height="14" viewBox="0 0 18 18" style="vertical-align:-2px; margin-right:4px;">
+            <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.616z"/>
+            <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/>
+            <path fill="#FBBC05" d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707s.102-1.167.282-1.707V4.961H.957C.347 6.175 0 7.55 0 9s.347 2.825.957 4.039l3.007-2.332z"/>
+            <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.961L3.964 7.293C4.672 5.166 6.656 3.58 9 3.58z"/>
+          </svg>
+          <span>Log in</span>
+        </a>
+        <a class="nav-cta" href="contact.html">Start a project <span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ============ HERO ============ -->
+    <section class="page-hero">
+      <div class="wrap">
+        <p class="eyebrow reveal"><i aria-hidden="true"></i> Transparent Pricing &amp; Milestone Model</p>
+        <h1 class="reveal" style="transition-delay:.08s">Affordable pricing.<br><em>Guaranteed delivery.</em></h1>
+        <p class="page-lead reveal" style="transition-delay:.16s">No bloated estimates, no surprise retainers, and zero upfront risk. We combine high-velocity engineering with an accountable <strong>30/30/40 milestone architecture</strong> and our signature <strong>7-Day Delivery Guarantee</strong>.</p>
+        
+        <!-- High-Impact Trust Grid -->
+        <div class="hero-trust-grid reveal" style="transition-delay:.24s">
+          <div class="trust-pill">
+            <span class="trust-pill-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </span>
+            <div class="trust-pill-text">
+              <strong>7-Day Delivery Guarantee</strong>
+              <span>Working MVP delivered or it’s free</span>
+            </div>
+          </div>
+          <div class="trust-pill">
+            <span class="trust-pill-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </span>
+            <div class="trust-pill-text">
+              <strong>Pay Only When Satisfied</strong>
+              <span>Signed MVP scope document</span>
+            </div>
+          </div>
+          <div class="trust-pill">
+            <span class="trust-pill-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+            </span>
+            <div class="trust-pill-text">
+              <strong>30 / 30 / 40 Milestones</strong>
+              <span>Milestone escrow model</span>
+            </div>
+          </div>
+          <div class="trust-pill">
+            <span class="trust-pill-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </span>
+            <div class="trust-pill-text">
+              <strong>Zero Risk Architecture</strong>
+              <span>Full code &amp; IP transfer</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 30/30/40 MILESTONE ARCHITECTURE ============ -->
+    <section class="wrap">
+      <div class="milestone-strip reveal">
+        <p class="eyebrow"><i aria-hidden="true"></i> Risk-Free Architecture</p>
+        <h2 style="font-size:clamp(24px, 3.5vw, 36px); font-weight:800; letter-spacing:-.03em; margin:8px 0 12px;">How the 30/30/40 Milestone Model Protects You</h2>
+        <p style="font-size:15px; color:var(--text-secondary); max-width:680px; line-height:1.6;">Traditional agencies demand 100% or 50% upfront before writing a line of code. At ZENSTRO, you only pay for verified progress across three transparent checkpoints:</p>
+        
+        <div class="milestone-cards">
+          <div class="milestone-step-card">
+            <div class="milestone-step-pct">30%</div>
+            <div class="milestone-step-title">Stage 1: Kickoff &amp; Architecture</div>
+            <p class="milestone-step-desc">Project initiation, signed MVP scope document, technical database schema, user flows, and staging environment provisioning.</p>
+          </div>
+          <div class="milestone-step-card">
+            <div class="milestone-step-pct">30%</div>
+            <div class="milestone-step-title">Stage 2: Core Staging Build</div>
+            <p class="milestone-step-desc">Full feature development, functional backend APIs, third-party integrations, and an interactive private staging URL for your hands-on review.</p>
+          </div>
+          <div class="milestone-step-card">
+            <div class="milestone-step-pct">40%</div>
+            <div class="milestone-step-title">Stage 3: QA, Handover &amp; Launch</div>
+            <p class="milestone-step-desc">Performance optimization, security audits, production deployment, complete Git repository code ownership transfer, plus 30-day warranty.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PRICING TIERS ============ -->
+    <section class="wrap" style="padding-bottom: 80px;">
+      <div class="section-head reveal">
+        <div>
+          <p class="eyebrow"><i aria-hidden="true"></i> Capability Packages</p>
+          <h2>Predictable, value-driven rates.</h2>
+        </div>
+        <p>Every tier is backed by our signed scope agreement, 30/30/40 milestones, and direct communication with senior engineers.</p>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Tier 1 -->
+        <div class="pricing-card reveal">
+          <div class="pricing-category">Web &amp; Landing Pages</div>
+          <h3>Rapid Web MVP</h3>
+          <p class="tier-desc">Custom responsive website or high-converting product landing page built for speed and conversion.</p>
+          <div class="pricing-rate">₹14,999<span style="font-size:16px; font-weight:500; color:var(--text-muted);"> / $199</span></div>
+          <span class="pricing-rate-sub">Eligible for 7-Day Sprint Guarantee</span>
+          <ul class="pricing-features">
+            <li><strong>7-Day Delivery Guarantee:</strong> Working site live on staging in 7 days or it's free.</li>
+            <li>Custom responsive design (Mobile, Tablet, Desktop).</li>
+            <li>Zero bloated frameworks: Pure clean HTML/CSS/JS for 99+ PageSpeed score.</li>
+            <li>Contact inquiry forms with instant email notifications.</li>
+            <li>Cloudflare CDN setup &amp; SSL configuration.</li>
+            <li>30-Day complimentary bug-fix warranty.</li>
+          </ul>
+          <a class="btn-primary" href="contact.html?tier=web" style="text-align:center;">Start Web Project <span aria-hidden="true">↗</span></a>
+        </div>
+
+        <!-- Tier 2 (Featured) -->
+        <div class="pricing-card featured reveal" style="transition-delay:.08s;">
+          <span class="pricing-badge">Most Popular</span>
+          <div class="pricing-category">SaaS &amp; Business Systems</div>
+          <h3>Custom Software &amp; SaaS</h3>
+          <p class="tier-desc">Bespoke web applications, SaaS MVPs, customer portals, or internal ERP/CRM systems.</p>
+          <div class="pricing-rate">₹49,999<span style="font-size:16px; font-weight:500; color:var(--text-muted);"> / $599</span></div>
+          <span class="pricing-rate-sub">Structured on 30/30/40 Milestone Model</span>
+          <ul class="pricing-features">
+            <li><strong>30/30/40 Milestones:</strong> Pay only when milestones are tested and approved.</li>
+            <li>Full-stack architecture (React/Next.js/Node/Python).</li>
+            <li>Database design (PostgreSQL/MongoDB/Cloudflare KV).</li>
+            <li>Role-Based Access Control (RBAC) &amp; Google SSO Auth.</li>
+            <li>Payment gateway integration (Stripe / Razorpay).</li>
+            <li>Full source code &amp; IP handover to your repository.</li>
+            <li>30-Day complimentary bug-fix warranty.</li>
+          </ul>
+          <a class="btn-primary" href="contact.html?tier=saas" style="text-align:center;">Start Software Project <span aria-hidden="true">↗</span></a>
+        </div>
+
+        <!-- Tier 3 -->
+        <div class="pricing-card reveal" style="transition-delay:.16s;">
+          <div class="pricing-category">AI &amp; Automation</div>
+          <h3>Intelligent Agents &amp; AI</h3>
+          <p class="tier-desc">Custom LLM integrations, conversational sales/support chatbots, and workflow automation pipelines.</p>
+          <div class="pricing-rate">₹29,999<span style="font-size:16px; font-weight:500; color:var(--text-muted);"> / $399</span></div>
+          <span class="pricing-rate-sub">Structured on 30/30/40 Milestone Model</span>
+          <ul class="pricing-features">
+            <li>Custom LLM integration (OpenAI, Anthropic, Gemini).</li>
+            <li>RAG vector retrieval over your private business documents.</li>
+            <li>Automated customer service &amp; lead qualification bots.</li>
+            <li>Zapier / webhook / Make.com workflow pipelines.</li>
+            <li>Private admin telemetry dashboard.</li>
+            <li>Full code ownership &amp; environment documentation.</li>
+          </ul>
+          <a class="btn-primary" href="contact.html?tier=ai" style="text-align:center;">Start AI Project <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CTA BAND ============ -->
+    <section class="cta-band">
+      <div class="wrap">
+        <p class="eyebrow"><i aria-hidden="true"></i> Need a Custom Scope?</p>
+        <h2>Get a free, transparent<br><em>MVP scope quote.</em></h2>
+        <a class="cta-link" href="contact.html">Request a Custom Proposal <span aria-hidden="true">↗</span></a>
+        <p class="cta-note">Send us your requirements — we will prepare a clear milestone scope document within 24 hours.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <img src="logo.png" alt="ZENSTRO" width="60" height="36">
+          <p class="foot-tagline">Innovate. Automate. Scale.</p>
+          <p class="foot-sub">A full-service technology studio for startups, SMEs and enterprises.</p>
+        </div>
+        <nav class="foot-col" aria-label="Capabilities">
+          <span>Capabilities</span>
+          <a href="web.html">ZENSTRO Web</a>
+          <a href="software.html">ZENSTRO Software</a>
+          <a href="ai.html">ZENSTRO AI</a>
+          <a href="cloud.html">ZENSTRO Cloud</a>
+          <a href="security.html">ZENSTRO Security</a>
+          <a href="consulting.html">ZENSTRO Consulting</a>
+        </nav>
+        <nav class="foot-col" aria-label="Company">
+          <span>Company</span>
+          <a href="about.html">Why ZENSTRO</a>
+          <a href="pricing.html" aria-current="page">Pricing &amp; Milestones</a>
+          <a href="faq.html">FAQ</a>
+          <a href="projects.html">Work &amp; GitHub</a>
+          <a href="insights.html">Insights</a>
+          <a href="contact.html">Contact Us</a>
+        </nav>
+        <nav class="foot-col" aria-label="Legal &amp; Trust">
+          <span>Legal &amp; Trust</span>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Service</a>
+          <a href="refund.html">Refund Policy</a>
+        </nav>
+        <nav class="foot-col" aria-label="Connect">
+          <span>Connect</span>
+          <a href="https://www.linkedin.com/company/134694292" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">↗</span></a>
+          <a href="https://www.instagram.com/ceo_shubham/" target="_blank" rel="noopener">Instagram <span aria-hidden="true">↗</span></a>
+          <a href="https://github.com/ceo-shubham" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+        </nav>
+      </div>
+      <div class="foot-bottom">
+        <span>© <span data-year>2026</span> ZENSTRO. All rights reserved.</span>
+        <div class="foot-legal-links">
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+          <a href="refund.html">Refunds</a>
+          <a href="login.html" style="opacity:0.6;" title="Admin & Staff Login">Admin</a>
+        </div>
+        <span>Innovate. Automate. Scale.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js?v=7.0" defer></script>
+</body>
+</html>

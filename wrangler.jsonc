@@ -1,0 +1,30 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "zenstro",
+  "compatibility_date": "2024-09-23",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "pages_build_output_dir": ".",
+
+
+
+  /**
+   * Cloudflare KV Namespace Bindings
+   * Used for storing inquiries, sent outbox, and inbound emails
+   */
+  "kv_namespaces": [
+    {
+      "binding": "ZENSTRO_KV",
+      "id": "eb9ba01d2f1b4f3da5c5ab7f97747a61"
+    }
+  ],
+
+  /**
+   * Environment Variables
+   */
+  "vars": {
+    "ADMIN_NOTIFICATION_EMAIL": "ceo.shubhampathak@gmail.com",
+    "RESEND_FROM": "ZENSTRO Admin <admin@zenstro.space>"
+  }
+}

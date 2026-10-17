@@ -1,0 +1,48 @@
+# ==========================================================
+# ZENSTRO Robots Specification (https://zenstro.space/)
+# ==========================================================
+
+# Standard Web Search Crawlers (Google, Bing, Yahoo, DuckDuckGo, Baidu, Yandex)
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /login.html
+
+# AI Search & Answer Engines (ChatGPT Search, Perplexity, Claude, Gemini)
+User-agent: GPTBot
+Allow: /
+Disallow: /admin.html
+Disallow: /login.html
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin.html
+Disallow: /login.html
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin.html
+Disallow: /login.html
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin.html
+Disallow: /login.html
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin.html
+Disallow: /login.html
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /admin.html
+Disallow: /login.html
+
+# XML Sitemap
+Sitemap: https://zenstro.space/sitemap.xml
+
+# LLM Entity Context Standard
+# See: https://llmstxt.org/
+# Link: https://zenstro.space/llms.txt
+# Link: https://zenstro.space/llms-full.txt

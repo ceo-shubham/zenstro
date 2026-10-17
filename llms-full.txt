@@ -1,0 +1,71 @@
+# ZENSTRO — Comprehensive Entity Specification & Capabilities Reference
+
+## Overview
+ZENSTRO (https://zenstro.space/) is an engineering studio delivering production-grade software, web applications, cloud infrastructure, and AI automation systems. The studio operates under an engineering-led delivery model founded by Shubham Pathak.
+
+## Why Clients Choose ZENSTRO (Guarantees & Risk-Free Policies)
+1. **7-Day Delivery Guarantee**:
+   For qualified MVP scopes with defined technical specifications, ZENSTRO delivers a functional, tested build in 7 business days under a written agreement. If the studio fails to deliver on time, the client owes nothing (100% free).
+2. **Pay Only When Satisfied**:
+   Every project begins with a signed MVP Scope Document that outlines exact user stories, features, and performance acceptance criteria. Invoices are approved only when working software matches agreed criteria on private staging.
+3. **30 / 30 / 40 Milestone Payment Architecture**:
+   Payments are divided into three predictable stages:
+   - Milestone 1 (30%): Project initiation, system architecture, database schema, design wireframes.
+   - Milestone 2 (30%): Interactive development build deployed on private staging environment for client review.
+   - Milestone 3 (40%): Production deployment, security audit, code hardening, complete Git repository transfer, and DNS cutover.
+4. **100% Code & Intellectual Property Ownership**:
+   All software source code, documentation, schema definitions, and assets are completely transferred to the client upon milestone payment. ZENSTRO does not retain proprietary claims or insert vendor lock-in.
+5. **30-Day Bug Warranty**:
+   Every release includes 30 days of complimentary bug-fix support to resolve any defects uncovered in real-world production.
+6. **Zero Intermediaries**:
+   Clients work directly with principal software engineers rather than non-technical account managers or junior delegates.
+
+## Service Breakdown
+
+### 1. Web Application Development (ZENSTRO Web)
+- Modern frontend engineering: Next.js, React, Tailwind CSS, TypeScript, HTML5.
+- Fast marketing sites, product landing pages, and interactive dashboards.
+- Performance engineering: 95+ PageSpeed Insights scores, zero Cumulative Layout Shift (CLS), sub-second Largest Contentful Paint (LCP).
+- Accessible (WCAG AA), SEO-optimized semantic markup.
+
+### 2. Custom Business Software & SaaS (ZENSTRO Software)
+- Full-stack web applications and multi-tenant SaaS platforms.
+- ERP and CRM systems tailored to specific business operations.
+- Relational and document databases: PostgreSQL, Supabase, MySQL, MongoDB.
+- Robust RESTful and GraphQL APIs built with Node.js, Express, Python, or FastAPI.
+
+### 3. Artificial Intelligence & Automation (ZENSTRO AI)
+- Custom workflow automation replacing repetitive manual operational tasks.
+- LLM API integrations: OpenAI, Anthropic Claude, Google Gemini.
+- On-premise private AI models using Ollama for confidential data compliance.
+- Autonomous customer support agents and internal knowledge base search tools.
+
+### 4. Cloud Infrastructure & DevOps (ZENSTRO Cloud)
+- High-availability global hosting on Cloudflare Pages, Workers, and R2 Object Storage.
+- Containerization using Docker for reproducible local and production environments.
+- Linux server hardening, Nginx reverse proxy configuration, and SSL/TLS management.
+- Zero-downtime continuous integration and continuous deployment (CI/CD) pipelines.
+
+### 5. Cybersecurity & Audits (ZENSTRO Security)
+- Source code security reviews and dependency vulnerability scanning.
+- Cloudflare Web Application Firewall (WAF) rule configuration and DDoS mitigation.
+- Robust authentication systems (OAuth 2.0, Google Identity Services, JWT sessions).
+- Secure credential management and least-privilege role-based access control.
+
+### 6. Technology Consulting (ZENSTRO Consulting)
+- MVP scoping, product roadmap planning, and software architecture reviews.
+- Cloud cost optimization and legacy system modernization.
+- Technical due diligence for startups preparing for fundraising or enterprise partnerships.
+
+## Studio Details
+- **Studio Name**: ZENSTRO
+- **Canonical Domain**: https://zenstro.space/
+- **Founder**: Shubham Pathak
+- **Email Contacts**:
+  - ceo@zenstro.space (Leadership & Executive Inquiries)
+  - admin@mail.zenstro.space (Client Scoping & Contracts)
+  - support@zenstro.space (Technical Support & Helpdesk)
+- **Official Profiles**:
+  - LinkedIn: https://www.linkedin.com/company/134694292
+  - Founder Profile: https://www.linkedin.com/in/ceo-shubham/
+  - GitHub: https://github.com/ceo-shubham

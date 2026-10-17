@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Frequently Asked Questions — ZENSTRO | Client Guarantees &amp; Milestones</title>
+  <meta name="description" content="Answers to common questions about ZENSTRO's 7-day delivery guarantee, 30/30/40 milestone pricing, IP ownership, and technical processes.">
+  <link rel="canonical" href="https://zenstro.space/faq.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ZENSTRO">
+  <meta property="og:title" content="Frequently Asked Questions — ZENSTRO">
+  <meta property="og:description" content="Clear answers on our 7-day delivery guarantee, milestone payments, IP ownership, and engineering sprints.">
+  <meta property="og:url" content="https://zenstro.space/faq.html">
+  <meta property="og:image" content="https://zenstro.space/logo.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=4">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=4">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=4">
+  <link rel="shortcut icon" href="favicon.ico?v=4">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=8.0">
+  <script src="config.js"></script>
+  <style>
+    .faq-layout {
+      max-width: 860px;
+      margin: 0 auto;
+      padding-bottom: 80px;
+    }
+    .faq-category {
+      margin-bottom: 48px;
+    }
+    .faq-category-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--accent-primary);
+      display: inline-block;
+    }
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      margin-bottom: 16px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .faq-item:hover {
+      border-color: #cbd5e1;
+    }
+    .faq-question {
+      width: 100%;
+      text-align: left;
+      padding: 20px 24px;
+      background: none;
+      border: none;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      font-family: var(--sans);
+    }
+    .faq-icon {
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--accent-primary);
+      transition: transform 0.2s var(--ease);
+      font-family: var(--mono);
+    }
+    .faq-item.open .faq-icon {
+      transform: rotate(45deg);
+    }
+    .faq-answer {
+      display: none;
+      padding: 0 24px 22px;
+      font-size: 14.5px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+    .faq-answer p { margin-bottom: 12px; }
+    .faq-answer p:last-child { margin-bottom: 0; }
+    .faq-answer strong { color: var(--text-primary); }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How does the 7-Day Delivery Guarantee work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "For qualifying web and rapid MVP builds, we scope a functional baseline documented in a signed MVP scope agreement. From kickoff, our engineering team works in a dedicated sprint. If we do not deliver your fully functional staging build within 7 business days, your project is 100% free."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What counts as a qualifying project for the 7-day sprint?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Rapid websites, product landing pages, functional prototypes, and focused MVP tools. Larger enterprise SaaS platforms, multi-tenant databases, or complex ERPs are delivered through 2-to-4 week milestones, also structured on our 30/30/40 framework."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the 30/30/40 Milestone Payment Model?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We eliminate client risk by dividing payments across three objective checkpoints: 30% Kickoff (architecture, wireframes, project initiation), 30% Staging Build (interactive, tested development build ready for your hands-on inspection), and 40% Final Launch (performance audit, security hardening, full source code handover, and production deploy)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does Pay Only When Satisfied mean?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Before writing a line of code, we draft a concise MVP Scope Document listing exact features, user journeys, and acceptance criteria. You only approve and fund stages as verified deliverables are demonstrated on private staging."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I own 100% of the code and intellectual property?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, absolutely. Upon final milestone sign-off, full intellectual property, all Git repository source code, environment configurations, and assets are transferred completely to you. We do not use proprietary vendor lock-in traps."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you sign Non-Disclosure Agreements (NDAs)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. We routinely execute mutual NDAs prior to reviewing proprietary product specifications or proprietary business logic. Your proprietary ideas remain strictly confidential."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens after launch? Is there a warranty?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Every delivered project includes a complimentary 30-Day Bug-Fix Warranty. If any reproducible issue emerges within 30 days of launch, our engineers fix it immediately at zero additional cost."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="noise" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap nav-bar">
+      <a class="brand" href="index.html" aria-label="ZENSTRO — home">
+        <img src="logo.png" alt="ZENSTRO" width="60" height="36">
+        <span class="brand-name">ZENSTRO</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
+      <nav id="nav-links" aria-label="Primary">
+        <a href="services.html">Capabilities</a>
+        <a href="about.html">Why ZENSTRO</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="faq.html" aria-current="page">FAQ</a>
+        <a href="projects.html">Work</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="insights.html">Insights</a>
+        <a class="nav-login-link" href="login.html" id="global-login-btn">
+          <svg width="14" height="14" viewBox="0 0 18 18" style="vertical-align:-2px; margin-right:4px;">
+            <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.616z"/>
+            <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/>
+            <path fill="#FBBC05" d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707s.102-1.167.282-1.707V4.961H.957C.347 6.175 0 7.55 0 9s.347 2.825.957 4.039l3.007-2.332z"/>
+            <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.961L3.964 7.293C4.672 5.166 6.656 3.58 9 3.58z"/>
+          </svg>
+          <span>Log in</span>
+        </a>
+        <a class="nav-cta" href="contact.html">Start a project <span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="wrap">
+        <p class="eyebrow reveal"><i aria-hidden="true"></i> Direct Answers</p>
+        <h1 class="reveal" style="transition-delay:.08s">Frequently asked<br><em>questions.</em></h1>
+        <p class="page-lead reveal" style="transition-delay:.16s">Radical transparency is how we work. Here is everything you need to know about our 7-day guarantee, 30/30/40 milestone pricing, intellectual property, and communication.</p>
+      </div>
+    </section>
+
+    <section class="wrap">
+      <div class="faq-layout">
+
+        <!-- Category 1 -->
+        <div class="faq-category reveal">
+          <h2 class="faq-category-title">Sprints &amp; 7-Day Guarantee</h2>
+
+          <div class="faq-item open">
+            <button class="faq-question" type="button">
+              <span>How does the 7-Day Delivery Guarantee work?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>For qualifying web and rapid MVP builds, we scope a functional baseline documented in a signed MVP scope agreement. From kickoff, our engineering team works in a dedicated sprint. If we do not deliver your fully functional staging build within <strong>7 business days</strong>, your project is <strong>100% free</strong>.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>What counts as a qualifying project for the 7-day sprint?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Rapid websites, product landing pages, functional prototypes, and focused MVP tools. Larger enterprise SaaS platforms, multi-tenant databases, or complex ERPs are delivered through 2-to-4 week milestones, also structured on our 30/30/40 framework.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category 2 -->
+        <div class="faq-category reveal">
+          <h2 class="faq-category-title">Milestone Payments &amp; Pricing</h2>
+
+          <div class="faq-item open">
+            <button class="faq-question" type="button">
+              <span>What is the 30/30/40 Milestone Payment Model?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>We eliminate client risk by dividing payments across three objective checkpoints:</p>
+              <ul>
+                <li><strong>30% Kickoff:</strong> Architecture, wireframes, and project initiation.</li>
+                <li><strong>30% Staging Build:</strong> Interactive, tested development build ready for your live hands-on inspection.</li>
+                <li><strong>40% Final Launch:</strong> Performance audit, security hardening, full source code handover, and production deploy.</li>
+              </ul>
+              <p>You never pay the final balance until the milestone deliverables match the signed MVP scope document.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>What does "Pay Only When Satisfied" mean?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Before writing a line of code, we draft a concise MVP Scope Document listing exact features, user journeys, and acceptance criteria. You only approve and fund stages as verified deliverables are demonstrated on private staging.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>What payment methods do you accept?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>We accept international bank wire transfers, Stripe (credit/debit cards), Razorpay, and direct bank transfers (INR for domestic Indian clients; USD, EUR, GBP for global clients). Invoices include formal GST or corporate tax breakdown.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category 3 -->
+        <div class="faq-category reveal">
+          <h2 class="faq-category-title">Ownership &amp; Intellectual Property</h2>
+
+          <div class="faq-item open">
+            <button class="faq-question" type="button">
+              <span>Do I own 100% of the code and intellectual property?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p><strong>Yes, absolutely.</strong> Upon final milestone sign-off, full intellectual property, all Git repository source code, environment configurations, and assets are transferred completely to you. We do not use proprietary vendor lock-in traps.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>Do you sign Non-Disclosure Agreements (NDAs)?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Yes. We routinely execute mutual NDAs prior to reviewing proprietary product specifications or proprietary business logic. Your proprietary ideas remain strictly confidential.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category 4 -->
+        <div class="faq-category reveal">
+          <h2 class="faq-category-title">Engineering &amp; Support</h2>
+
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>What happens after launch? Is there a warranty?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Every delivered project includes a complimentary <strong>30-Day Bug-Fix Warranty</strong>. If any reproducible issue emerges within 30 days of launch, our engineers fix it immediately at zero additional cost. We also provide ongoing maintenance retainers if desired.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>How do we communicate throughout the sprint?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>You communicate directly with studio leadership and senior engineers via dedicated Slack or WhatsApp channels, backed by asynchronous video walkthroughs and email milestone summaries. No middleman account managers.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ CTA BAND ============ -->
+    <section class="cta-band">
+      <div class="wrap">
+        <p class="eyebrow"><i aria-hidden="true"></i> Have a Question Not Listed Here?</p>
+        <h2>Ask us directly.<br><em>We reply within 2 hours.</em></h2>
+        <a class="cta-link" href="contact.html">Get in Touch With Leadership <span aria-hidden="true">↗</span></a>
+        <p class="cta-note">Or email us directly at <a href="mailto:ceo@zenstro.space" style="color:#ffffff; text-decoration:underline;">ceo@zenstro.space</a> or <a href="mailto:support@zenstro.space" style="color:#ffffff; text-decoration:underline;">support@zenstro.space</a>.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <img src="logo.png" alt="ZENSTRO" width="60" height="36">
+          <p class="foot-tagline">Innovate. Automate. Scale.</p>
+          <p class="foot-sub">A full-service technology studio for startups, SMEs and enterprises.</p>
+        </div>
+        <nav class="foot-col" aria-label="Capabilities">
+          <span>Capabilities</span>
+          <a href="web.html">ZENSTRO Web</a>
+          <a href="software.html">ZENSTRO Software</a>
+          <a href="ai.html">ZENSTRO AI</a>
+          <a href="cloud.html">ZENSTRO Cloud</a>
+          <a href="security.html">ZENSTRO Security</a>
+          <a href="consulting.html">ZENSTRO Consulting</a>
+        </nav>
+        <nav class="foot-col" aria-label="Company">
+          <span>Company</span>
+          <a href="about.html">Why ZENSTRO</a>
+          <a href="pricing.html">Pricing &amp; Milestones</a>
+          <a href="faq.html" aria-current="page">FAQ</a>
+          <a href="projects.html">Work &amp; GitHub</a>
+          <a href="insights.html">Insights</a>
+          <a href="contact.html">Contact Us</a>
+        </nav>
+        <nav class="foot-col" aria-label="Legal &amp; Trust">
+          <span>Legal &amp; Trust</span>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Service</a>
+          <a href="refund.html">Refund Policy</a>
+        </nav>
+        <nav class="foot-col" aria-label="Connect">
+          <span>Connect</span>
+          <a href="https://www.linkedin.com/company/134694292" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">↗</span></a>
+          <a href="https://www.instagram.com/ceo_shubham/" target="_blank" rel="noopener">Instagram <span aria-hidden="true">↗</span></a>
+          <a href="https://github.com/ceo-shubham" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+        </nav>
+      </div>
+      <div class="foot-bottom">
+        <span>© <span data-year>2026</span> ZENSTRO. All rights reserved.</span>
+        <div class="foot-legal-links">
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+          <a href="refund.html">Refunds</a>
+          <a href="login.html" style="opacity:0.6;" title="Admin & Staff Login">Admin</a>
+        </div>
+        <span>Innovate. Automate. Scale.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js?v=7.0" defer></script>
+  <script>
+    document.querySelectorAll('.faq-question').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var parent = btn.closest('.faq-item');
+        parent.classList.toggle('open');
+      });
+    });
+  </script>
+</body>
+</html>

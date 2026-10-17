@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login — ZENSTRO Portal</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=4">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=4">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=4">
+  <link rel="shortcut icon" href="favicon.ico?v=4">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=8.0">
+  <script src="config.js"></script>
+  <!-- Google Identity Services library -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    .auth-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: radial-gradient(ellipse 65% 55% at 50% 15%, rgba(37, 99, 235, 0.07), transparent 70%), #ffffff;
+    }
+    .auth-nav {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border-default);
+    }
+    .auth-main {
+      flex: 1;
+      display: grid;
+      place-items: center;
+      padding: 40px 20px;
+    }
+    .auth-card {
+      width: 100%;
+      max-width: 440px;
+      background: #ffffff;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-xl);
+      padding: 42px 36px;
+      box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.04);
+      text-align: center;
+      position: relative;
+    }
+    .auth-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      background: rgba(37, 99, 235, 0.08);
+      color: var(--accent-primary);
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 18px;
+      font-family: var(--mono);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .auth-title {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -.03em;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+    .auth-sub {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+    .auth-alert {
+      margin-top: 18px;
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      line-height: 1.5;
+      display: none;
+      text-align: center;
+      font-weight: 500;
+    }
+    .auth-alert.error {
+      display: block;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #dc2626;
+    }
+    .auth-alert.success {
+      display: block;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #16a34a;
+    }
+    @media (max-width: 480px) {
+      .auth-main { padding: 20px 14px; }
+      .auth-card { padding: 26px 20px; border-radius: 12px; }
+      .auth-title { font-size: 20px; }
+      .auth-sub { font-size: 13px; margin-bottom: 20px; }
+    }
+  </style>
+</head>
+<body class="auth-page">
+
+  <header class="auth-nav">
+    <div class="wrap" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+      <a class="brand" href="index.html" aria-label="ZENSTRO — home">
+        <img src="logo.png" alt="ZENSTRO" width="60" height="36">
+        <span class="brand-name">ZENSTRO</span>
+      </a>
+      <div style="display:flex; align-items:center; gap:16px; font-size:13px; font-weight:600;">
+        <a href="index.html" style="color:var(--text-secondary); text-decoration:none;">← Home</a>
+        <a href="privacy.html" style="color:var(--text-secondary); text-decoration:none;">Privacy Policy</a>
+        <a href="terms.html" style="color:var(--text-secondary); text-decoration:none;">Terms of Service</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="auth-main">
+    <div class="auth-card">
+      <div class="auth-badge">ZENSTRO Sign-In</div>
+      <h1 class="auth-title">Welcome to ZENSTRO</h1>
+      <p class="auth-sub">Sign in with your Google account to access your client portal, track project sprints, or enter the leadership console.</p>
+
+      <!-- Official Google Sign-In (GIS) -->
+      <div id="g_id_onload"
+           data-client_id="193810371236-jli2ml7qh8qedqmat8o0hrms8uavhr6s.apps.googleusercontent.com"
+           data-context="signin"
+           data-ux_mode="popup"
+           data-callback="handleGoogleCredentialResponse"
+           data-auto_prompt="false">
+      </div>
+      <div id="g_id_signin_wrap" class="g_id_signin"
+           data-type="standard"
+           data-shape="rectangular"
+           data-theme="outline"
+           data-text="signin_with"
+           data-size="large"
+           data-logo_alignment="left"
+           data-width="368"
+           style="display:flex; justify-content:center; margin-bottom:12px;">
+      </div>
+
+      <div id="auth-alert" class="auth-alert"></div>
+
+      <div style="font-size:12px; color:var(--text-secondary); margin-top:24px; text-align:left; line-height:1.6; border-top:1px solid #e2e8f0; padding-top:16px;">
+        <strong>Google Data Usage Transparency:</strong><br>
+        ZENSTRO requests access only to your basic Google profile (email, name, profile avatar) solely to verify your identity and authenticate your session. We do not access sensitive personal data, do not read private emails or Google Drive files, and adhere strictly to the <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener" style="color:var(--accent-primary); text-decoration:underline;">Google API Services User Data Policy</a>. See our <a href="privacy.html#google-data" style="color:var(--accent-primary); text-decoration:underline;">Privacy Policy</a>.
+      </div>
+
+      <div style="margin-top:20px; font-size:12px; display:flex; justify-content:center; gap:16px; flex-wrap:wrap; border-top:1px solid #e2e8f0; padding-top:14px;">
+        <a href="privacy.html" style="color:var(--text-secondary); font-weight:600; text-decoration:underline;">Privacy Policy</a>
+        <a href="terms.html" style="color:var(--text-secondary); font-weight:600; text-decoration:underline;">Terms of Service</a>
+        <a href="refund.html" style="color:var(--text-secondary); font-weight:600; text-decoration:underline;">Refund Policy</a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      const AUTHORIZED_ADMINS = (window.ZENSTRO_CONFIG && window.ZENSTRO_CONFIG.adminEmails) || [
+        "sub08pathak@gmail.com",
+        "officialzyanix@gmail.com",
+        "shubhamowen@gmail.com",
+        "anshikashar1008@gmail.com",
+        "ceo.shubhampathak@gmail.com"
+      ];
+
+      const alertBox = document.getElementById('auth-alert');
+
+      function showAlert(msg, isError) {
+        if (!alertBox) return;
+        alertBox.textContent = msg;
+        alertBox.className = 'auth-alert ' + (isError ? 'error' : 'success');
+      }
+
+      function attemptLogin(email, displayName, avatarUrl) {
+        const cleanEmail = String(email || '').trim().toLowerCase();
+        if (!cleanEmail) {
+          showAlert('No valid email received from Google account.', true);
+          return;
+        }
+
+        const isAdmin = AUTHORIZED_ADMINS.some(a => a.toLowerCase() === cleanEmail);
+
+        const session = {
+          email: cleanEmail,
+          name: displayName || cleanEmail.split('@')[0],
+          avatar: avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName || cleanEmail)}&background=2563eb&color=fff`,
+          role: isAdmin ? (cleanEmail === 'ceo.shubhampathak@gmail.com' ? 'Owner / Lead' : 'Administrator') : 'Client Member',
+          isAdmin: isAdmin,
+          token: 'zen_' + Math.random().toString(36).substring(2) + Date.now().toString(36),
+          loginAt: new Date().toISOString()
+        };
+
+        // Store sessions
+        localStorage.setItem('zenstro_user_session', JSON.stringify(session));
+        sessionStorage.setItem('zenstro_user_session', JSON.stringify(session));
+
+        if (isAdmin) {
+          localStorage.setItem('zenstro_admin_session', JSON.stringify(session));
+          sessionStorage.setItem('zenstro_admin_session', JSON.stringify(session));
+          showAlert(`Welcome, ${session.name}! Redirecting to Admin Console...`, false);
+          setTimeout(() => {
+            window.location.href = 'admin.html';
+          }, 500);
+        } else {
+          localStorage.removeItem('zenstro_admin_session');
+          sessionStorage.removeItem('zenstro_admin_session');
+          showAlert(`Welcome, ${session.name}! Signed in successfully. Redirecting to website...`, false);
+          setTimeout(() => {
+            window.location.href = 'index.html';
+          }, 600);
+        }
+      }
+
+      // Global Callback for Google GIS
+      window.handleGoogleCredentialResponse = function(response) {
+        try {
+          if (!response || !response.credential) {
+            showAlert('Google sign-in was not completed.', true);
+            return;
+          }
+          const base64Url = response.credential.split('.')[1];
+          const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+          const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+          }).join(''));
+          const payload = JSON.parse(jsonPayload);
+          attemptLogin(payload.email, payload.name, payload.picture);
+        } catch (err) {
+          console.error('Failed to parse Google credential:', err);
+          showAlert('Failed to process Google sign-in response.', true);
+        }
+      };
+
+      // Programmatic GIS init on window load
+      window.addEventListener('load', function() {
+        if (window.google && window.google.accounts && window.google.accounts.id) {
+          try {
+            google.accounts.id.initialize({
+              client_id: (window.ZENSTRO_CONFIG && window.ZENSTRO_CONFIG.googleClientId) || "193810371236-jli2ml7qh8qedqmat8o0hrms8uavhr6s.apps.googleusercontent.com",
+              callback: window.handleGoogleCredentialResponse,
+              auto_select: false,
+              cancel_on_tap_outside: true
+            });
+            const wrap = document.getElementById('g_id_signin_wrap');
+            if (wrap && wrap.children.length === 0) {
+              google.accounts.id.renderButton(wrap, {
+                type: "standard",
+                theme: "outline",
+                size: "large",
+                shape: "rectangular",
+                text: "signin_with",
+                logo_alignment: "left",
+                width: 320
+              });
+            }
+          } catch (e) {
+            console.warn('GIS init error:', e);
+          }
+        }
+      });
+
+      // Auto-redirect if already logged in as admin
+      const existing = localStorage.getItem('zenstro_admin_session');
+      if (existing) {
+        try {
+          const parsed = JSON.parse(existing);
+          if (parsed && parsed.email && AUTHORIZED_ADMINS.some(a => a.toLowerCase() === parsed.email.toLowerCase())) {
+            window.location.replace('admin.html');
+          }
+        } catch (e) {}
+      }
+    })();
+  </script>
+</body>
+</html>

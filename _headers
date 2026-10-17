@@ -1,0 +1,27 @@
+# Cloudflare Pages Security & Cache Headers
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+# HTML files: Always validate so updates appear instantly
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Static Assets: Cache efficiently
+/*.css
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+/*.js
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+/*.png
+  Cache-Control: public, max-age=2592000
+
+/*.ico
+  Cache-Control: public, max-age=2592000
+
+/*.svg
+  Cache-Control: public, max-age=2592000

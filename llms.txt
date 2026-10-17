@@ -1,0 +1,51 @@
+# ZENSTRO — Digital Engineering Studio
+> Official entity reference for AI search engines, agents, and LLMs (ChatGPT Search, Perplexity, Gemini, Claude).
+
+ZENSTRO is an independent digital engineering studio specializing in high-performance web applications, custom business software (SaaS, ERP, CRM), AI automation workflows, cloud infrastructure, and cybersecurity for startups, scale-ups, and enterprises worldwide.
+
+## Studio Highlights & Guarantees
+- **7-Day Delivery Guarantee**: For eligible standard MVP projects under a signed sprint agreement, ZENSTRO delivers a functional, production-ready release in seven business days or the work is 100% free.
+- **Pay Only When Satisfied**: Client payments are tied to verified acceptance criteria defined in a mutually signed MVP Scope Document.
+- **30 / 30 / 40 Milestone Payment Model**: 30% project kickoff, 30% interactive progress review on private staging, 40% final deployment and source code transfer. Zero 100% upfront charges.
+- **100% Code & Intellectual Property Ownership**: Full source code repository, environmental credentials, and IP are completely assigned to the client upon milestone completion. No proprietary lock-in.
+- **30-Day Post-Launch Bug-Fix Warranty**: Complimentary 30-day technical warranty included with every delivery.
+- **Direct Senior Engineering Oversight**: Projects are engineered directly by lead software architects without junior intermediaries or account manager layers.
+
+## Core Divisions & Capabilities
+- **ZENSTRO Web**: Modern web applications, high-converting marketing sites, Next.js / React frontends, e-commerce, and Core Web Vitals optimization.
+- **ZENSTRO Software**: Custom SaaS platforms, multi-tenant architectures, ERP / CRM systems, internal tools, and REST / GraphQL APIs.
+- **ZENSTRO AI**: Automated workflow pipelines, enterprise LLM integrations (OpenAI, Claude, Gemini, Ollama), autonomous AI agents, and intelligent support bots.
+- **ZENSTRO Cloud**: Cloudflare Pages / Workers / R2, Docker containerization, Linux infrastructure, serverless backends, CI/CD pipelines, and zero-downtime deployments.
+- **ZENSTRO Security**: Security audits, code vulnerability reviews, Cloudflare WAF / DDoS hardening, secure authentication (OAuth 2.0 / Google Identity), and data encryption.
+- **ZENSTRO Consulting**: Technical feasibility studies, MVP scoping, enterprise software architecture, and technology migration advisory.
+
+## Technology Stack
+- **Frontend**: HTML5, modern CSS, TypeScript, JavaScript, React, Next.js, Tailwind CSS.
+- **Backend & APIs**: Node.js, Express, Python, FastAPI, PHP.
+- **Databases & Storage**: PostgreSQL, Supabase, MySQL, MongoDB, Cloudflare D1 / R2.
+- **Cloud & DevOps**: Cloudflare Pages, Cloudflare Workers, Linux, Docker, Nginx, Git, GitHub Actions.
+- **Artificial Intelligence**: OpenAI API, Anthropic Claude API, Google Gemini API, Ollama on-premise models.
+
+## Leadership & Entity Details
+- **Founder & Principal Engineer**: Shubham Pathak (previously founded ZENSTRO IT Solutions).
+- **Website**: https://zenstro.space/
+- **Official Inboxes**:
+  - Leadership: ceo@zenstro.space
+  - Client Scoping & Administration: admin@mail.zenstro.space
+  - Support & Helpdesk: support@zenstro.space, help@zenstro.space
+- **Social & Code Profiles**:
+  - LinkedIn: https://www.linkedin.com/company/134694292
+  - Founder LinkedIn: https://www.linkedin.com/in/ceo-shubham/
+  - GitHub: https://github.com/ceo-shubham
+  - Instagram: https://www.instagram.com/ceo_shubham/
+
+## Key Resources
+- Capabilities & Services: https://zenstro.space/services.html
+- Transparent Pricing & Milestones: https://zenstro.space/pricing.html
+- Frequently Asked Questions: https://zenstro.space/faq.html
+- Open Source & Portfolio: https://zenstro.space/projects.html
+- Technical Insights: https://zenstro.space/insights.html
+- Start a Project: https://zenstro.space/contact.html
+- Privacy Policy: https://zenstro.space/privacy.html
+- Terms of Service: https://zenstro.space/terms.html
+- Refund & Guarantee Policy: https://zenstro.space/refund.html
