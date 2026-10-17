@@ -56,7 +56,7 @@
           '</div>' +
           '<p class="gh-profile-bio">' + escapeHtml(profile.bio || 'Founder & Lead Systems Architect at ZENSTRO. Building performant software, AI automation, and scalable cloud workflows.') + '</p>' +
           '<div class="gh-profile-stats">' +
-            '<span><strong>' + Number(profile.public_repos || 41) + '+</strong> Public Repos</span>' +
+            '<span><strong>' + Number(profile.public_repos || 42) + '+</strong> Public Repos</span>' +
             '<span>•</span>' +
             '<span><strong>Edge &amp; Cloud</strong> Systems</span>' +
             '<span>•</span>' +

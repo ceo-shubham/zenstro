@@ -39,7 +39,7 @@ async function fetchGitHubData(token) {
     bio: 'Founder & Lead Systems Architect at ZENSTRO. Building high-performance web applications, AI automation, and cloud platforms.',
     avatar_url: 'https://github.com/ceo-shubham.png',
     html_url: 'https://github.com/ceo-shubham',
-    public_repos: 41
+    public_repos: 42
   };
 
   try {
