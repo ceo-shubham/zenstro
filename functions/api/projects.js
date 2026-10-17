@@ -16,7 +16,7 @@ const CORS_HEADERS = {
 
 const DEFAULT_CONFIG = {
   githubMaxDisplay: 12,
-  cloudflareMaxDisplay: 8,
+  cloudflareMaxDisplay: 12,
   repoOverrides: {},
   cfOverrides: {}
 };
@@ -81,49 +81,38 @@ async function fetchGitHubData(token) {
   return { profile, repos };
 }
 
-// Fetch Cloudflare Pages Projects & Live Domains
+// Fetch Cloudflare Pages Projects AND Cloudflare Workers Deployments
 async function fetchCloudflareData(accountId, apiKey, email) {
   if (!accountId || !apiKey || !email) {
-    return [
-      {
-        name: 'zenstro',
-        domains: ['zenstro.space', 'www.zenstro.space'],
-        subdomain: 'zenstro.pages.dev',
-        primary_url: 'https://zenstro.space',
-        status: 'active',
-        created_on: new Date().toISOString()
-      },
-      {
-        name: 'typ',
-        domains: ['typ.zenstro.space', 'typ-18f.pages.dev'],
-        subdomain: 'typ-18f.pages.dev',
-        primary_url: 'https://typ.zenstro.space',
-        status: 'active',
-        created_on: new Date().toISOString()
-      }
-    ];
+    return [];
   }
 
+  const cfHeaders = {
+    'User-Agent': 'ZENSTRO-Studio',
+    'X-Auth-Email': email,
+    'X-Auth-Key': apiKey,
+    'Content-Type': 'application/json'
+  };
+
+  const results = [];
+
+  // 1. Fetch Cloudflare Pages Projects
   try {
-    const res = await fetch(`https://api.cloudflare.com/client/v4/accounts/${accountId}/pages/projects`, {
-      headers: {
-        'User-Agent': 'ZENSTRO-Studio',
-        'X-Auth-Email': email,
-        'X-Auth-Key': apiKey,
-        'Content-Type': 'application/json'
-      }
+    const pagesRes = await fetch(`https://api.cloudflare.com/client/v4/accounts/${accountId}/pages/projects`, {
+      headers: cfHeaders
     });
 
-    if (res.ok) {
-      const data = await res.json();
+    if (pagesRes.ok) {
+      const data = await pagesRes.json();
       if (data.success && Array.isArray(data.result)) {
-        return data.result.map(p => {
+        data.result.forEach(p => {
           const customDomains = (p.domains || []).filter(d => !d.endsWith('.pages.dev'));
           const primaryDomain = customDomains[0] || (p.domains && p.domains[0]) || p.subdomain;
           const primaryUrl = primaryDomain.startsWith('http') ? primaryDomain : `https://${primaryDomain}`;
 
-          return {
+          results.push({
             name: p.name,
+            type: 'pages',
             subdomain: p.subdomain,
             domains: p.domains || [],
             primary_url: primaryUrl,
@@ -133,15 +122,58 @@ async function fetchCloudflareData(accountId, apiKey, email) {
               created_on: p.canonical_deployment.created_on
             } : null,
             created_on: p.created_on
-          };
+          });
         });
       }
     }
   } catch (e) {
-    console.warn('Cloudflare Projects fetch error:', e);
+    console.warn('Cloudflare Pages fetch error:', e);
   }
 
-  return [];
+  // 2. Fetch Cloudflare Workers and Custom Worker Domains
+  try {
+    const [scriptsRes, domainsRes] = await Promise.all([
+      fetch(`https://api.cloudflare.com/client/v4/accounts/${accountId}/workers/scripts`, { headers: cfHeaders }),
+      fetch(`https://api.cloudflare.com/client/v4/accounts/${accountId}/workers/domains`, { headers: cfHeaders })
+    ]);
+
+    let domainMap = {};
+    if (domainsRes.ok) {
+      const domData = await domainsRes.json();
+      if (domData.success && Array.isArray(domData.result)) {
+        domData.result.forEach(d => {
+          if (!domainMap[d.service]) domainMap[d.service] = [];
+          domainMap[d.service].push(d.hostname);
+        });
+      }
+    }
+
+    if (scriptsRes.ok) {
+      const scData = await scriptsRes.json();
+      if (scData.success && Array.isArray(scData.result)) {
+        scData.result.forEach(s => {
+          const workerDomains = domainMap[s.id] || [];
+          const primaryHost = workerDomains[0] || `${s.id}.workers.dev`;
+          const primaryUrl = primaryHost.startsWith('http') ? primaryHost : `https://${primaryHost}`;
+
+          results.push({
+            name: s.id,
+            type: 'worker',
+            subdomain: `${s.id}.workers.dev`,
+            domains: workerDomains,
+            primary_url: primaryUrl,
+            status: 'active',
+            created_on: s.created_on,
+            modified_on: s.modified_on
+          });
+        });
+      }
+    }
+  } catch (e) {
+    console.warn('Cloudflare Workers fetch error:', e);
+  }
+
+  return results;
 }
 
 export async function onRequestGet(context) {

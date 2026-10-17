@@ -94,19 +94,57 @@
       return;
     }
 
+    var DEFAULT_CF_META = {
+      'zenstro': {
+        title: 'ZENSTRO — Digital Engineering Studio',
+        desc: 'Official production platform for ZENSTRO. Deployed on Cloudflare Pages with Edge Workers, Cloudflare KV storage, and automated webhook routing.'
+      },
+      'typ': {
+        title: 'TYP Platform — Client Portal & Automation',
+        desc: 'Enterprise system and client workflow automation suite deployed on Cloudflare global edge infrastructure.'
+      },
+      'unoplay': {
+        title: 'UnoPlay — Interactive Streaming & Media Platform',
+        desc: 'Real-time media and entertainment engine powered by serverless Cloudflare Workers with ultra-low latency edge routing.'
+      },
+      'moplay': {
+        title: 'MoPlay — Digital Entertainment Portal',
+        desc: 'Next-generation entertainment portal and interactive delivery system deployed globally on Cloudflare edge infrastructure.'
+      },
+      'weplay': {
+        title: 'WePlay — Multiplayer Interactive Space',
+        desc: 'Collaborative real-time application suite featuring multi-route Anycast edge routing and instant responsiveness.'
+      },
+      'vyvia': {
+        title: 'VYVIA — Ultra-Clean Digital Architecture',
+        desc: 'Minimalist luxury web experience with performance-first engineering and serverless edge delivery.'
+      },
+      'coup-le': {
+        title: 'Coup-le — Discovery & Connectivity Network',
+        desc: 'Modern social connection and discovery engine deployed with high availability across 300+ edge locations.'
+      },
+      'typ-ans': {
+        title: 'TYP Answers — Intelligent Knowledge Engine',
+        desc: 'Automated query resolution and intelligent workflow assistant deployed on Cloudflare global serverless infrastructure.'
+      }
+    };
+
     cfGrid.innerHTML = displayed.map(function (p) {
       var ov = cfOverrides[p.name] || {};
-      var title = ov.title || (p.name === 'zenstro' ? 'ZENSTRO — Digital Engineering Studio' : (p.name === 'typ' ? 'TYP Platform — Client Portal & Automation' : p.name.toUpperCase()));
-      var desc = ov.description || (p.name === 'zenstro' 
-        ? 'Official production platform for ZENSTRO. Deployed on Cloudflare Pages with Edge Workers, Cloudflare KV storage, and automated webhook routing.'
-        : 'Enterprise system and client workflow automation suite deployed on Cloudflare global edge infrastructure.');
+      var defaultMeta = DEFAULT_CF_META[p.name] || {
+        title: p.name.toUpperCase() + ' — Live Edge Deployment',
+        desc: 'Production serverless application deployed and running globally on Cloudflare edge infrastructure.'
+      };
+      var title = ov.title || defaultMeta.title;
+      var desc = ov.description || defaultMeta.desc;
       var liveUrl = p.primary_url || ('https://' + (p.domains[0] || p.subdomain));
+      var techLabel = p.type === 'worker' ? 'Cloudflare Worker' : 'Cloudflare Pages';
 
       return '<div class="cf-project-card">' +
         '<div class="cf-card-header">' +
           '<div class="cf-badge-row">' +
             '<span class="cf-live-badge"><span class="pulse-dot"></span> Live Edge System</span>' +
-            '<span class="cf-tech-tag">Cloudflare Pages</span>' +
+            '<span class="cf-tech-tag">' + escapeHtml(techLabel) + '</span>' +
           '</div>' +
           '<a href="' + escapeHtml(liveUrl) + '" target="_blank" rel="noopener" class="cf-external-link" title="Open live project">' +
             '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>' +
