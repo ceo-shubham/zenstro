@@ -6,12 +6,8 @@ window.ZENSTRO_CONFIG = {
   linkedinCompanyUrl: "https://www.linkedin.com/company/134694292",
   linkedinProfileUrl: "https://www.linkedin.com/in/ceo-shubham/",
 
-  /* Authorized Admin Emails for Google Login (Admin Panel) */
+  /* Authorized Admin Emails for Google Login (Admin Panel) - strictly ceo.shubhampathak@gmail.com */
   adminEmails: [
-    "sub08pathak@gmail.com",
-    "officialzyanix@gmail.com",
-    "shubhamowen@gmail.com",
-    "anshikashar1008@gmail.com",
     "ceo.shubhampathak@gmail.com"
   ],
 

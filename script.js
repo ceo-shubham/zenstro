@@ -111,10 +111,6 @@
     if (!loginBtn) return;
 
     var adminEmails = (window.ZENSTRO_CONFIG && window.ZENSTRO_CONFIG.adminEmails) || [
-      "sub08pathak@gmail.com",
-      "officialzyanix@gmail.com",
-      "shubhamowen@gmail.com",
-      "anshikashar1008@gmail.com",
       "ceo.shubhampathak@gmail.com"
     ];
 

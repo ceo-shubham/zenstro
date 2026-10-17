@@ -161,10 +161,6 @@
   <script>
     (function () {
       const AUTHORIZED_ADMINS = (window.ZENSTRO_CONFIG && window.ZENSTRO_CONFIG.adminEmails) || [
-        "sub08pathak@gmail.com",
-        "officialzyanix@gmail.com",
-        "shubhamowen@gmail.com",
-        "anshikashar1008@gmail.com",
         "ceo.shubhampathak@gmail.com"
       ];
 
@@ -176,6 +172,16 @@
         alertBox.className = 'auth-alert ' + (isError ? 'error' : 'success');
       }
 
+      // Check URL for unauthorized error on load
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('error') === 'unauthorized') {
+        localStorage.removeItem('zenstro_admin_session');
+        sessionStorage.removeItem('zenstro_admin_session');
+        localStorage.removeItem('zenstro_user_session');
+        sessionStorage.removeItem('zenstro_user_session');
+        showAlert('You are not a member of ZENSTRO yet.', true);
+      }
+
       function attemptLogin(email, displayName, avatarUrl) {
         const cleanEmail = String(email || '').trim().toLowerCase();
         if (!cleanEmail) {
@@ -185,35 +191,37 @@
 
         const isAdmin = AUTHORIZED_ADMINS.some(a => a.toLowerCase() === cleanEmail);
 
+        if (!isAdmin) {
+          // Log out immediately and show access denied message
+          localStorage.removeItem('zenstro_admin_session');
+          sessionStorage.removeItem('zenstro_admin_session');
+          localStorage.removeItem('zenstro_user_session');
+          sessionStorage.removeItem('zenstro_user_session');
+
+          showAlert('You are not a member of ZENSTRO yet.', true);
+          return;
+        }
+
         const session = {
           email: cleanEmail,
           name: displayName || cleanEmail.split('@')[0],
           avatar: avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName || cleanEmail)}&background=2563eb&color=fff`,
-          role: isAdmin ? (cleanEmail === 'ceo.shubhampathak@gmail.com' ? 'Owner / Lead' : 'Administrator') : 'Client Member',
-          isAdmin: isAdmin,
+          role: 'Owner / Lead Systems Architect',
+          isAdmin: true,
           token: 'zen_' + Math.random().toString(36).substring(2) + Date.now().toString(36),
           loginAt: new Date().toISOString()
         };
 
-        // Store sessions
+        // Store sessions for ceo.shubhampathak@gmail.com
+        localStorage.setItem('zenstro_admin_session', JSON.stringify(session));
+        sessionStorage.setItem('zenstro_admin_session', JSON.stringify(session));
         localStorage.setItem('zenstro_user_session', JSON.stringify(session));
         sessionStorage.setItem('zenstro_user_session', JSON.stringify(session));
 
-        if (isAdmin) {
-          localStorage.setItem('zenstro_admin_session', JSON.stringify(session));
-          sessionStorage.setItem('zenstro_admin_session', JSON.stringify(session));
-          showAlert(`Welcome, ${session.name}! Redirecting to Admin Console...`, false);
-          setTimeout(() => {
-            window.location.href = 'admin.html';
-          }, 500);
-        } else {
-          localStorage.removeItem('zenstro_admin_session');
-          sessionStorage.removeItem('zenstro_admin_session');
-          showAlert(`Welcome, ${session.name}! Signed in successfully. Redirecting to website...`, false);
-          setTimeout(() => {
-            window.location.href = 'index.html';
-          }, 600);
-        }
+        showAlert(`Welcome, ${session.name}! Redirecting to Admin Console...`, false);
+        setTimeout(() => {
+          window.location.href = 'admin.html';
+        }, 500);
       }
 
       // Global Callback for Google GIS

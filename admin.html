@@ -768,10 +768,6 @@
   <script>
     (function checkAuth() {
       const AUTHORIZED_ADMINS = (window.ZENSTRO_CONFIG && window.ZENSTRO_CONFIG.adminEmails) || [
-        "sub08pathak@gmail.com",
-        "officialzyanix@gmail.com",
-        "shubhamowen@gmail.com",
-        "anshikashar1008@gmail.com",
         "ceo.shubhampathak@gmail.com"
       ];
       const raw = localStorage.getItem('zenstro_admin_session') || sessionStorage.getItem('zenstro_admin_session');
@@ -785,7 +781,10 @@
         if (!authorized) {
           localStorage.removeItem('zenstro_admin_session');
           sessionStorage.removeItem('zenstro_admin_session');
-          window.location.replace('login.html');
+          localStorage.removeItem('zenstro_user_session');
+          sessionStorage.removeItem('zenstro_user_session');
+          alert('You are not a member of ZENSTRO yet.');
+          window.location.replace('login.html?error=unauthorized');
         }
       } catch (e) {
         window.location.replace('login.html');
@@ -927,7 +926,7 @@
   <footer style="border-top:1px solid #e2e8f0; background:#ffffff; padding:18px 0; text-align:center; font-size:12px; color:#64748b;">
     <div class="wrap" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
       <span>ZENSTRO Admin Portal • Restricted Access</span>
-      <span>Automated notification alerts configured for: <strong id="admin-notify-target">sub08pathak@gmail.com</strong></span>
+      <span>Automated notification alerts configured for: <strong id="admin-notify-target">ceo.shubhampathak@gmail.com</strong></span>
     </div>
   </footer>
 
