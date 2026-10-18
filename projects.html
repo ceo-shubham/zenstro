@@ -21,7 +21,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=8.0">
+  <link rel="stylesheet" href="styles.css?v=8.2">
   <script src="config.js"></script>
   <script defer data-cfasync="false" src="https://mqleads.zenstro.space/mqleads.js" data-site-id="6ad4a0d013eaf75f9ee43c9b"></script>
   <script type="application/ld+json">
@@ -79,56 +79,88 @@
     <!-- ============ PAGE HERO ============ -->
     <section class="page-hero">
       <div class="wrap">
-        <p class="eyebrow reveal"><i aria-hidden="true"></i> Open delivery</p>
-        <h1 class="reveal" style="transition-delay:.08s">Work that<br><em>speaks</em> in code.</h1>
-        <p class="page-lead reveal" style="transition-delay:.16s">Most of our work ships inside client products, where confidentiality comes first. Our public GitHub repositories show the other side — how we think, build and maintain software in the open.</p>
-      </div>
-    </section>
+        <p class="eyebrow reveal"><i aria-hidden="true"></i> Production &amp; Open Source</p>
+        <h1 class="reveal" style="transition-delay:.08s">Projects &amp;<br><em>Live</em> Systems.</h1>
+        <p class="page-lead reveal" style="transition-delay:.16s">Explore our live web platforms deployed globally on Cloudflare Edge infrastructure, or browse open-source repositories maintained by ZENSTRO.</p>
 
-    <!-- ============ PROFILE BANNER ============ -->
-    <section class="section wrap" style="padding-top: 0; padding-bottom: 32px;">
-      <div id="gh-profile-banner"></div>
-    </section>
-
-    <!-- ============ CLOUDFLARE LIVE DEPLOYMENTS ============ -->
-    <section class="section wrap cf-section" style="padding-top: 10px; padding-bottom: 48px;">
-      <div class="section-head reveal">
-        <div>
-          <p class="eyebrow"><i aria-hidden="true"></i> Production Infrastructure</p>
-          <h2>Live Edge Deployments.</h2>
+        <!-- Segmented Tab Switcher -->
+        <div class="projects-tabs-container reveal" style="transition-delay:.22s">
+          <div class="projects-tabs-bar" role="tablist" aria-label="Projects display filter">
+            <button type="button" class="projects-tab-btn active" id="tab-btn-live" role="tab" aria-selected="true" aria-controls="view-live">
+              <span class="tab-live-pulse" aria-hidden="true"></span>
+              <span class="tab-label">Live Web Systems</span>
+              <span class="tab-count-badge" id="badge-cf-count">8 Live</span>
+            </button>
+            <button type="button" class="projects-tab-btn" id="tab-btn-github" role="tab" aria-selected="false" aria-controls="view-github">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" class="tab-gh-svg" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              <span class="tab-label">GitHub Repositories</span>
+              <span class="tab-count-badge" id="badge-gh-count">42 Repos</span>
+            </button>
+          </div>
         </div>
-        <p id="cf-status">Connecting to Cloudflare Pages edge deployments…</p>
-      </div>
-      <div class="cf-projects-grid" id="cf-projects-grid" aria-live="polite"></div>
-    </section>
-
-    <!-- ============ REPOS ============ -->
-    <section class="section wrap repo-section" style="padding-top: 10px;">
-      <div class="section-head reveal">
-        <div>
-          <p class="eyebrow"><i aria-hidden="true"></i> Live from GitHub</p>
-          <h2>Public Repositories &amp; Code.</h2>
-        </div>
-        <p id="repo-status">Loading public repositories…</p>
-      </div>
-
-      <!-- Controls: Search & Language Filters -->
-      <div class="repo-controls-bar">
-        <div class="repo-search-wrap">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="repo-search-icon" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <input type="search" id="repo-search-input" placeholder="Search repositories by name, language or keywords…" aria-label="Search repositories">
-        </div>
-        <div class="repo-filter-tags" id="repo-filter-tags"></div>
-      </div>
-
-      <div class="repo-grid" id="repo-grid" aria-live="polite"></div>
-
-      <div style="text-align: center; margin-top: 36px;">
-        <button type="button" id="btn-show-more-repos" class="btn btn-outline" style="display: none; padding: 12px 28px; font-size: 13px; font-weight: 600; cursor: pointer;">
-          View All Repositories ↗
-        </button>
       </div>
     </section>
+
+    <!-- ============ TAB VIEW 1: CLOUDFLARE LIVE DEPLOYMENTS ============ -->
+    <div id="view-live" class="projects-tab-panel active" role="tabpanel" aria-labelledby="tab-btn-live">
+      <section class="section wrap cf-section" style="padding-top: 10px; padding-bottom: 56px;">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow"><i aria-hidden="true"></i> Live Edge Infrastructure</p>
+            <h2>Production Web Applications &amp; Portals.</h2>
+          </div>
+          <p id="cf-status">Connecting to Cloudflare Pages &amp; Edge Workers deployments…</p>
+        </div>
+
+        <div class="view-switch-hint">
+          <span>Looking for open-source code?</span>
+          <button type="button" class="view-switch-btn" id="switch-to-github">Switch to GitHub Repositories (42) →</button>
+        </div>
+
+        <div class="cf-projects-grid" id="cf-projects-grid" aria-live="polite"></div>
+      </section>
+    </div>
+
+    <!-- ============ TAB VIEW 2: GITHUB REPOSITORIES ============ -->
+    <div id="view-github" class="projects-tab-panel" role="tabpanel" aria-labelledby="tab-btn-github" style="display: none;">
+      <!-- Profile Banner -->
+      <section class="section wrap" style="padding-top: 0; padding-bottom: 28px;">
+        <div id="gh-profile-banner"></div>
+      </section>
+
+      <!-- Repos Section -->
+      <section class="section wrap repo-section" style="padding-top: 10px; padding-bottom: 56px;">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow"><i aria-hidden="true"></i> Open Source Architecture</p>
+            <h2>Public Repositories &amp; Source Code.</h2>
+          </div>
+          <p id="repo-status">Loading public repositories from @ceo-shubham…</p>
+        </div>
+
+        <div class="view-switch-hint">
+          <span>Looking for live working websites?</span>
+          <button type="button" class="view-switch-btn" id="switch-to-live">Switch to Live Systems (8) →</button>
+        </div>
+
+        <!-- Controls: Search & Language Filters -->
+        <div class="repo-controls-bar">
+          <div class="repo-search-wrap">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="repo-search-icon" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="search" id="repo-search-input" placeholder="Search repositories by name, language or keywords…" aria-label="Search repositories">
+          </div>
+          <div class="repo-filter-tags" id="repo-filter-tags"></div>
+        </div>
+
+        <div class="repo-grid" id="repo-grid" aria-live="polite"></div>
+
+        <div style="text-align: center; margin-top: 36px;">
+          <button type="button" id="btn-show-more-repos" class="btn btn-outline" style="display: none; padding: 12px 28px; font-size: 13px; font-weight: 600; cursor: pointer;">
+            View All Repositories ↗
+          </button>
+        </div>
+      </section>
+    </div>
 
     <!-- ============ STATEMENT ============ -->
     <section class="statement">
@@ -206,6 +238,6 @@
 
   <script src="config.js" defer></script>
   <script src="script.js" defer></script>
-  <script src="projects.js" defer></script>
+  <script src="projects.js?v=8.2" defer></script>
 </body>
 </html>

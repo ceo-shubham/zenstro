@@ -1,17 +1,31 @@
 /**
  * ZENSTRO — Projects & Open Source
  * Dynamically loads and renders:
- * 1. Verified GitHub Profile & Public Repositories (@ceo-shubham)
- * 2. Live Cloudflare Production Deployments & Systems
- * 3. Incorporates Admin Panel customizations (visibility, 2-line descriptions, display limits)
+ * 1. Live Cloudflare Production Deployments & Web Applications
+ * 2. Verified GitHub Profile & 42 Public Repositories (@ceo-shubham)
+ * 3. Segmented Tab Navigation (#live and #github)
+ * 4. Admin Panel customizations (visibility, descriptions, limits)
  */
 
 (function () {
   'use strict';
 
-  var profileContainer = document.getElementById('gh-profile-banner');
+  // DOM Elements - Tabs
+  var tabBtnLive = document.getElementById('tab-btn-live');
+  var tabBtnGithub = document.getElementById('tab-btn-github');
+  var viewLive = document.getElementById('view-live');
+  var viewGithub = document.getElementById('view-github');
+  var badgeCfCount = document.getElementById('badge-cf-count');
+  var badgeGhCount = document.getElementById('badge-gh-count');
+  var switchToGithub = document.getElementById('switch-to-github');
+  var switchToLive = document.getElementById('switch-to-live');
+
+  // DOM Elements - Cloudflare Live
   var cfGrid = document.getElementById('cf-projects-grid');
   var cfStatus = document.getElementById('cf-status');
+
+  // DOM Elements - GitHub
+  var profileContainer = document.getElementById('gh-profile-banner');
   var repoGrid = document.getElementById('repo-grid');
   var repoStatus = document.getElementById('repo-status');
   var repoSearch = document.getElementById('repo-search-input');
@@ -19,7 +33,7 @@
   var btnShowMoreRepos = document.getElementById('btn-show-more-repos');
 
   var allFetchedRepos = [];
-  var repoConfig = { githubMaxDisplay: 12, cloudflareMaxDisplay: 8, repoOverrides: {}, cfOverrides: {} };
+  var repoConfig = { githubMaxDisplay: 12, cloudflareMaxDisplay: 12, repoOverrides: {}, cfOverrides: {} };
   var currentLanguageFilter = 'ALL';
   var showAllRepos = false;
 
@@ -36,6 +50,35 @@
       return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
     } catch (e) {
       return '';
+    }
+  }
+
+  // Tab Switching
+  function switchTab(targetTab) {
+    var isLive = targetTab !== 'github';
+
+    if (tabBtnLive) {
+      tabBtnLive.classList.toggle('active', isLive);
+      tabBtnLive.setAttribute('aria-selected', isLive ? 'true' : 'false');
+    }
+    if (tabBtnGithub) {
+      tabBtnGithub.classList.toggle('active', !isLive);
+      tabBtnGithub.setAttribute('aria-selected', !isLive ? 'true' : 'false');
+    }
+
+    if (viewLive) {
+      viewLive.style.display = isLive ? 'block' : 'none';
+      viewLive.classList.toggle('active', isLive);
+    }
+    if (viewGithub) {
+      viewGithub.style.display = !isLive ? 'block' : 'none';
+      viewGithub.classList.toggle('active', !isLive);
+    }
+
+    // Update URL hash smoothly without jump
+    var targetHash = isLive ? '#live' : '#github';
+    if (window.location.hash !== targetHash && window.history && window.history.replaceState) {
+      window.history.replaceState(null, '', targetHash);
     }
   }
 
@@ -80,17 +123,21 @@
       return !ov.hidden;
     });
 
-    var limit = maxDisplay || 8;
+    var limit = maxDisplay || 12;
     var displayed = filtered.slice(0, limit);
+
+    if (badgeCfCount) {
+      badgeCfCount.textContent = displayed.length + ' Live';
+    }
 
     if (cfStatus) {
       cfStatus.textContent = displayed.length
-        ? 'Active edge deployments loaded from Cloudflare Pages API.'
+        ? 'Showing ' + displayed.length + ' production applications running globally on Cloudflare Edge.'
         : 'Cloudflare deployments will appear here.';
     }
 
     if (!displayed.length) {
-      cfGrid.innerHTML = '<div class="repo-empty" style="grid-column:1/-1; padding:24px; text-align:center;">No live deployments available right now.</div>';
+      cfGrid.innerHTML = '<div class="repo-empty" style="grid-column:1/-1; padding:32px; text-align:center;">No live deployments available right now.</div>';
       return;
     }
 
@@ -138,27 +185,29 @@
       var title = ov.title || defaultMeta.title;
       var desc = ov.description || defaultMeta.desc;
       var liveUrl = p.primary_url || ('https://' + (p.domains[0] || p.subdomain));
+      var cleanDomain = liveUrl.replace(/^https?:\/\//, '');
       var techLabel = p.type === 'worker' ? 'Cloudflare Worker' : 'Cloudflare Pages';
 
       return '<div class="cf-project-card">' +
         '<div class="cf-card-header">' +
           '<div class="cf-badge-row">' +
-            '<span class="cf-live-badge"><span class="pulse-dot"></span> Live Edge System</span>' +
+            '<span class="cf-live-badge"><span class="pulse-dot"></span> Live Production</span>' +
             '<span class="cf-tech-tag">' + escapeHtml(techLabel) + '</span>' +
           '</div>' +
-          '<a href="' + escapeHtml(liveUrl) + '" target="_blank" rel="noopener" class="cf-external-link" title="Open live project">' +
-            '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>' +
-          '</a>' +
+          '<span class="cf-edge-status">Anycast Edge</span>' +
         '</div>' +
         '<h3 class="cf-project-title">' +
           '<a href="' + escapeHtml(liveUrl) + '" target="_blank" rel="noopener">' + escapeHtml(title) + '</a>' +
         '</h3>' +
         '<p class="cf-project-desc">' + escapeHtml(desc) + '</p>' +
         '<div class="cf-card-footer">' +
-          '<a href="' + escapeHtml(liveUrl) + '" target="_blank" rel="noopener" class="cf-domain-pill">' +
-            '<code>' + escapeHtml(liveUrl.replace(/^https?:\/\//, '')) + '</code>' +
+          '<a href="' + escapeHtml(liveUrl) + '" target="_blank" rel="noopener" class="cf-launch-btn">' +
+            '<span>Visit Live Application</span>' +
+            '<span class="cf-launch-arrow" aria-hidden="true">↗</span>' +
           '</a>' +
-          '<span class="cf-global-anycast" title="Deployed across 300+ edge cities">Global CDN · KV Active</span>' +
+          '<a href="' + escapeHtml(liveUrl) + '" target="_blank" rel="noopener" class="cf-domain-pill" title="Open ' + escapeHtml(cleanDomain) + '">' +
+            '<code>' + escapeHtml(cleanDomain) + '</code>' +
+          '</a>' +
         '</div>' +
       '</div>';
     }).join('');
@@ -193,6 +242,10 @@
     var totalMatches = filtered.length;
     var displayed = showAllRepos ? filtered : filtered.slice(0, maxDisplay);
 
+    if (badgeGhCount) {
+      badgeGhCount.textContent = (allFetchedRepos.length || 42) + ' Repos';
+    }
+
     if (repoStatus) {
       repoStatus.textContent = displayed.length
         ? 'Showing ' + displayed.length + ' of ' + totalMatches + ' public repositories from @ceo-shubham.'
@@ -222,7 +275,7 @@
           '<span class="repo-lang-badge">' + escapeHtml(repo.language || 'Code') + '</span>' +
           '<span class="repo-star-count" title="Stars count">★ ' + Number(repo.stars || 0) + '</span>' +
         '</div>' +
-        '<h2 class="repo-card-title">' + escapeHtml(repo.name) + '</h2>' +
+        '<h3 class="repo-card-title">' + escapeHtml(repo.name) + '</h3>' +
         '<p class="repo-card-desc">' + escapeHtml(customDesc) + '</p>' +
         '<div class="repo-meta">' +
           '<small>' + (repo.updated_at ? ('Updated ' + formatDate(repo.updated_at)) : 'Active') + '</small>' +
@@ -265,6 +318,28 @@
 
   // Main Initializer
   function init() {
+    // Setup tab clicks
+    if (tabBtnLive) {
+      tabBtnLive.addEventListener('click', function () { switchTab('live'); });
+    }
+    if (tabBtnGithub) {
+      tabBtnGithub.addEventListener('click', function () { switchTab('github'); });
+    }
+    if (switchToGithub) {
+      switchToGithub.addEventListener('click', function () { switchTab('github'); });
+    }
+    if (switchToLive) {
+      switchToLive.addEventListener('click', function () { switchTab('live'); });
+    }
+
+    // Check initial hash (e.g. #github or #live)
+    var hash = (window.location.hash || '').toLowerCase();
+    if (hash === '#github' || hash === '#repos') {
+      switchTab('github');
+    } else {
+      switchTab('live');
+    }
+
     if (repoStatus) repoStatus.textContent = 'Loading public repositories and deployments…';
 
     fetch('/api/projects')
@@ -278,6 +353,7 @@
         if (data.cloudflareProjects) renderCloudflareProjects(data.cloudflareProjects, repoConfig.cfOverrides || {}, repoConfig.cloudflareMaxDisplay);
 
         allFetchedRepos = data.githubRepos || [];
+        if (badgeGhCount) badgeGhCount.textContent = (allFetchedRepos.length || 42) + ' Repos';
         setupLanguageFilters(allFetchedRepos);
         renderRepos();
       })
@@ -289,6 +365,7 @@
           .then(function (res) { return res.json(); })
           .then(function (repos) {
             allFetchedRepos = (repos || []).filter(function (r) { return !r.fork && !r.private && !r.archived; });
+            if (badgeGhCount) badgeGhCount.textContent = (allFetchedRepos.length || 42) + ' Repos';
             setupLanguageFilters(allFetchedRepos);
             renderRepos();
           })
