@@ -14,6 +14,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css?v=8.0">
   <script src="config.js"></script>
+  <script defer data-cfasync="false" src="https://mqleads.zenstro.space/mqleads.js" data-site-id="6ad4a0d013eaf75f9ee43c9b"></script>
   <!-- Google Identity Services library -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
@@ -217,6 +218,18 @@
         sessionStorage.setItem('zenstro_admin_session', JSON.stringify(session));
         localStorage.setItem('zenstro_user_session', JSON.stringify(session));
         sessionStorage.setItem('zenstro_user_session', JSON.stringify(session));
+
+        // Identify authenticated visitor in MQLeads
+        try {
+          if (window.MQLeads && typeof window.MQLeads.identify === 'function') {
+            window.MQLeads.identify({
+              name: session.name,
+              email: session.email,
+              handle: session.email.split('@')[0],
+              via: "login"
+            });
+          }
+        } catch (e) {}
 
         showAlert(`Welcome, ${session.name}! Redirecting to Admin Console...`, false);
         setTimeout(() => {

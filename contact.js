@@ -77,6 +77,18 @@
     // 1. Immediately save to Admin Panel local storage
     saveToAdminStore(enquiry);
 
+    // Identify lead in MQLeads
+    try {
+      if (window.MQLeads && typeof window.MQLeads.identify === 'function') {
+        window.MQLeads.identify({
+          name: name,
+          email: email,
+          handle: email.split('@')[0],
+          via: "contact_form"
+        });
+      }
+    } catch (e) {}
+
     // 2. Prepare automated notification payload
     var notificationEmail = config.notificationEmail || 'ceo.shubhampathak@gmail.com';
     var emailSubject = '🔔 New Client Inquiry: ' + name + ' (' + topic + ')';

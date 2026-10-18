@@ -114,7 +114,32 @@
       "ceo.shubhampathak@gmail.com"
     ];
 
+    /* ----- MQLeads Visitor Identification ----- */
+    function identifyMQLeadsUser(u, viaMethod) {
+      if (!u || !u.email) return;
+      var doIdentify = function () {
+        try {
+          if (window.MQLeads && typeof window.MQLeads.identify === 'function') {
+            window.MQLeads.identify({
+              name: u.name || u.email.split('@')[0],
+              email: u.email,
+              handle: u.email.split('@')[0],
+              via: viaMethod || "login"
+            });
+          }
+        } catch (e) {}
+      };
+      if (window.MQLeads) {
+        doIdentify();
+      } else {
+        window.addEventListener('load', function () {
+          setTimeout(doIdentify, 800);
+        });
+      }
+    }
+
     if (user && user.email) {
+      identifyMQLeadsUser(user, "login");
       var isAdmin = user.isAdmin || adminEmails.some(function(a){ return a.toLowerCase() === (user.email||'').toLowerCase(); });
       if (isAdmin) {
         loginBtn.innerHTML = '<span class="nav-auth-avatar">' + (user.name ? user.name.charAt(0).toUpperCase() : 'A') + '</span><span class="nav-auth-name">Admin Console</span> <span class="nav-auth-arrow">↗</span>';
