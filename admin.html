@@ -977,11 +977,11 @@
           <div class="user-info-email" id="display-admin-email">Loading...</div>
           <div class="user-info-role">Console Administrator</div>
         </div>
-        <button id="btn-open-compose" class="btn-console-primary" type="button" onclick="window.openComposeModal({ title: 'Compose Custom Email' })">
+        <button id="btn-open-compose" class="btn-console-primary" type="button">
           Compose Email
         </button>
         <a href="index.html" class="btn-console-outline">View Site</a>
-        <button id="btn-logout" class="btn-console-outline" type="button" onclick="window.handleAdminLogout()" style="color:#71717a;">Sign Out</button>
+        <button id="btn-logout" class="btn-console-outline" type="button" style="color:#71717a;">Sign Out</button>
       </div>
     </div>
   </header>
@@ -1015,35 +1015,35 @@
     <!-- ============ VIEWS NAV TABS ============ -->
     <div class="views-nav-bar">
       <div class="views-tabs">
-        <button class="view-tab-btn active" data-tab="all" type="button" onclick="window.switchTab('all')">
+        <button class="view-tab-btn active" data-tab="all" type="button">
           All Inquiries <span class="tab-counter" id="tab-count-all">0</span>
         </button>
-        <button class="view-tab-btn" data-tab="form" type="button" onclick="window.switchTab('form')">
+        <button class="view-tab-btn" data-tab="form" type="button">
           Web Forms <span class="tab-counter" id="tab-count-form">0</span>
         </button>
-        <button class="view-tab-btn" data-tab="email" type="button" onclick="window.switchTab('email')">
+        <button class="view-tab-btn" data-tab="email" type="button">
           Direct Inbound <span class="tab-counter" id="tab-count-email">0</span>
         </button>
-        <button class="view-tab-btn" data-tab="sent" type="button" onclick="window.switchTab('sent')">
+        <button class="view-tab-btn" data-tab="sent" type="button">
           Sent Outbox <span class="tab-counter" id="tab-count-sent">0</span>
         </button>
-        <button class="view-tab-btn" data-tab="trash" type="button" onclick="window.switchTab('trash')">
+        <button class="view-tab-btn" data-tab="trash" type="button">
           Delete Bin <span class="tab-counter" id="tab-count-trash">0</span>
         </button>
-        <button class="view-tab-btn" data-tab="github" type="button" onclick="window.switchTab('github')" style="margin-left:8px; border-left:1px solid #e4e4e7;">
+        <button class="view-tab-btn" data-tab="github" type="button" style="margin-left:8px; border-left:1px solid #e4e4e7;">
           GitHub Repos <span class="tab-counter" id="tab-count-github">42</span>
         </button>
-        <button class="view-tab-btn" data-tab="cloudflare" type="button" onclick="window.switchTab('cloudflare')">
+        <button class="view-tab-btn" data-tab="cloudflare" type="button">
           Cloudflare Projects <span class="tab-counter" id="tab-count-cf">8</span>
         </button>
-        <button class="view-tab-btn" data-tab="storage" type="button" onclick="window.switchTab('storage')">
+        <button class="view-tab-btn" data-tab="storage" type="button">
           ☁️ Cloud Storage (B2) <span class="tab-counter" id="tab-count-storage">10GB</span>
         </button>
       </div>
 
       <div class="routing-info-text">
         <span>Routing: <code>ceo@</code> &bull; <code>support@</code> &bull; <code>admin@</code> &bull; <code>help@zenstro.space</code></span>
-        <button id="btn-sync-inbound" class="btn-micro" type="button" onclick="window.syncResendInbound(true)" title="Fetch received emails from Resend Receiving API">Sync Inbound ↻</button>
+        <button id="btn-sync-inbound" class="btn-micro" type="button" title="Fetch received emails from Resend Receiving API">Sync Inbound ↻</button>
       </div>
     </div>
 
@@ -1073,15 +1073,15 @@
           <option value="replied">Responded</option>
         </select>
 
-        <button id="btn-open-add-lead" class="btn-console-primary" type="button" onclick="window.openAddLeadModal()">
+        <button id="btn-open-add-lead" class="btn-console-primary" type="button">
           + Add Lead
         </button>
 
-        <button id="btn-empty-trash" class="btn-console-outline" style="display:none; color:#dc2626; border-color:#fca5a5;" type="button" onclick="window.emptyTrashBin()">
+        <button id="btn-empty-trash" class="btn-console-outline" style="display:none; color:#dc2626; border-color:#fca5a5;" type="button">
           Empty Trash
         </button>
 
-        <button id="btn-export-csv" class="btn-console-outline" type="button" onclick="window.exportAdminCsv()">
+        <button id="btn-export-csv" class="btn-console-outline" type="button">
           Export CSV
         </button>
       </div>
@@ -1246,6 +1246,28 @@
   <script>
     (function () {
       'use strict';
+
+      // Global Dialog Debounce Guard (prevents any duplicate confirm/alert popups)
+      let lastDialogTimestamp = 0;
+      const _nativeConfirm = window.confirm.bind(window);
+      window.confirm = function (msg) {
+        const now = Date.now();
+        if (now - lastDialogTimestamp < 600) {
+          return false;
+        }
+        lastDialogTimestamp = now;
+        return _nativeConfirm(msg);
+      };
+
+      const _nativeAlert = window.alert.bind(window);
+      window.alert = function (msg) {
+        const now = Date.now();
+        if (now - lastDialogTimestamp < 600) {
+          return;
+        }
+        lastDialogTimestamp = now;
+        return _nativeAlert(msg);
+      };
 
       // Load session
       const session = JSON.parse(localStorage.getItem('zenstro_admin_session') || sessionStorage.getItem('zenstro_admin_session') || '{}');
@@ -2844,7 +2866,11 @@
       const addLeadAlert = document.getElementById('add-lead-alert');
       const btnSubmitAddLead = document.getElementById('btn-submit-add-lead');
 
+      let _isAddLeadModalBusy = false;
       function openAddLeadModal() {
+        if (_isAddLeadModalBusy) return;
+        _isAddLeadModalBusy = true;
+        setTimeout(() => { _isAddLeadModalBusy = false; }, 300);
         addLeadAlert.style.display = 'none';
         addLeadForm.reset();
         leadModal.classList.add('open');
@@ -2935,7 +2961,11 @@
       const modalTitle = document.getElementById('modal-title');
       const btnSubmitSend = document.getElementById('btn-submit-send');
 
+      let _isComposeModalBusy = false;
       function openComposeModal(opts = {}) {
+        if (_isComposeModalBusy) return;
+        _isComposeModalBusy = true;
+        setTimeout(() => { _isComposeModalBusy = false; }, 300);
         composeAlert.style.display = 'none';
         modalTitle.textContent = opts.title || 'Compose Email';
         composeTo.value = opts.to || '';
