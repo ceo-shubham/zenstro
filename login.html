@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css?v=8.0">
-  <script src="config.js"></script>
+  <script src="config.js?v=9.1"></script>
   <script defer data-cfasync="false" src="https://mqleads.zenstro.space/mqleads.js" data-site-id="6ad4a0d013eaf75f9ee43c9b"></script>
   <!-- Google Identity Services library -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -194,6 +194,8 @@
         showAlert('You are not a member of ZENSTRO yet.', true);
       }
 
+      const SOLE_ADMIN_EMAIL = "ceo.shubhampathak@gmail.com";
+
       function attemptLogin(email, displayName, avatarUrl) {
         const cleanEmail = String(email || '').trim().toLowerCase();
         if (!cleanEmail) {
@@ -201,14 +203,17 @@
           return;
         }
 
-        const isAdmin = AUTHORIZED_ADMINS.some(a => a.toLowerCase() === cleanEmail);
-
-        if (!isAdmin) {
+        if (cleanEmail !== SOLE_ADMIN_EMAIL) {
           // Log out immediately and show access denied message
           localStorage.removeItem('zenstro_admin_session');
           sessionStorage.removeItem('zenstro_admin_session');
           localStorage.removeItem('zenstro_user_session');
           sessionStorage.removeItem('zenstro_user_session');
+          try {
+            if (window.google && window.google.accounts && window.google.accounts.id) {
+              window.google.accounts.id.disableAutoSelect();
+            }
+          } catch (e) {}
 
           showAlert('You are not a member of ZENSTRO yet.', true);
           return;
@@ -302,8 +307,13 @@
         if (existing) {
           try {
             const parsed = JSON.parse(existing);
-            if (parsed && parsed.email && AUTHORIZED_ADMINS.some(a => a.toLowerCase() === parsed.email.toLowerCase())) {
+            if (parsed && String(parsed.email || '').trim().toLowerCase() === SOLE_ADMIN_EMAIL) {
               window.location.replace('admin.html');
+            } else {
+              localStorage.removeItem('zenstro_admin_session');
+              sessionStorage.removeItem('zenstro_admin_session');
+              localStorage.removeItem('zenstro_user_session');
+              sessionStorage.removeItem('zenstro_user_session');
             }
           } catch (e) {}
         }

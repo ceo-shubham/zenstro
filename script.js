@@ -140,9 +140,10 @@
 
     if (user && user.email) {
       identifyMQLeadsUser(user, "login");
-      var isAdmin = user.isAdmin || adminEmails.some(function(a){ return a.toLowerCase() === (user.email||'').toLowerCase(); });
+      var SOLE_ADMIN_EMAIL = "ceo.shubhampathak@gmail.com";
+      var userEmail = String(user.email || '').trim().toLowerCase();
 
-      if (!isAdmin) {
+      if (userEmail !== SOLE_ADMIN_EMAIL) {
         localStorage.removeItem('zenstro_user_session');
         sessionStorage.removeItem('zenstro_user_session');
         localStorage.removeItem('zenstro_admin_session');
