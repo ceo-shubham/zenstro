@@ -761,6 +761,153 @@
       from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    /* Cloud Storage (B2) Styles */
+    .b2-storage-panel {
+      background: #ffffff;
+      border: 1px solid #e4e4e7;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .b2-quota-card {
+      background: #fafafa;
+      border-bottom: 1px solid #e4e4e7;
+      padding: 24px;
+    }
+    .b2-quota-bar-wrap {
+      width: 100%;
+      height: 12px;
+      background: #e4e4e7;
+      border-radius: 6px;
+      overflow: hidden;
+      margin: 14px 0 16px;
+      position: relative;
+    }
+    .b2-quota-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #059669);
+      border-radius: 6px;
+      transition: width 0.4s ease;
+    }
+    .b2-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    .b2-stat-box {
+      background: #ffffff;
+      border: 1px solid #e4e4e7;
+      border-radius: 6px;
+      padding: 12px 14px;
+    }
+    .b2-stat-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #71717a;
+      text-transform: uppercase;
+      font-family: var(--mono);
+      margin-bottom: 4px;
+    }
+    .b2-stat-value {
+      font-size: 16px;
+      font-weight: 800;
+      color: #09090b;
+      font-family: var(--mono);
+    }
+    .b2-dropzone {
+      margin: 20px 24px;
+      border: 2px dashed #cbd5e1;
+      border-radius: 8px;
+      padding: 28px 20px;
+      text-align: center;
+      background: #f8fafc;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .b2-dropzone.dragover {
+      border-color: #2563eb;
+      background: #eff6ff;
+    }
+    .b2-dropzone-icon {
+      width: 32px;
+      height: 32px;
+      color: #2563eb;
+      margin-bottom: 8px;
+      display: inline-block;
+    }
+    .b2-file-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .b2-file-table th {
+      background: #fafafa;
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 600;
+      color: #71717a;
+      border-bottom: 1px solid #e4e4e7;
+      font-size: 11px;
+      text-transform: uppercase;
+      font-family: var(--mono);
+    }
+    .b2-file-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #f4f4f5;
+      vertical-align: middle;
+    }
+    .b2-file-table tr:hover td {
+      background: #fcfcfc;
+    }
+    .b2-file-name {
+      font-weight: 600;
+      color: #09090b;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .b2-file-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: #f1f5f9;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: #475569;
+      flex-shrink: 0;
+    }
+    .b2-btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      font-family: var(--mono);
+      padding: 5px 10px;
+      border-radius: 4px;
+      border: 1px solid #e4e4e7;
+      background: #ffffff;
+      color: #3f3f46;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+    .b2-btn-action:hover {
+      background: #f4f4f5;
+      color: #09090b;
+    }
+    .b2-btn-delete:hover {
+      background: #fef2f2;
+      border-color: #fecaca;
+      color: #dc2626;
+    }
+    @media (max-width: 768px) {
+      .b2-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
   </style>
 </head>
 <body class="admin-body">
@@ -883,7 +1030,10 @@
           GitHub Repos <span class="tab-counter" id="tab-count-github">42</span>
         </button>
         <button class="view-tab-btn" data-tab="cloudflare" type="button" onclick="window.switchTab('cloudflare')">
-          Cloudflare Projects <span class="tab-counter" id="tab-count-cf">2</span>
+          Cloudflare Projects <span class="tab-counter" id="tab-count-cf">8</span>
+        </button>
+        <button class="view-tab-btn" data-tab="storage" type="button" onclick="window.switchTab('storage')">
+          ☁️ Cloud Storage (B2) <span class="tab-counter" id="tab-count-storage">10GB</span>
         </button>
       </div>
 
@@ -1261,7 +1411,7 @@
         const searchInputEl = document.getElementById('search-input');
         const routingInfoEl = document.querySelector('.routing-info-text');
 
-        if (tabName === 'github' || tabName === 'cloudflare') {
+        if (tabName === 'github' || tabName === 'cloudflare' || tabName === 'storage') {
           if (filterTopicEl) filterTopicEl.style.display = 'none';
           if (filterStatusEl) filterStatusEl.style.display = 'none';
           if (btnAddLeadEl) btnAddLeadEl.style.display = 'none';
@@ -1272,9 +1422,13 @@
             searchInputEl.value = '';
             searchInputEl.placeholder = tabName === 'github'
               ? 'Filter repositories by name or language…'
-              : 'Filter Cloudflare deployments…';
+              : (tabName === 'cloudflare' ? 'Filter Cloudflare deployments…' : 'Filter files in B2 bucket…');
           }
-          if (!showcaseState.loaded) {
+          if (tabName === 'storage') {
+            if (!storageState.loaded) {
+              fetchStorageData();
+            }
+          } else if (!showcaseState.loaded) {
             fetchShowcaseData();
           }
         } else {
@@ -1753,6 +1907,363 @@
         container.innerHTML = html;
       }
 
+      // ============ BACKBLAZE B2 CLOUD STORAGE MANAGEMENT ============
+      let storageState = {
+        loaded: false,
+        loading: false,
+        uploading: false,
+        uploadProgress: '',
+        files: [],
+        totalBytes: 0,
+        totalFiles: 0,
+        maxBytes: 10737418240, // 10 GB
+        usedFormatted: '0 B',
+        freeFormatted: '10 GB',
+        maxFormatted: '10 GB',
+        usedPercentage: 0,
+        bucketName: 'zenstro',
+        bucketId: 'cf2d1dae48585b43a31e0c17',
+        downloadUrl: 'https://f005.backblazeb2.com',
+        s3ApiUrl: 'https://s3.us-east-005.backblazeb2.com',
+        region: 'us-east-005'
+      };
+
+      function formatStorageBytes(bytes) {
+        if (!bytes || bytes === 0) return '0 B';
+        const k = 1024;
+        const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+      }
+
+      async function fetchStorageData() {
+        storageState.loading = true;
+        render();
+        try {
+          const res = await fetch('/api/storage');
+          if (res.ok) {
+            const data = await res.json();
+            if (data.ok) {
+              storageState.files = data.files || [];
+              storageState.totalBytes = data.totalBytes || 0;
+              storageState.totalFiles = data.totalFiles || 0;
+              storageState.maxBytes = data.maxBytes || 10737418240;
+              storageState.usedFormatted = data.usedFormatted || '0 B';
+              storageState.freeFormatted = data.freeFormatted || '10 GB';
+              storageState.maxFormatted = data.maxFormatted || '10 GB';
+              storageState.usedPercentage = data.usedPercentage || 0;
+              storageState.bucketName = data.bucketName || 'zenstro';
+              storageState.bucketId = data.bucketId || 'cf2d1dae48585b43a31e0c17';
+              storageState.downloadUrl = data.downloadUrl || 'https://f005.backblazeb2.com';
+              storageState.s3ApiUrl = data.s3ApiUrl || 'https://s3.us-east-005.backblazeb2.com';
+              storageState.loaded = true;
+
+              const badge = document.getElementById('tab-count-storage');
+              if (badge) {
+                badge.textContent = `${storageState.files.length} (${storageState.usedFormatted})`;
+              }
+            }
+          } else {
+            showAdminToast('Could not load B2 storage files.', false);
+          }
+        } catch (e) {
+          console.warn('Storage fetch error:', e);
+          showAdminToast('Storage connection error: ' + e.message, false);
+        } finally {
+          storageState.loading = false;
+          render();
+        }
+      }
+      window.fetchStorageData = fetchStorageData;
+
+      async function uploadStorageFile(file) {
+        if (!file) return;
+        storageState.uploading = true;
+        storageState.uploadProgress = `Uploading '${file.name}' (${formatStorageBytes(file.size)})…`;
+        render();
+
+        try {
+          const formData = new FormData();
+          formData.append('file', file);
+
+          const res = await fetch('/api/storage', {
+            method: 'POST',
+            body: formData
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+            if (data.ok) {
+              showAdminToast(`Uploaded '${file.name}' to Backblaze B2!`);
+              await fetchStorageData();
+            } else {
+              showAdminToast(`Upload failed: ${data.error || 'Unknown error'}`, false);
+            }
+          } else {
+            const err = await res.text();
+            showAdminToast(`Upload error (${res.status}): ${err}`, false);
+          }
+        } catch (e) {
+          showAdminToast('Upload failed: ' + e.message, false);
+        } finally {
+          storageState.uploading = false;
+          storageState.uploadProgress = '';
+          render();
+        }
+      }
+      window.uploadStorageFile = uploadStorageFile;
+
+      window.handleStorageFileInput = function(input) {
+        if (input && input.files && input.files[0]) {
+          uploadStorageFile(input.files[0]);
+          input.value = '';
+        }
+      };
+
+      async function deleteStorageFile(fileId, fileName) {
+        if (!confirm(`Are you sure you want to permanently delete '${fileName}' from Backblaze B2 bucket?`)) {
+          return;
+        }
+
+        try {
+          const res = await fetch(`/api/storage?fileId=${encodeURIComponent(fileId)}&fileName=${encodeURIComponent(fileName)}`, {
+            method: 'DELETE'
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+            if (data.ok) {
+              showAdminToast(`File '${fileName}' deleted from B2 bucket.`);
+              await fetchStorageData();
+            } else {
+              showAdminToast(`Delete error: ${data.error || 'Failed'}`, false);
+            }
+          } else {
+            showAdminToast('Delete failed from server.', false);
+          }
+        } catch (e) {
+          showAdminToast('Delete request error: ' + e.message, false);
+        }
+      }
+      window.deleteStorageFile = deleteStorageFile;
+
+      window.copyStorageLink = function(url, fileName) {
+        if (!url) return;
+        navigator.clipboard.writeText(url).then(() => {
+          showAdminToast(`Download link copied for '${fileName}'!`);
+        }).catch(() => {
+          prompt('Copy link:', url);
+        });
+      };
+
+      function getFileIcon(fileName) {
+        const ext = (fileName.split('.').pop() || '').toLowerCase();
+        if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'ico'].includes(ext)) return '🖼️';
+        if (['pdf'].includes(ext)) return '📄';
+        if (['zip', 'rar', '7z', 'tar', 'gz'].includes(ext)) return '📦';
+        if (['mp4', 'mov', 'webm', 'avi', 'mkv'].includes(ext)) return '🎥';
+        if (['mp3', 'wav', 'ogg', 'm4a'].includes(ext)) return '🎵';
+        if (['js', 'ts', 'json', 'html', 'css', 'py', 'sql'].includes(ext)) return '💻';
+        if (['doc', 'docx', 'txt', 'md'].includes(ext)) return '📝';
+        if (['xls', 'xlsx', 'csv'].includes(ext)) return '📊';
+        return '📁';
+      }
+
+      function renderB2StorageManager(search) {
+        if (!storageState.loaded && storageState.loading) {
+          container.innerHTML = `
+            <div style="text-align:center; padding:64px 20px; color:#71717a;">
+              <div class="pulse-dot" style="width:12px; height:12px; margin:0 auto 16px;"></div>
+              <h3 style="font-size:16px; font-weight:700; color:#09090b; margin-bottom:6px;">Connecting to Backblaze B2 Cloud Storage…</h3>
+              <p style="font-size:13px;">Authorizing account and listing bucket files from US-East region.</p>
+            </div>
+          `;
+          return;
+        }
+
+        const files = storageState.files || [];
+        const filteredFiles = files.filter(f => {
+          if (!search) return true;
+          return (f.fileName || '').toLowerCase().includes(search.toLowerCase());
+        });
+
+        const barColor = storageState.usedPercentage >= 90 ? '#ef4444' : (storageState.usedPercentage >= 75 ? '#f59e0b' : '#10b981');
+
+        let html = `
+          <div class="b2-storage-panel">
+            <!-- Quota & Header Card -->
+            <div class="b2-quota-card">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; margin-bottom:14px;">
+                <div>
+                  <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                    <h3 style="font-size:18px; font-weight:800; color:#09090b; margin:0;">☁️ Backblaze B2 Cloud Storage</h3>
+                    <span style="font-size:11px; font-family:var(--mono); color:#059669; background:#ecfdf5; border:1px solid #a7f3d0; padding:2px 8px; border-radius:4px; font-weight:700;">
+                      10 GB Free Storage Active
+                    </span>
+                  </div>
+                  <p style="font-size:13px; color:#71717a; margin:0;">
+                    Bucket: <strong style="color:#09090b;">${escapeHtml(storageState.bucketName)}</strong> &bull;
+                    Region: <code>${escapeHtml(storageState.region)}</code> &bull;
+                    S3 Endpoint: <code>${escapeHtml(storageState.s3ApiUrl)}</code>
+                  </p>
+                </div>
+                <div style="display:flex; gap:8px;">
+                  <button type="button" class="btn-console-outline" onclick="window.fetchStorageData()" style="padding:7px 14px; font-size:12px;">
+                    Refresh Bucket ↻
+                  </button>
+                  <label class="btn-console-solid" style="padding:7px 16px; font-size:12px; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+                    <span>Upload File ↗</span>
+                    <input type="file" style="display:none;" onchange="window.handleStorageFileInput(this)">
+                  </label>
+                </div>
+              </div>
+
+              <!-- Storage Bar -->
+              <div>
+                <div style="display:flex; justify-content:space-between; font-size:12px; font-family:var(--mono); font-weight:600; color:#52525b; margin-bottom:6px;">
+                  <span>Storage Used: <strong style="color:#09090b;">${escapeHtml(storageState.usedFormatted)}</strong> of ${escapeHtml(storageState.maxFormatted)}</span>
+                  <span><strong>${escapeHtml(storageState.usedPercentage.toString())}%</strong> Quota Used</span>
+                </div>
+                <div class="b2-quota-bar-wrap">
+                  <div class="b2-quota-bar-fill" style="width:${Math.max(1, storageState.usedPercentage)}%; background:${barColor};"></div>
+                </div>
+              </div>
+
+              <!-- Stats Grid -->
+              <div class="b2-stats-grid">
+                <div class="b2-stat-box">
+                  <div class="b2-stat-label">Used Storage</div>
+                  <div class="b2-stat-value" style="color:#2563eb;">${escapeHtml(storageState.usedFormatted)}</div>
+                </div>
+                <div class="b2-stat-box">
+                  <div class="b2-stat-label">Free Remaining</div>
+                  <div class="b2-stat-value" style="color:#059669;">${escapeHtml(storageState.freeFormatted)}</div>
+                </div>
+                <div class="b2-stat-box">
+                  <div class="b2-stat-label">Total Files</div>
+                  <div class="b2-stat-value">${escapeHtml(storageState.totalFiles.toString())}</div>
+                </div>
+                <div class="b2-stat-box">
+                  <div class="b2-stat-label">Free Tier Capacity</div>
+                  <div class="b2-stat-value">10.00 GB</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Upload Dropzone -->
+            <div class="b2-dropzone" id="b2-dropzone" onclick="document.getElementById('b2-direct-file-input').click()">
+              <input type="file" id="b2-direct-file-input" style="display:none;" onchange="window.handleStorageFileInput(this)">
+              <div class="b2-dropzone-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+              </div>
+              <div style="font-weight:700; font-size:14px; color:#09090b; margin-bottom:4px;">
+                ${storageState.uploading ? escapeHtml(storageState.uploadProgress) : 'Click or Drag & Drop to Upload Files to Backblaze B2'}
+              </div>
+              <div style="font-size:12px; color:#71717a;">
+                Supports images, documents, client deliverables, archives, video &amp; backups (Direct 10GB cloud storage)
+              </div>
+            </div>
+
+            <!-- Files Table -->
+            <div style="padding:0 24px 24px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h4 style="font-size:14px; font-weight:700; color:#09090b; margin:0;">
+                  Stored Files in Bucket (${filteredFiles.length})
+                </h4>
+                ${search ? `<span style="font-size:12px; color:#71717a;">Filtered by: <code>"${escapeHtml(search)}"</code></span>` : ''}
+              </div>
+
+              ${filteredFiles.length === 0 ? `
+                <div style="text-align:center; padding:48px 20px; background:#fafafa; border:1px solid #e4e4e7; border-radius:6px; color:#71717a;">
+                  <div style="font-size:28px; margin-bottom:8px;">📭</div>
+                  <div style="font-weight:700; font-size:14px; color:#09090b; margin-bottom:4px;">No files found in B2 storage</div>
+                  <div style="font-size:12px;">${search ? 'Try adjusting your search keyword.' : 'Upload your first file using the dropzone above.'}</div>
+                </div>
+              ` : `
+                <div style="border:1px solid #e4e4e7; border-radius:6px; overflow:hidden;">
+                  <table class="b2-file-table">
+                    <thead>
+                      <tr>
+                        <th style="width:45%;">File Name</th>
+                        <th style="width:15%;">Size</th>
+                        <th style="width:20%;">Uploaded</th>
+                        <th style="width:20%; text-align:right;">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${filteredFiles.map(f => {
+                        const icon = getFileIcon(f.fileName);
+                        return `
+                          <tr>
+                            <td>
+                              <div class="b2-file-name">
+                                <span class="b2-file-icon">${icon}</span>
+                                <div style="min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                                  <div style="font-weight:700; font-size:13px; color:#09090b; text-overflow:ellipsis; overflow:hidden;" title="${escapeHtml(f.fileName)}">
+                                    ${escapeHtml(f.fileName)}
+                                  </div>
+                                  <div style="font-size:11px; color:#71717a; font-family:var(--mono);">
+                                    ${escapeHtml(f.contentType || 'binary')}
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                            <td style="font-family:var(--mono); font-size:12px; font-weight:600; color:#52525b;">
+                              ${escapeHtml(f.sizeFormatted || '0 B')}
+                            </td>
+                            <td style="font-size:12px; color:#71717a;">
+                              ${formatDate(f.uploadTimestamp)}
+                            </td>
+                            <td style="text-align:right;">
+                              <div style="display:inline-flex; gap:6px;">
+                                <button type="button" class="b2-btn-action" onclick="window.copyStorageLink('${escapeHtml(f.downloadUrl)}', '${escapeHtml(f.fileName)}')" title="Copy direct download link">
+                                  🔗 Copy
+                                </button>
+                                <a href="${escapeHtml(f.downloadUrl)}" target="_blank" rel="noopener" class="b2-btn-action" title="Open / Download file">
+                                  Download ↗
+                                </a>
+                                <button type="button" class="b2-btn-action b2-btn-delete" onclick="window.deleteStorageFile('${escapeHtml(f.fileId)}', '${escapeHtml(f.fileName)}')" title="Delete file from B2">
+                                  Delete ✕
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        `;
+                      }).join('')}
+                    </tbody>
+                  </table>
+                </div>
+              `}
+            </div>
+          </div>
+        `;
+
+        container.innerHTML = html;
+
+        // Setup dropzone drag and drop
+        const dz = document.getElementById('b2-dropzone');
+        if (dz) {
+          dz.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dz.classList.add('dragover');
+          });
+          dz.addEventListener('dragleave', () => {
+            dz.classList.remove('dragover');
+          });
+          dz.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dz.classList.remove('dragover');
+            if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+              uploadStorageFile(e.dataTransfer.files[0]);
+            }
+          });
+        }
+      }
+
       // UI Elements
       const container = document.getElementById('inquiries-list');
       const searchInput = document.getElementById('search-input');
@@ -1929,6 +2440,12 @@
         // ============ TAB: CLOUDFLARE DEPLOYMENTS SHOWCASE ============
         if (currentTab === 'cloudflare') {
           renderCloudflareShowcase(search);
+          return;
+        }
+
+        // ============ TAB: CLOUD STORAGE (B2) ============
+        if (currentTab === 'storage') {
+          renderB2StorageManager(search);
           return;
         }
 
