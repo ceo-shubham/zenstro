@@ -2811,8 +2811,9 @@ html.js .reveal.in {
   .drow-name { font-size: 18px; }
   .featured-projects-grid { grid-template-columns: 1fr; gap: 24px; }
   .fp-github-spotlight { flex-direction: column; align-items: flex-start; padding: 28px 24px; gap: 20px; }
-  .fp-gh-right { width: 100%; }
-  .fp-gh-right .btn { width: 100%; justify-content: center; }
+  .fp-spotlight-content { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .fp-spotlight-actions { width: 100%; display: flex; flex-direction: column; gap: 10px; }
+  .fp-spotlight-actions .btn { width: 100%; justify-content: center; }
   .usp-grid { grid-template-columns: 1fr; gap: 20px; }
   .usp-stat-row { grid-template-columns: 1fr; gap: 16px; }
   .stack-group { grid-template-columns: 1fr; gap: 10px; padding: 18px 0; }
