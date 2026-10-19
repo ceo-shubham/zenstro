@@ -2878,23 +2878,41 @@ html.js .reveal.in {
 }
 .nav-auth-admin:hover {
   background: #1e293b !important;
-  color: #93c5fd !important;
+}
+.nav-auth-admin-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffffff;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.nav-auth-admin-link:hover {
+  color: #93c5fd;
 }
 .nav-auth-admin .nav-auth-avatar {
   background: #3b82f6;
 }
 .nav-auth-logout {
-  margin-left: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
   color: #94a3b8;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 700;
   line-height: 1;
-  padding: 2px 5px;
+  padding: 2px 6px;
   border-radius: 4px;
+  background: transparent;
+  border: none;
+  transition: all 0.15s ease;
 }
 .nav-auth-logout:hover {
-  color: #dc2626;
-  background: rgba(220, 38, 38, 0.1);
+  color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.2) !important;
 }
 
 /* ---------- Premium Hero Trust Bar ---------- */

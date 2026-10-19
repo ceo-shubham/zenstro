@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Signing out… — ZENSTRO</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=4">
+  <link rel="stylesheet" href="styles.css?v=8.2">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body style="display:flex; align-items:center; justify-content:center; min-height:100vh; font-family:'Manrope',sans-serif; background:#ffffff; color:#0f172a; text-align:center; padding:20px;">
+  <div style="max-width:400px;">
+    <img src="logo.png" alt="ZENSTRO" width="64" height="38" style="margin-bottom:24px;">
+    <h2 style="font-size:20px; font-weight:700; margin-bottom:8px;">Signing you out…</h2>
+    <p style="font-size:14px; color:#64748b;">Clearing all active sessions and security tokens.</p>
+  </div>
+
+  <script>
+    (function() {
+      try {
+        localStorage.removeItem('zenstro_user_session');
+        sessionStorage.removeItem('zenstro_user_session');
+        localStorage.removeItem('zenstro_admin_session');
+        sessionStorage.removeItem('zenstro_admin_session');
+        if (window.google && window.google.accounts && window.google.accounts.id) {
+          window.google.accounts.id.disableAutoSelect();
+        }
+      } catch (e) {}
+
+      setTimeout(function() {
+        window.location.replace('login.html?logout=true');
+      }, 400);
+    })();
+  </script>
+</body>
+</html>

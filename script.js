@@ -141,27 +141,49 @@
     if (user && user.email) {
       identifyMQLeadsUser(user, "login");
       var isAdmin = user.isAdmin || adminEmails.some(function(a){ return a.toLowerCase() === (user.email||'').toLowerCase(); });
-      if (isAdmin) {
-        loginBtn.innerHTML = '<span class="nav-auth-avatar">' + (user.name ? user.name.charAt(0).toUpperCase() : 'A') + '</span><span class="nav-auth-name">Admin Console</span> <span class="nav-auth-arrow">↗</span>';
-        loginBtn.href = 'admin.html';
-        loginBtn.className = 'nav-auth-pill nav-auth-admin';
-      } else {
-        loginBtn.innerHTML = '<span class="nav-auth-avatar">' + (user.name ? user.name.charAt(0).toUpperCase() : 'U') + '</span><span class="nav-auth-name">' + (user.name || user.email.split('@')[0]) + '</span> <span class="nav-auth-logout" id="nav-btn-logout" title="Sign out">&times;</span>';
-        loginBtn.href = 'javascript:void(0);';
-        loginBtn.className = 'nav-auth-pill nav-auth-member';
 
-        var logoutBtn = document.getElementById('nav-btn-logout');
-        if (logoutBtn) {
-          logoutBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            localStorage.removeItem('zenstro_user_session');
-            sessionStorage.removeItem('zenstro_user_session');
-            localStorage.removeItem('zenstro_admin_session');
-            sessionStorage.removeItem('zenstro_admin_session');
-            window.location.reload();
-          });
-        }
+      if (!isAdmin) {
+        localStorage.removeItem('zenstro_user_session');
+        sessionStorage.removeItem('zenstro_user_session');
+        localStorage.removeItem('zenstro_admin_session');
+        sessionStorage.removeItem('zenstro_admin_session');
+        return;
+      }
+
+      loginBtn.innerHTML = 
+        '<span class="nav-auth-admin-link" title="Open Admin Console">' +
+          '<span class="nav-auth-avatar">' + (user.name ? user.name.charAt(0).toUpperCase() : 'A') + '</span>' +
+          '<span class="nav-auth-name">Admin Console</span> <span class="nav-auth-arrow">↗</span>' +
+        '</span>' +
+        '<button type="button" class="nav-auth-logout" id="nav-btn-logout" title="Sign out from Admin Console" aria-label="Sign out">&times;</button>';
+      loginBtn.href = 'javascript:void(0);';
+      loginBtn.className = 'nav-auth-pill nav-auth-admin';
+
+      var adminLink = loginBtn.querySelector('.nav-auth-admin-link');
+      if (adminLink) {
+        adminLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          window.location.href = 'admin.html';
+        });
+      }
+
+      var logoutBtn = document.getElementById('nav-btn-logout');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          localStorage.removeItem('zenstro_user_session');
+          sessionStorage.removeItem('zenstro_user_session');
+          localStorage.removeItem('zenstro_admin_session');
+          sessionStorage.removeItem('zenstro_admin_session');
+          try {
+            if (window.google && window.google.accounts && window.google.accounts.id) {
+              window.google.accounts.id.disableAutoSelect();
+            }
+          } catch (err) {}
+          window.location.href = 'login.html?logout=true';
+        });
       }
     }
   }
