@@ -2872,47 +2872,30 @@ html.js .reveal.in {
   line-height: 1;
 }
 .nav-auth-admin {
-  background: #0f172a !important;
-  border-color: #1e293b !important;
-  color: #ffffff !important;
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
 }
 .nav-auth-admin:hover {
-  background: #1e293b !important;
-}
-.nav-auth-admin-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: #ffffff;
-  cursor: pointer;
-  text-decoration: none;
-  transition: color 0.15s ease;
-}
-.nav-auth-admin-link:hover {
-  color: #93c5fd;
+  background: #eff6ff !important;
+  border-color: #93c5fd !important;
+  color: #1d4ed8 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
 }
 .nav-auth-admin .nav-auth-avatar {
-  background: #3b82f6;
+  background: #2563eb;
+  color: #ffffff;
 }
-.nav-auth-logout {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 8px;
-  color: #94a3b8;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1;
-  padding: 2px 6px;
-  border-radius: 4px;
-  background: transparent;
-  border: none;
-  transition: all 0.15s ease;
+.nav-auth-admin .nav-auth-arrow {
+  color: #64748b;
+  font-size: 13px;
+  transition: transform 0.2s ease, color 0.2s ease;
 }
-.nav-auth-logout:hover {
-  color: #ef4444 !important;
-  background: rgba(239, 68, 68, 0.2) !important;
+.nav-auth-admin:hover .nav-auth-arrow {
+  color: #1d4ed8;
+  transform: translate(2px, -2px);
 }
 
 /* ---------- Premium Hero Trust Bar ---------- */
