@@ -197,6 +197,14 @@
     .views-tabs {
       display: flex;
       gap: 20px;
+      align-items: center;
+    }
+    .views-tabs-divider {
+      width: 1px;
+      height: 16px;
+      background: #e4e4e7;
+      margin: 0 -4px;
+      flex-shrink: 0;
     }
     .view-tab-btn {
       background: transparent;
@@ -1030,7 +1038,8 @@
         <button class="view-tab-btn" data-tab="trash" type="button">
           Delete Bin <span class="tab-counter" id="tab-count-trash">0</span>
         </button>
-        <button class="view-tab-btn" data-tab="github" type="button" style="margin-left:8px; border-left:1px solid #e4e4e7;">
+        <span class="views-tabs-divider" aria-hidden="true"></span>
+        <button class="view-tab-btn" data-tab="github" type="button">
           GitHub Repos <span class="tab-counter" id="tab-count-github">42</span>
         </button>
         <button class="view-tab-btn" data-tab="cloudflare" type="button">
