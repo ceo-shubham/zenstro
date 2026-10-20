@@ -268,6 +268,185 @@
     .btn-micro:hover {
       background: #f4f4f5;
     }
+    /* Domain Inbox Bar & Inbound Email Styles */
+    .domain-inboxes-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      flex-wrap: wrap;
+    }
+    .inbox-filter-chips {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .inbox-chip {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 20px;
+      padding: 4px 11px;
+      font-size: 11.5px;
+      font-family: var(--mono);
+      color: #334155;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-weight: 600;
+    }
+    .inbox-chip:hover {
+      border-color: #09090b;
+      color: #09090b;
+    }
+    .inbox-chip.active {
+      background: #0f172a;
+      color: #ffffff;
+      border-color: #0f172a;
+    }
+    .inbox-sync-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .webhook-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-family: var(--mono);
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+    .inbox-pill {
+      display: inline-flex;
+      align-items: center;
+      font: 600 11px var(--mono);
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+    .inbox-pill-ceo { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+    .inbox-pill-contact { background: #ecfdf5; color: #047857; border-color: #a7f3d0; }
+    .inbox-pill-admin { background: #faf5ff; color: #7e22ce; border-color: #e9d5ff; }
+    .inbox-pill-support { background: #fff7ed; color: #c2410c; border-color: #fed7aa; }
+    .inbox-pill-help { background: #fdf2f8; color: #be185d; border-color: #fbcfe8; }
+    .inbox-pill-other { background: #f1f5f9; color: #475569; border-color: #cbd5e1; }
+
+    .attachment-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .modal-dialog-lg {
+      max-width: 820px;
+      width: 95%;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .email-meta-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 14px 18px;
+    }
+    .attachments-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .attachment-card {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 8px 12px;
+      text-decoration: none;
+      color: #0f172a;
+      font-size: 12.5px;
+      transition: all 0.15s;
+    }
+    .attachment-card:hover {
+      border-color: #2563eb;
+      box-shadow: 0 2px 8px rgba(37,99,235,0.12);
+    }
+    .email-html-sandbox {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #ffffff;
+      min-height: 320px;
+    }
+    .email-text-box {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 16px;
+      font-size: 13.5px;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      color: #1e293b;
+      font-family: var(--mono);
+      max-height: 480px;
+      overflow-y: auto;
+    }
+    .email-headers-box {
+      background: #0f172a;
+      color: #f8fafc;
+      border-radius: 8px;
+      padding: 14px;
+      font: 12px var(--mono);
+      white-space: pre-wrap;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+    .pill-toggle-group {
+      display: inline-flex;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 2px;
+    }
+    .pill-toggle-btn {
+      background: transparent;
+      border: none;
+      font-size: 12px;
+      font-weight: 600;
+      color: #64748b;
+      padding: 5px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .pill-toggle-btn.active {
+      background: #ffffff;
+      color: #0f172a;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
 
     /* Toolbar / Filter Strip */
     .toolbar-bar {
@@ -1003,6 +1182,12 @@
         <div class="metric-value" id="count-total">0</div>
         <div class="metric-note">Total active records</div>
       </div>
+      
+      <div class="metric-cell" onclick="window.switchTab('email')" style="cursor:pointer;" title="Click to view domain received emails">
+        <div class="metric-header"><span class="metric-dot" style="background:#0284c7;"></span> Received Emails</div>
+        <div class="metric-value" id="count-received">0</div>
+        <div class="metric-note">Domain inbound inbox</div>
+      </div>
       <div class="metric-cell" onclick="window.switchTab('all', 'new')" style="cursor:pointer;" title="Click to filter unread leads">
         <div class="metric-header"><span class="metric-dot" style="background:#2563eb;"></span> Unread Leads</div>
         <div class="metric-value" id="count-new">0</div>
@@ -1026,11 +1211,11 @@
         <button class="view-tab-btn active" data-tab="all" type="button">
           All Inquiries <span class="tab-counter" id="tab-count-all">0</span>
         </button>
+        <button class="view-tab-btn" data-tab="email" type="button">
+          📥 Received Emails <span class="tab-counter" id="tab-count-email">0</span>
+        </button>
         <button class="view-tab-btn" data-tab="form" type="button">
           Web Forms <span class="tab-counter" id="tab-count-form">0</span>
-        </button>
-        <button class="view-tab-btn" data-tab="email" type="button">
-          Direct Inbound <span class="tab-counter" id="tab-count-email">0</span>
         </button>
         <button class="view-tab-btn" data-tab="sent" type="button">
           Sent Outbox <span class="tab-counter" id="tab-count-sent">0</span>
@@ -1051,8 +1236,33 @@
       </div>
 
       <div class="routing-info-text">
-        <span>Routing: <code>ceo@</code> &bull; <code>support@</code> &bull; <code>admin@</code> &bull; <code>help@zenstro.space</code></span>
-        <button id="btn-sync-inbound" class="btn-micro" type="button" title="Fetch received emails from Resend Receiving API">Sync Inbound ↻</button>
+        <span>Inbound Domain: <code>*@zenstro.space</code></span>
+        <button id="btn-sync-inbound" class="btn-micro" type="button" title="Fetch received emails from Resend Receiving API">Sync Resend Inbox ↻</button>
+      </div>
+    </div>
+
+    <!-- ============ DOMAIN INBOX BAR (VISIBLE ON RECEIVED TAB) ============ -->
+    <div id="domain-inboxes-bar" class="domain-inboxes-bar" style="display:none;">
+      <div class="inbox-filter-chips">
+        <button class="inbox-chip active" data-inbox="all" type="button">All @zenstro.space</button>
+        <button class="inbox-chip" data-inbox="ceo@zenstro.space" type="button">ceo@</button>
+        <button class="inbox-chip" data-inbox="contact@zenstro.space" type="button">contact@</button>
+        <button class="inbox-chip" data-inbox="admin@zenstro.space" type="button">admin@</button>
+        <button class="inbox-chip" data-inbox="support@zenstro.space" type="button">support@</button>
+        <button class="inbox-chip" data-inbox="help@zenstro.space" type="button">help@</button>
+        <button class="inbox-chip" data-inbox="other" type="button">Catch-All</button>
+      </div>
+      <div class="inbox-sync-group">
+        <span class="webhook-badge" title="Webhook is active to receive all incoming emails">
+          <span style="width:6px; height:6px; background:#16a34a; border-radius:50%; display:inline-block;"></span>
+          Webhook: <code>/api/inbound-email</code>
+        </span>
+        <button id="btn-sync-inbox-direct" class="btn-micro" type="button" onclick="window.syncResendInbound(true)" style="background:#0f172a; color:#ffffff; border-color:#0f172a; padding:5px 12px; font-weight:700;">
+          Sync Resend Inbox ↻
+        </button>
+        <button class="btn-micro" type="button" onclick="window.copyWebhookUrl()" title="Copy inbound webhook endpoint URL for Resend dashboard">
+          Copy Webhook URL 📋
+        </button>
       </div>
     </div>
 
@@ -1109,6 +1319,95 @@
       <span>Automated notification alerts configured for: <strong id="admin-notify-target">ceo.shubhampathak@gmail.com</strong></span>
     </div>
   </footer>
+
+  <!-- ============ FULL EMAIL READER MODAL ============ -->
+  <div id="email-view-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-dialog modal-dialog-lg">
+      <div class="modal-header">
+        <div style="display:flex; align-items:center; gap:12px; min-width:0;">
+          <div style="background:#eff6ff; border:1px solid #bfdbfe; width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div style="min-width:0;">
+            <h3 id="ev-subject" style="margin:0; font-size:15px; font-weight:700; color:#09090b; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Email Subject</h3>
+            <div style="display:flex; align-items:center; gap:8px; margin-top:3px; flex-wrap:wrap;">
+              <span id="ev-recipient-badge" class="inbox-pill">ceo@zenstro.space</span>
+              <span id="ev-status-badge" class="status-pill status-pill-new">NEW</span>
+              <span id="ev-date" style="font-size:11.5px; color:#71717a; font-family:var(--mono);">Date</span>
+            </div>
+          </div>
+        </div>
+        <button type="button" id="btn-close-ev-modal" class="modal-close-btn" aria-label="Close modal">&times;</button>
+      </div>
+
+      <div class="email-view-body" style="padding:18px 24px; overflow-y:auto; flex:1;">
+        <!-- Sender Meta Details -->
+        <div class="email-meta-card">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+            <div>
+              <div style="font-size:14px; font-weight:700; color:#09090b;" id="ev-sender-name">Sender Name</div>
+              <div style="font-size:12.5px; color:#64748b; font-family:var(--mono); margin-top:2px;">
+                From: <span id="ev-sender-email" style="color:#09090b;">sender@example.com</span>
+              </div>
+              <div style="font-size:12px; color:#64748b; margin-top:4px;" id="ev-to-line">
+                To: <span id="ev-to-email">ceo@zenstro.space</span>
+              </div>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button type="button" class="btn-micro" id="btn-ev-reply-direct" style="background:#0f172a; color:#ffffff; border-color:#0f172a; font-weight:700;">↩ Reply</button>
+              <button type="button" class="btn-micro" id="btn-ev-toggle-read">Mark as Replied</button>
+              <button type="button" class="btn-micro" id="btn-ev-trash" style="color:#dc2626;">Move to Trash</button>
+            </div>
+          </div>
+
+          <!-- Attachments Section (if present) -->
+          <div id="ev-attachments-section" style="display:none; margin-top:14px; padding-top:12px; border-top:1px solid #e2e8f0;">
+            <div style="font-size:12px; font-weight:700; color:#334155; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+              <span>📎 Attachments (<span id="ev-attachment-count">0</span>):</span>
+            </div>
+            <div id="ev-attachments-list" class="attachments-grid"></div>
+          </div>
+        </div>
+
+        <!-- Body View Tabs: Formatted HTML vs Plain Text -->
+        <div class="email-body-tabs" style="margin-top:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <div class="pill-toggle-group">
+              <button type="button" id="tab-ev-html" class="pill-toggle-btn active" onclick="window.switchEmailTab('html')">Formatted HTML</button>
+              <button type="button" id="tab-ev-text" class="pill-toggle-btn" onclick="window.switchEmailTab('text')">Plain Text</button>
+              <button type="button" id="tab-ev-headers" class="pill-toggle-btn" onclick="window.switchEmailTab('headers')">Headers</button>
+            </div>
+            <button type="button" class="btn-micro" id="btn-copy-ev-body">Copy Text</button>
+          </div>
+
+          <!-- Tab 1: Formatted HTML Container -->
+          <div id="ev-content-html" class="email-html-sandbox">
+            <iframe id="ev-html-frame" sandbox="allow-same-origin allow-popups" style="width:100%; min-height:360px; border:none; background:#ffffff;"></iframe>
+          </div>
+
+          <!-- Tab 2: Plain Text Container -->
+          <div id="ev-content-text" class="email-text-box" style="display:none;"></div>
+
+          <!-- Tab 3: Raw Headers Container -->
+          <div id="ev-content-headers" class="email-headers-box" style="display:none;"></div>
+        </div>
+
+        <!-- Reply History Thread (if any replies sent) -->
+        <div id="ev-replies-container" style="display:none; margin-top:20px;">
+          <h4 style="font-size:13px; font-weight:700; color:#09090b; margin:0 0 10px;">Recorded Reply Thread:</h4>
+          <div id="ev-replies-list"></div>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="padding:14px 24px; background:#f8fafc; border-top:1px solid #e4e4e7; display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:12px; color:#64748b;" id="ev-footer-info">Domain Inbox &bull; zenstro.space</span>
+        <div style="display:flex; gap:10px;">
+          <button type="button" class="btn-console-outline" id="btn-close-ev-modal-bottom">Close</button>
+          <button type="button" class="btn-console-primary" id="btn-ev-reply-bottom">↩ Reply to Sender</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ============ EMAIL COMPOSER MODAL ============ -->
   <div id="email-modal" class="modal-overlay" style="display:none;">
@@ -1446,7 +1745,25 @@
         const searchInputEl = document.getElementById('search-input');
         const routingInfoEl = document.querySelector('.routing-info-text');
 
-        if (tabName === 'github' || tabName === 'cloudflare' || tabName === 'storage') {
+        const domainBarEl = document.getElementById('domain-inboxes-bar');
+        if (domainBarEl) {
+          domainBarEl.style.display = (tabName === 'email') ? 'flex' : 'none';
+        }
+
+        if (tabName === 'email') {
+          if (filterTopicEl) filterTopicEl.style.display = 'none';
+          if (filterStatusEl) filterStatusEl.style.display = '';
+          if (btnAddLeadEl) btnAddLeadEl.style.display = 'none';
+          if (btnExportCsvEl) btnExportCsvEl.style.display = '';
+          if (btnEmptyTrash) btnEmptyTrash.style.display = 'none';
+          if (routingInfoEl) routingInfoEl.style.display = 'none';
+          if (searchInputEl) {
+            searchInputEl.placeholder = 'Filter domain emails by sender, subject, mailbox, body…';
+          }
+          if (typeof window.syncResendInbound === 'function') {
+            window.syncResendInbound(false);
+          }
+        } else if (tabName === 'github' || tabName === 'cloudflare' || tabName === 'storage') {
           if (filterTopicEl) filterTopicEl.style.display = 'none';
           if (filterStatusEl) filterStatusEl.style.display = 'none';
           if (btnAddLeadEl) btnAddLeadEl.style.display = 'none';
@@ -2457,6 +2774,8 @@
         document.getElementById('count-new').textContent = inquiries.filter(i => i.status === 'new').length;
         document.getElementById('count-replied').textContent = inquiries.filter(i => i.status === 'replied').length;
         document.getElementById('count-trash').textContent = trashCount;
+        const countReceivedEl = document.getElementById('count-received');
+        if (countReceivedEl) countReceivedEl.textContent = emailCount;
 
         // Empty Trash button visibility
         if (currentTab === 'trash') {
@@ -2481,6 +2800,12 @@
         // ============ TAB: CLOUD STORAGE (B2) ============
         if (currentTab === 'storage') {
           renderB2StorageManager(search);
+          return;
+        }
+
+        // ============ TAB: RECEIVED EMAILS (*@zenstro.space) ============
+        if (currentTab === 'email') {
+          renderReceivedEmails(search, status);
           return;
         }
 
@@ -3273,6 +3598,12 @@
               localStorage.setItem('zenstro_sent_emails', JSON.stringify(mergedSent));
             }
 
+            // Sync received domain emails
+            if (data.receivedEmails && Array.isArray(data.receivedEmails)) {
+              const cleanRemoteRec = data.receivedEmails.filter(r => !isFakeItem(r));
+              localStorage.setItem('zenstro_received_emails', JSON.stringify(cleanRemoteRec));
+            }
+
             // Sync trash
             if (data.trash && Array.isArray(data.trash)) {
               const cleanRemoteTrash = data.trash.filter(t => !isFakeItem(t));
@@ -3297,34 +3628,50 @@
         }
       }
 
-      async function syncResendInbound(showToast = false) {
-        const btn = document.getElementById('btn-sync-inbound');
+      async function syncResendInbound(manual = false) {
+        const btn = document.getElementById('btn-sync-inbox-direct') || document.getElementById('btn-sync-inbound');
         if (btn) {
           btn.disabled = true;
-          btn.textContent = 'Syncing…';
+          btn.textContent = 'Syncing Resend…';
         }
         try {
-          const res = await fetch('/api/inquiries', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: 'sync_resend' })
-          });
-          if (res.ok) {
-            const data = await res.json();
-            if (data.inquiries && Array.isArray(data.inquiries)) {
-              const clean = data.inquiries.filter(i => !isFakeItem(i));
-              localStorage.setItem('zenstro_inquiries', JSON.stringify(clean));
-              render();
+          let data = null;
+          // 1. Try unified inbound sync endpoint
+          try {
+            const resInbound = await fetch('/api/inbound-email?action=sync');
+            if (resInbound.ok) {
+              data = await resInbound.json();
             }
+          } catch(e) {}
+
+          // 2. Fallback to /api/inquiries sync_resend action
+          if (!data || !data.success) {
+            const res = await fetch('/api/inquiries', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ action: 'sync_resend' })
+            });
+            if (res.ok) data = await res.json();
+          }
+
+          if (data) {
+            await syncWithCloudflare();
+            render();
             if (btn) {
-              btn.textContent = '✓ Synced';
-              setTimeout(() => { if (btn) btn.textContent = 'Sync Inbound ↻'; }, 2500);
+              const count = data.added !== undefined ? data.added : (data.count || 0);
+              btn.textContent = manual ? `✓ Synced (${count})` : '✓ Synced';
+              setTimeout(() => {
+                if (btn) {
+                  btn.textContent = btn.id === 'btn-sync-inbox-direct' ? 'Sync Resend Inbox ↻' : 'Sync Inbound ↻';
+                }
+              }, 3000);
             }
           } else {
-            if (btn) btn.textContent = 'Sync Inbound ↻';
+            if (btn) btn.textContent = btn.id === 'btn-sync-inbox-direct' ? 'Sync Resend Inbox ↻' : 'Sync Inbound ↻';
           }
         } catch (e) {
-          if (btn) btn.textContent = 'Sync Inbound ↻';
+          console.warn('Sync Resend error:', e);
+          if (btn) btn.textContent = btn.id === 'btn-sync-inbox-direct' ? 'Sync Resend Inbox ↻' : 'Sync Inbound ↻';
         } finally {
           if (btn) btn.disabled = false;
         }
@@ -3381,6 +3728,552 @@
       window.exportAdminCsv = exportAdminCsv;
       const exportBtn = document.getElementById('btn-export-csv');
       if (exportBtn) exportBtn.addEventListener('click', exportAdminCsv);
+
+      
+      // ============ RECEIVED EMAILS (*@zenstro.space) CONTROLLER ============
+      let currentInboxFilter = 'all';
+      let currentViewingEmailId = null;
+      let _isEvModalBusy = false;
+
+      // Filter chips for domain inboxes
+      document.querySelectorAll('.inbox-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          document.querySelectorAll('.inbox-chip').forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+          currentInboxFilter = chip.dataset.inbox || 'all';
+          render();
+        });
+      });
+
+      function formatBytes(bytes) {
+        if (!bytes || bytes <= 0) return '0 B';
+        const k = 1024;
+        const sizes = ['B', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+      }
+
+      function getReceivedEmails() {
+        const inq = getInquiries().filter(i => i.source === 'email_inbound');
+        try {
+          const rawRec = JSON.parse(localStorage.getItem('zenstro_received_emails') || '[]');
+          const cleanRec = rawRec.filter(r => !isFakeItem(r));
+          const map = new Map();
+          inq.forEach(item => {
+            const key = item.emailId || item.id;
+            map.set(key, item);
+          });
+          cleanRec.forEach(item => {
+            const key = item.emailId || item.id;
+            if (!map.has(key)) {
+              map.set(key, item);
+            } else {
+              const existing = map.get(key);
+              map.set(key, Object.assign({}, existing, item));
+            }
+          });
+          return Array.from(map.values()).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        } catch (e) {
+          return inq;
+        }
+      }
+
+      function renderReceivedEmails(search, statusFilter) {
+        const allReceived = getReceivedEmails();
+        let filtered = allReceived;
+
+        // 1. Mailbox Filter Chip
+        if (currentInboxFilter && currentInboxFilter !== 'all') {
+          if (currentInboxFilter === 'other') {
+            const known = ['ceo@zenstro.space', 'contact@zenstro.space', 'admin@zenstro.space', 'support@zenstro.space', 'help@zenstro.space'];
+            filtered = filtered.filter(item => {
+              const rec = (item.recipientInbox || (Array.isArray(item.to) ? item.to.join(',') : item.to) || '').toLowerCase();
+              return !known.some(k => rec.includes(k));
+            });
+          } else {
+            const targetInbox = currentInboxFilter.toLowerCase();
+            filtered = filtered.filter(item => {
+              const rec = (item.recipientInbox || (Array.isArray(item.to) ? item.to.join(',') : item.to) || '').toLowerCase();
+              return rec.includes(targetInbox);
+            });
+          }
+        }
+
+        // 2. Keyword Search
+        if (search) {
+          const q = search.toLowerCase();
+          filtered = filtered.filter(item => {
+            const inName = (item.name || '').toLowerCase().includes(q);
+            const inEmail = (item.email || '').toLowerCase().includes(q);
+            const inFrom = (item.from || '').toLowerCase().includes(q);
+            const inTo = (item.recipientInbox || (Array.isArray(item.to) ? item.to.join(',') : item.to) || '').toLowerCase();
+            const inSub = (item.subject || '').toLowerCase().includes(q);
+            const inMsg = (item.message || '').toLowerCase().includes(q);
+            const inAtt = Array.isArray(item.attachments) && item.attachments.some(a => (a.filename || '').toLowerCase().includes(q));
+            return inName || inEmail || inFrom || inTo || inSub || inMsg || inAtt;
+          });
+        }
+
+        // 3. Status Filter
+        if (statusFilter) {
+          filtered = filtered.filter(item => item.status === statusFilter);
+        }
+
+        if (filtered.length === 0) {
+          container.innerHTML = `
+            <div class="zero-state" style="padding:48px 24px;">
+              <div style="width:56px; height:56px; border-radius:50%; background:#eff6ff; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; border:1px solid #bfdbfe;">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
+                </svg>
+              </div>
+              <h4 style="font-size:16px; font-weight:700; color:#0f172a; margin-bottom:6px;">No Emails Found in ${currentInboxFilter === 'all' ? 'Domain Inboxes' : currentInboxFilter}</h4>
+              <p style="font-size:13px; color:#64748b; max-width:500px; margin:0 auto 20px; line-height:1.5;">
+                Emails sent to <strong>${currentInboxFilter === 'all' ? '*@zenstro.space' : currentInboxFilter}</strong> will land here automatically via Resend Inbound. You can also sync directly with the Resend Receiving API below.
+              </p>
+              <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+                <button type="button" class="btn-console-primary" onclick="window.syncResendInbound(true)" style="background:#0f172a; color:#ffffff; border-color:#0f172a;">
+                  Sync Resend Inbox ↻
+                </button>
+                <button type="button" class="btn-console-outline" onclick="window.copyWebhookUrl()">
+                  Copy Webhook URL 📋
+                </button>
+              </div>
+            </div>
+          `;
+          return;
+        }
+
+        let html = `
+          <table class="ledger-table">
+            <thead>
+              <tr>
+                <th style="width:100px;">Status</th>
+                <th style="width:230px;">Sender / From</th>
+                <th style="width:150px;">Mailbox / To</th>
+                <th>Subject &amp; Message Preview</th>
+                <th style="width:115px;">Received</th>
+                <th style="width:215px; text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        filtered.forEach(item => {
+          const statusClass = item.status === 'replied' ? 'status-pill-replied' : 'status-pill-new';
+          const statusText = item.status === 'replied' ? 'REPLIED' : 'NEW';
+          const senderName = item.name || item.from || 'Sender';
+          const senderEmail = item.email || item.from || '—';
+          const toMailbox = item.recipientInbox || (Array.isArray(item.to) ? item.to[0] : item.to) || 'ceo@zenstro.space';
+          const subject = item.subject || '(No Subject)';
+          const previewText = (item.message || '').replace(/\s+/g, ' ').slice(0, 120);
+          const attCount = Array.isArray(item.attachments) ? item.attachments.length : 0;
+          const attBadge = attCount > 0 ? `<span class="attachment-pill" title="${attCount} file(s)">📎 ${attCount}</span>` : '';
+
+          html += `
+            <tr class="ledger-row" data-id="${escapeHtml(item.id)}" onclick="window.openEmailViewModal('${escapeHtml(item.id)}')">
+              <td><span class="status-pill ${statusClass}">${statusText}</span></td>
+              <td>
+                <div class="row-client-name">${escapeHtml(senderName)}</div>
+                <div class="row-client-sub">${escapeHtml(senderEmail)}</div>
+              </td>
+              <td>
+                <span class="inbox-pill">${escapeHtml(toMailbox)}</span>
+              </td>
+              <td>
+                <div class="row-preview-text">
+                  <strong>${escapeHtml(subject)}</strong>
+                  ${attBadge}
+                  &mdash; ${escapeHtml(previewText)}
+                </div>
+              </td>
+              <td><div class="row-date-text">${formatDate(item.createdAt)}</div></td>
+              <td>
+                <div class="row-actions-group" onclick="event.stopPropagation();">
+                  <button class="btn-action-icon btn-view-email" data-id="${escapeHtml(item.id)}" type="button" style="color:#2563eb; border-color:#bfdbfe; font-weight:700;">
+                    Read
+                  </button>
+                  <button class="btn-action-icon btn-reply-email"
+                          data-id="${escapeHtml(item.id)}"
+                          data-name="${escapeHtml(senderName)}"
+                          data-email="${escapeHtml(senderEmail)}"
+                          data-subject="${escapeHtml(subject)}"
+                          data-inbox="${escapeHtml(toMailbox)}"
+                          type="button">
+                    Reply
+                  </button>
+                  <button class="btn-action-icon btn-status-rec" data-id="${escapeHtml(item.id)}" data-status="${item.status}" type="button">
+                    ${item.status === 'replied' ? 'Mark New' : 'Replied'}
+                  </button>
+                  <button class="btn-action-icon btn-action-icon-danger btn-trash-rec" data-id="${escapeHtml(item.id)}" type="button">
+                    Trash
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        });
+
+        html += `</tbody></table>`;
+        container.innerHTML = html;
+
+        // Action Listeners
+        container.querySelectorAll('.btn-view-email').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openEmailViewModal(btn.dataset.id);
+          });
+        });
+
+        container.querySelectorAll('.btn-reply-email').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id = btn.dataset.id;
+            const to = btn.dataset.email;
+            const sub = btn.dataset.subject;
+            const inbox = btn.dataset.inbox || 'ceo@zenstro.space';
+            let fromAddr = 'ZENSTRO CEO <ceo@zenstro.space>';
+            if (inbox.includes('support')) fromAddr = 'ZENSTRO Support <support@zenstro.space>';
+            else if (inbox.includes('admin')) fromAddr = 'ZENSTRO Admin <admin@zenstro.space>';
+            else if (inbox.includes('contact')) fromAddr = 'ZENSTRO Contact <contact@zenstro.space>';
+            else if (inbox.includes('help')) fromAddr = 'ZENSTRO Helpdesk <help@zenstro.space>';
+
+            openComposeModal({
+              to: to,
+              from: fromAddr,
+              subject: sub.toLowerCase().startsWith('re:') ? sub : ('Re: ' + sub),
+              inquiryId: id,
+              title: 'Reply to ' + (btn.dataset.name || to)
+            });
+          });
+        });
+
+        container.querySelectorAll('.btn-status-rec').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id = btn.dataset.id;
+            const cur = btn.dataset.status;
+            const nextStatus = cur === 'replied' ? 'new' : 'replied';
+
+            const updatedInq = getInquiries().map(i => {
+              if (i.id === id || i.emailId === id) return Object.assign({}, i, { status: nextStatus });
+              return i;
+            });
+            saveInquiries(updatedInq);
+
+            try {
+              const rec = JSON.parse(localStorage.getItem('zenstro_received_emails') || '[]');
+              const updatedRec = rec.map(r => {
+                if (r.id === id || r.emailId === id) return Object.assign({}, r, { status: nextStatus });
+                return r;
+              });
+              localStorage.setItem('zenstro_received_emails', JSON.stringify(updatedRec));
+            } catch(e) {}
+
+            updateRemoteStatus(id, nextStatus);
+            render();
+          });
+        });
+
+        container.querySelectorAll('.btn-trash-rec').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            moveToTrash(btn.dataset.id, 'inquiry');
+          });
+        });
+      }
+
+      // ============ FULL EMAIL READER MODAL ============
+      function openEmailViewModal(id) {
+        if (_isEvModalBusy) return;
+        _isEvModalBusy = true;
+        setTimeout(() => { _isEvModalBusy = false; }, 300);
+
+        let item = getInquiries().find(i => String(i.id) === String(id) || String(i.emailId) === String(id));
+        if (!item) {
+          try {
+            const rec = JSON.parse(localStorage.getItem('zenstro_received_emails') || '[]');
+            item = rec.find(i => String(i.id) === String(id) || String(i.emailId) === String(id));
+          } catch(e) {}
+        }
+        if (!item) return;
+
+        currentViewingEmailId = item.id;
+
+        const subjectEl = document.getElementById('ev-subject');
+        const recBadgeEl = document.getElementById('ev-recipient-badge');
+        const statusBadgeEl = document.getElementById('ev-status-badge');
+        const dateEl = document.getElementById('ev-date');
+        const senderNameEl = document.getElementById('ev-sender-name');
+        const senderEmailEl = document.getElementById('ev-sender-email');
+        const toEmailEl = document.getElementById('ev-to-email');
+        const footerInfoEl = document.getElementById('ev-footer-info');
+
+        const senderName = item.name || item.from || 'Sender';
+        const senderEmail = item.email || item.from || '—';
+        const toMailbox = item.recipientInbox || (Array.isArray(item.to) ? item.to.join(', ') : item.to) || 'ceo@zenstro.space';
+        const subject = item.subject || '(No Subject)';
+
+        if (subjectEl) subjectEl.textContent = subject;
+        if (recBadgeEl) recBadgeEl.textContent = toMailbox;
+        if (statusBadgeEl) {
+          statusBadgeEl.className = 'status-pill ' + (item.status === 'replied' ? 'status-pill-replied' : 'status-pill-new');
+          statusBadgeEl.textContent = item.status === 'replied' ? 'REPLIED' : 'NEW';
+        }
+        if (dateEl) dateEl.textContent = formatDate(item.createdAt);
+        if (senderNameEl) senderNameEl.textContent = senderName;
+        if (senderEmailEl) senderEmailEl.textContent = senderEmail;
+        if (toEmailEl) toEmailEl.textContent = toMailbox;
+        if (footerInfoEl) footerInfoEl.innerHTML = `Domain Inbox &bull; Received via Resend &bull; ID: ${escapeHtml(item.emailId || item.id || '')}`;
+
+        // Attachments
+        const attSection = document.getElementById('ev-attachments-section');
+        const attList = document.getElementById('ev-attachments-list');
+        const attCountEl = document.getElementById('ev-attachment-count');
+        const attachments = Array.isArray(item.attachments) ? item.attachments : [];
+
+        if (attachments.length > 0 && attSection && attList) {
+          attSection.style.display = 'block';
+          if (attCountEl) attCountEl.textContent = attachments.length;
+          attList.innerHTML = attachments.map(att => {
+            const fname = escapeHtml(att.filename || 'attachment');
+            const sizeStr = att.size ? formatBytes(att.size) : 'File';
+            const attId = att.id || att.contentId || '';
+            const emailId = item.emailId || '';
+            const dlUrl = att.downloadUrl || `/api/inbound-email?action=attachment&email_id=${encodeURIComponent(emailId)}&attachment_id=${encodeURIComponent(attId)}&filename=${encodeURIComponent(att.filename || 'file')}`;
+
+            return `
+              <a href="${dlUrl}" target="_blank" rel="noopener noreferrer" class="attachment-item" download="${fname}" title="Download ${fname}">
+                <div class="attachment-icon">📎</div>
+                <div class="attachment-meta">
+                  <div class="attachment-name">${fname}</div>
+                  <div class="attachment-size">${sizeStr} &bull; Download</div>
+                </div>
+              </a>
+            `;
+          }).join('');
+        } else if (attSection) {
+          attSection.style.display = 'none';
+          if (attList) attList.innerHTML = '';
+        }
+
+        // Body Content Tabs
+        const frame = document.getElementById('ev-html-frame');
+        if (frame) {
+          if (item.html) {
+            frame.srcdoc = `<!DOCTYPE html><html><head><meta charset="utf-8"><style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:13.5px;line-height:1.6;color:#1e293b;padding:16px;margin:0;word-break:break-word;}img{max-width:100%;height:auto;}a{color:#2563eb;}</style></head><body>${item.html}</body></html>`;
+          } else {
+            frame.srcdoc = `<!DOCTYPE html><html><head><meta charset="utf-8"><style>body{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:13px;line-height:1.6;color:#334155;padding:16px;margin:0;white-space:pre-wrap;word-break:break-word;}</style></head><body>${escapeHtml(item.message || '(Empty email content)')}</body></html>`;
+          }
+        }
+
+        const textBox = document.getElementById('ev-content-text');
+        if (textBox) {
+          textBox.textContent = item.message || item.text || '(No plain text content provided)';
+        }
+
+        const headersBox = document.getElementById('ev-content-headers');
+        if (headersBox) {
+          if (item.headers && typeof item.headers === 'object') {
+            let hText = '';
+            for (const [k, v] of Object.entries(item.headers)) {
+              hText += `${k}: ${Array.isArray(v) ? v.join(', ') : v}\n`;
+            }
+            headersBox.textContent = hText || 'No raw headers available.';
+          } else {
+            headersBox.textContent = 'No raw headers recorded for this email.';
+          }
+        }
+
+        // Reset to HTML tab
+        switchEmailTab('html');
+
+        // Replies Thread
+        const repliesContainer = document.getElementById('ev-replies-container');
+        const repliesList = document.getElementById('ev-replies-list');
+        const replies = Array.isArray(item.replies) ? item.replies : [];
+        if (replies.length > 0 && repliesContainer && repliesList) {
+          repliesContainer.style.display = 'block';
+          repliesList.innerHTML = replies.map(r => `
+            <div style="background:#ffffff; border:1px solid #e4e4e7; border-left:3px solid #09090b; padding:10px 14px; margin-bottom:8px; border-radius:4px; font-size:12px;">
+              <div style="display:flex; justify-content:space-between; margin-bottom:4px; color:#71717a; font-family:var(--mono);">
+                <span>FROM: ${escapeHtml(r.from || 'ZENSTRO')} &bull; TO: ${escapeHtml(r.to || senderEmail)}</span>
+                <span>${formatDate(r.sentAt)}</span>
+              </div>
+              <div style="color:#27272a; white-space:pre-wrap;">${escapeHtml(r.message || '')}</div>
+            </div>
+          `).join('');
+        } else if (repliesContainer) {
+          repliesContainer.style.display = 'none';
+        }
+
+        // Open modal
+        const modal = document.getElementById('email-view-modal');
+        if (modal) {
+          modal.style.display = 'flex';
+          modal.classList.add('open');
+        }
+      }
+      window.openEmailViewModal = openEmailViewModal;
+
+      function closeEmailViewModal() {
+        const modal = document.getElementById('email-view-modal');
+        if (modal) {
+          modal.style.display = 'none';
+          modal.classList.remove('open');
+        }
+        currentViewingEmailId = null;
+      }
+      window.closeEmailViewModal = closeEmailViewModal;
+
+      function switchEmailTab(tab) {
+        ['html', 'text', 'headers'].forEach(t => {
+          const btn = document.getElementById('tab-ev-' + t);
+          const box = document.getElementById('ev-content-' + t);
+          if (btn) {
+            if (t === tab) btn.classList.add('active');
+            else btn.classList.remove('active');
+          }
+          if (box) {
+            box.style.display = (t === tab) ? 'block' : 'none';
+          }
+        });
+      }
+      window.switchEmailTab = switchEmailTab;
+
+      function replyToCurrentViewingEmail() {
+        if (!currentViewingEmailId) return;
+        const item = getInquiries().find(i => String(i.id) === String(currentViewingEmailId) || String(i.emailId) === String(currentViewingEmailId));
+        if (!item) return;
+
+        closeEmailViewModal();
+
+        const to = item.email || item.from || '';
+        const sub = item.subject || 'Inquiry';
+        const inbox = item.recipientInbox || 'ceo@zenstro.space';
+        let fromAddr = 'ZENSTRO CEO <ceo@zenstro.space>';
+        if (inbox.includes('support')) fromAddr = 'ZENSTRO Support <support@zenstro.space>';
+        else if (inbox.includes('admin')) fromAddr = 'ZENSTRO Admin <admin@zenstro.space>';
+        else if (inbox.includes('contact')) fromAddr = 'ZENSTRO Contact <contact@zenstro.space>';
+        else if (inbox.includes('help')) fromAddr = 'ZENSTRO Helpdesk <help@zenstro.space>';
+
+        openComposeModal({
+          to: to,
+          from: fromAddr,
+          subject: sub.toLowerCase().startsWith('re:') ? sub : ('Re: ' + sub),
+          inquiryId: item.id,
+          title: 'Reply to ' + (item.name || to)
+        });
+      }
+      window.replyToCurrentViewingEmail = replyToCurrentViewingEmail;
+
+      function copyWebhookUrl() {
+        const url = 'https://zenstro.space/api/inbound-email';
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(() => {
+            alert('✓ Inbound Webhook URL copied to clipboard:\n\n' + url + '\n\nPaste this in Resend Dashboard -> Domains -> Webhooks or Receiving Webhook endpoint.');
+          }).catch(() => {
+            prompt('Copy Inbound Webhook URL:', url);
+          });
+        } else {
+          prompt('Copy Inbound Webhook URL:', url);
+        }
+      }
+      window.copyWebhookUrl = copyWebhookUrl;
+
+      // Email Reader Modal Listeners
+      const evCloseBtn = document.getElementById('btn-close-ev-modal');
+      const evCloseBtnBottom = document.getElementById('btn-close-ev-modal-bottom');
+      const evReplyBtnDirect = document.getElementById('btn-ev-reply-direct');
+      const evReplyBtnBottom = document.getElementById('btn-ev-reply-bottom');
+      const evToggleReadBtn = document.getElementById('btn-ev-toggle-read');
+      const evTrashBtn = document.getElementById('btn-ev-trash');
+      const evCopyBodyBtn = document.getElementById('btn-copy-ev-body');
+      const evModal = document.getElementById('email-view-modal');
+
+      if (evCloseBtn) evCloseBtn.addEventListener('click', closeEmailViewModal);
+      if (evCloseBtnBottom) evCloseBtnBottom.addEventListener('click', closeEmailViewModal);
+      if (evReplyBtnDirect) evReplyBtnDirect.addEventListener('click', replyToCurrentViewingEmail);
+      if (evReplyBtnBottom) evReplyBtnBottom.addEventListener('click', replyToCurrentViewingEmail);
+
+      if (evModal) {
+        evModal.addEventListener('click', (e) => {
+          if (e.target === evModal) closeEmailViewModal();
+        });
+      }
+
+      if (evToggleReadBtn) {
+        evToggleReadBtn.addEventListener('click', () => {
+          if (!currentViewingEmailId) return;
+          const id = currentViewingEmailId;
+          const inq = getInquiries();
+          const target = inq.find(i => String(i.id) === String(id) || String(i.emailId) === String(id));
+          if (!target) return;
+
+          const nextStatus = target.status === 'replied' ? 'new' : 'replied';
+          const updated = inq.map(i => {
+            if (String(i.id) === String(id) || String(i.emailId) === String(id)) {
+              return Object.assign({}, i, { status: nextStatus });
+            }
+            return i;
+          });
+          saveInquiries(updated);
+
+          try {
+            const rec = JSON.parse(localStorage.getItem('zenstro_received_emails') || '[]');
+            const updatedRec = rec.map(r => {
+              if (String(r.id) === String(id) || String(r.emailId) === String(id)) {
+                return Object.assign({}, r, { status: nextStatus });
+              }
+              return r;
+            });
+            localStorage.setItem('zenstro_received_emails', JSON.stringify(updatedRec));
+          } catch(e) {}
+
+          updateRemoteStatus(target.id, nextStatus);
+
+          const statusBadge = document.getElementById('ev-status-badge');
+          if (statusBadge) {
+            statusBadge.className = 'status-pill ' + (nextStatus === 'replied' ? 'status-pill-replied' : 'status-pill-new');
+            statusBadge.textContent = nextStatus === 'replied' ? 'REPLIED' : 'NEW';
+          }
+          evToggleReadBtn.textContent = nextStatus === 'replied' ? 'Mark as New' : 'Mark as Replied';
+          render();
+        });
+      }
+
+      if (evTrashBtn) {
+        evTrashBtn.addEventListener('click', () => {
+          if (!currentViewingEmailId) return;
+          const id = currentViewingEmailId;
+          closeEmailViewModal();
+          moveToTrash(id, 'inquiry');
+        });
+      }
+
+      if (evCopyBodyBtn) {
+        evCopyBodyBtn.addEventListener('click', () => {
+          const textBox = document.getElementById('ev-content-text');
+          const text = textBox ? textBox.textContent : '';
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => {
+              evCopyBodyBtn.textContent = '✓ Copied';
+              setTimeout(() => { evCopyBodyBtn.textContent = 'Copy Text'; }, 2000);
+            });
+          }
+        });
+      }
+
+      // Close modal on escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          const modal = document.getElementById('email-view-modal');
+          if (modal && modal.style.display !== 'none') {
+            closeEmailViewModal();
+          }
+        }
+      });
 
       // Storage sync across tabs
       window.addEventListener('storage', (e) => {
