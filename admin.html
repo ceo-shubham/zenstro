@@ -138,20 +138,24 @@
 
     /* Unified Segmented Metrics Strip */
     .metrics-strip {
-      background: #ffffff;
+      background: #e4e4e7;
       border: 1px solid #e4e4e7;
       border-radius: 8px;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      margin: 24px 0 20px;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 1px;
+      margin: 20px 0 16px;
       overflow: hidden;
     }
     .metric-cell {
-      padding: 16px 20px;
-      border-right: 1px solid #e4e4e7;
+      background: #ffffff;
+      padding: 14px 18px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s ease;
     }
-    .metric-cell:last-child {
-      border-right: none;
+    .metric-cell:hover {
+      background: #f8fafc;
     }
     .metric-header {
       font-size: 11px;
@@ -191,13 +195,20 @@
       align-items: center;
       border-bottom: 1px solid #e4e4e7;
       margin-bottom: 16px;
-      flex-wrap: wrap;
       gap: 12px;
     }
     .views-tabs {
       display: flex;
-      gap: 20px;
+      gap: 18px;
       align-items: center;
+      overflow-x: auto;
+      white-space: nowrap;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      flex: 1;
+    }
+    .views-tabs::-webkit-scrollbar {
+      display: none;
     }
     .views-tabs-divider {
       width: 1px;
@@ -764,10 +775,23 @@
       box-shadow: 0 0 0 1px #09090b;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
       .metrics-strip {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
+    }
+    @media (max-width: 640px) {
+      .metrics-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .metric-cell {
+        padding: 10px 12px;
+      }
+      .metric-value {
+        font-size: 18px;
+      }
+    }
+    @media (max-width: 768px) {
       .toolbar-bar {
         flex-direction: column;
         align-items: stretch;
@@ -1212,7 +1236,7 @@
           All Inquiries <span class="tab-counter" id="tab-count-all">0</span>
         </button>
         <button class="view-tab-btn" data-tab="email" type="button">
-          📥 Received Emails <span class="tab-counter" id="tab-count-email">0</span>
+          Received Emails <span class="tab-counter" id="tab-count-email">0</span>
         </button>
         <button class="view-tab-btn" data-tab="form" type="button">
           Web Forms <span class="tab-counter" id="tab-count-form">0</span>
@@ -1225,19 +1249,14 @@
         </button>
         <span class="views-tabs-divider" aria-hidden="true"></span>
         <button class="view-tab-btn" data-tab="github" type="button">
-          GitHub Repos <span class="tab-counter" id="tab-count-github">42</span>
+          GitHub <span class="tab-counter" id="tab-count-github">42</span>
         </button>
         <button class="view-tab-btn" data-tab="cloudflare" type="button">
-          Cloudflare Projects <span class="tab-counter" id="tab-count-cf">8</span>
+          Cloudflare <span class="tab-counter" id="tab-count-cf">8</span>
         </button>
         <button class="view-tab-btn" data-tab="storage" type="button">
-          ☁️ Cloud Storage (B2) <span class="tab-counter" id="tab-count-storage">10GB</span>
+          Storage (B2) <span class="tab-counter" id="tab-count-storage">10GB</span>
         </button>
-      </div>
-
-      <div class="routing-info-text">
-        <span>Inbound Domain: <code>*@zenstro.space</code></span>
-        <button id="btn-sync-inbound" class="btn-micro" type="button" title="Fetch received emails from Resend Receiving API">Sync Resend Inbox ↻</button>
       </div>
     </div>
 
