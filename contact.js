@@ -40,6 +40,33 @@
     return true;
   }
 
+  // Auto-select topic/service based on URL query parameter
+  try {
+    var urlParams = new URLSearchParams(window.location.search);
+    var targetTier = (urlParams.get('tier') || '').toLowerCase();
+    var targetService = (urlParams.get('service') || '').toLowerCase();
+    var topicSelect = form.elements.topic;
+    if (topicSelect && (targetTier || targetService)) {
+      var queryKey = targetService || targetTier;
+      for (var optIdx = 0; optIdx < topicSelect.options.length; optIdx++) {
+        var optText = topicSelect.options[optIdx].text.toLowerCase();
+        if (queryKey.includes('web') || queryKey.includes('site') || queryKey.includes('ecom')) {
+          if (optText.includes('web')) { topicSelect.selectedIndex = optIdx; break; }
+        } else if (queryKey.includes('software') || queryKey.includes('saas') || queryKey.includes('erp') || queryKey.includes('crm')) {
+          if (optText.includes('saas') || optText.includes('erp')) { topicSelect.selectedIndex = optIdx; break; }
+        } else if (queryKey.includes('ai') || queryKey.includes('bot') || queryKey.includes('agent')) {
+          if (optText.includes('ai')) { topicSelect.selectedIndex = optIdx; break; }
+        } else if (queryKey.includes('cloud') || queryKey.includes('devops') || queryKey.includes('monitor')) {
+          if (optText.includes('cloud')) { topicSelect.selectedIndex = optIdx; break; }
+        } else if (queryKey.includes('sec') || queryKey.includes('cloudflare') || queryKey.includes('audit')) {
+          if (optText.includes('security')) { topicSelect.selectedIndex = optIdx; break; }
+        } else if (queryKey.includes('consult') || queryKey.includes('mvp') || queryKey.includes('plan')) {
+          if (optText.includes('consulting')) { topicSelect.selectedIndex = optIdx; break; }
+        }
+      }
+    }
+  } catch (e) {}
+
   /* Save enquiry to local database for Admin Panel */
   function saveToAdminStore(enquiry) {
     try {
