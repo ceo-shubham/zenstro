@@ -21,7 +21,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=8.0">
+  <link rel="stylesheet" href="styles.css?v=8.7">
   <script src="config.js"></script>
   <script defer data-cfasync="false" src="https://mqleads.zenstro.space/mqleads.js" data-site-id="6ad4a0d013eaf75f9ee43c9b"></script>
   <style>
@@ -306,6 +306,34 @@
       background: var(--accent-primary);
       color: #ffffff;
     }
+    .rate-scroll-hint {
+      display: none;
+    }
+    @media (max-width: 768px) {
+      .rate-scroll-hint {
+        display: block;
+        font: 600 12px var(--mono);
+        color: var(--accent-primary);
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        padding: 8px 14px;
+        border-radius: 6px;
+        margin-bottom: 12px;
+        text-align: center;
+      }
+      .rate-table th, .rate-table td {
+        padding: 12px 14px;
+      }
+      .pricing-grid {
+        gap: 20px;
+        margin: 28px 0 44px;
+      }
+      .pricing-card {
+        padding: 24px 20px;
+        border-radius: 10px;
+      }
+    }
+
 
   </style>
 </head>
@@ -508,6 +536,7 @@
       </div>
 
       <!-- Interactive Rate Table -->
+      <div class="rate-scroll-hint" aria-hidden="true">👈 Swipe horizontally to view full rate card details 👉</div>
       <div class="rate-table-wrap reveal">
         <table class="rate-table" aria-label="ZENSTRO Services & Pricing Rate Card">
           <thead>
