@@ -1191,7 +1191,6 @@
         <button id="btn-open-compose" class="btn-console-primary" type="button">
           Compose Email
         </button>
-        <a href="portal.html?client=easeyourfiling" class="btn-console-outline" style="border-color:#3b82f6; color:#2563eb; font-weight:700;" title="Open EaseYourFiling Client Hub">🏢 EaseYourFiling Hub ↗</a>
         <a href="index.html" class="btn-console-outline">View Site</a>
         <button id="btn-logout" class="btn-console-outline" type="button" style="color:#71717a;">Sign Out</button>
       </div>
@@ -1249,6 +1248,9 @@
           Delete Bin <span class="tab-counter" id="tab-count-trash">0</span>
         </button>
         <span class="views-tabs-divider" aria-hidden="true"></span>
+        <button class="view-tab-btn" data-tab="clients" type="button">
+          Clients <span class="tab-counter" id="tab-count-clients">1</span>
+        </button>
         <button class="view-tab-btn" data-tab="github" type="button">
           GitHub <span class="tab-counter" id="tab-count-github">42</span>
         </button>
@@ -1783,7 +1785,7 @@
           if (typeof window.syncResendInbound === 'function') {
             window.syncResendInbound(false);
           }
-        } else if (tabName === 'github' || tabName === 'cloudflare' || tabName === 'storage') {
+        } else if (tabName === 'clients' || tabName === 'github' || tabName === 'cloudflare' || tabName === 'storage') {
           if (filterTopicEl) filterTopicEl.style.display = 'none';
           if (filterStatusEl) filterStatusEl.style.display = 'none';
           if (btnAddLeadEl) btnAddLeadEl.style.display = 'none';
@@ -1792,9 +1794,11 @@
           if (routingInfoEl) routingInfoEl.style.display = 'none';
           if (searchInputEl) {
             searchInputEl.value = '';
-            searchInputEl.placeholder = tabName === 'github'
-              ? 'Filter repositories by name or language…'
-              : (tabName === 'cloudflare' ? 'Filter Cloudflare deployments…' : 'Filter files in B2 bucket…');
+            searchInputEl.placeholder = tabName === 'clients'
+              ? 'Filter client portals by name, domain, or mailbox…'
+              : (tabName === 'github'
+                ? 'Filter repositories by name or language…'
+                : (tabName === 'cloudflare' ? 'Filter Cloudflare deployments…' : 'Filter files in B2 bucket…'));
           }
           if (tabName === 'storage') {
             if (!storageState.loaded) {
@@ -2806,6 +2810,11 @@
         }
 
         // ============ TAB: GITHUB REPOSITORIES SHOWCASE ============
+        if (currentTab === 'clients') {
+          renderClientsTab(search);
+          return;
+        }
+
         if (currentTab === 'github') {
           renderGitHubShowcase(search);
           return;
@@ -4314,6 +4323,106 @@
       syncWithCloudflare();
       setInterval(syncWithCloudflare, 25000);
     })();
+
+      // ============ TAB: MANAGED CLIENT PORTALS ============
+      function renderClientsTab(searchFilter) {
+        const listEl = document.getElementById('inquiries-list');
+        const countHeader = document.getElementById('filter-results-count');
+        const bulkBar = document.getElementById('bulk-actions-bar');
+        if (bulkBar) bulkBar.style.display = 'none';
+
+        const clients = (window.ZENSTRO_CONFIG && window.ZENSTRO_CONFIG.clients) || [
+          {
+            id: 'easeyourfiling',
+            name: 'EaseYourFiling',
+            tagline: 'Corporate Filings, Taxation & Legal Compliance Suite',
+            domain: 'easeyourfiling.com',
+            websiteUrl: 'https://easeyourfiling.com',
+            businessEmails: ['official@easeyourfiling.com', 'help@easeyourfiling.com', 'info@easeyourfiling.com'],
+            authorizedEmails: ['official@easeyourfiling.com', 'help@easeyourfiling.com', 'info@easeyourfiling.com', 'easeyourfiling@gmail.com'],
+            hosting: {
+              status: 'Online & Protected',
+              ssl: 'Strict TLS 1.3 Active',
+              provider: 'Cloudflare Pages / Global Edge'
+            }
+          }
+        ];
+
+        let filtered = clients;
+        if (searchFilter) {
+          const q = searchFilter.toLowerCase().trim();
+          filtered = clients.filter(c => 
+            c.name.toLowerCase().includes(q) || 
+            c.domain.toLowerCase().includes(q) ||
+            (c.businessEmails && c.businessEmails.some(e => e.toLowerCase().includes(q)))
+          );
+        }
+
+        if (countHeader) countHeader.textContent = `${filtered.length} Active Client Portal${filtered.length === 1 ? '' : 's'}`;
+
+        let html = `
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; padding:4px 0;">
+            <div>
+              <h2 style="font-size:18px; font-weight:800; margin:0 0 4px; color:#09090b; letter-spacing:-0.02em;">Client Hubs &amp; Workspaces</h2>
+              <p style="font-size:13px; color:#71717a; margin:0;">Multi-tenant client webmail portals, domain routing &amp; Cloudflare hosting environments.</p>
+            </div>
+            <div style="display:flex; gap:10px;">
+              <a href="https://dash.cloudflare.com" target="_blank" rel="noopener" class="btn-console-outline" style="font-size:12px;">Cloudflare Dash ↗</a>
+              <a href="https://resend.com/domains" target="_blank" rel="noopener" class="btn-console-outline" style="font-size:12px;">Resend Domains ↗</a>
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(380px, 1fr)); gap:20px;">
+        `;
+
+        filtered.forEach(c => {
+          html += `
+            <div style="background:#ffffff; border:1px solid #e4e4e7; border-radius:12px; padding:22px; box-shadow:0 1px 3px rgba(0,0,0,0.03); display:flex; flex-direction:column; justify-content:space-between; gap:16px;">
+              <div>
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
+                  <div>
+                    <span style="font-size:11px; font-family:var(--mono); color:#2563eb; font-weight:700; text-transform:uppercase; letter-spacing:0.06em;">Client Portal</span>
+                    <div style="margin-top:4px;"><img src="easeyourfilinglogo.png" alt="logo" style="height:26px; max-width:140px; object-fit:contain; display:block;" onerror="this.style.display='none';"></div>
+                    <h3 style="font-size:18px; font-weight:800; margin:4px 0 0; color:#09090b;">${c.name}</h3>
+                  </div>
+                  <span style="display:inline-flex; align-items:center; gap:5px; background:#f0fdf4; border:1px solid #bbf7d0; color:#15803d; font-size:11px; font-weight:700; padding:3px 9px; border-radius:20px; font-family:var(--mono);">
+                    <span style="width:6px; height:6px; border-radius:50%; background:#16a34a;"></span> Active
+                  </span>
+                </div>
+                <div style="font-size:13px; color:#71717a; line-height:1.5; margin-bottom:14px;">${c.tagline || 'Connected Client Suite'}</div>
+                
+                <div style="background:#f8fafc; border:1px solid #f1f5f9; border-radius:8px; padding:12px; font-size:12.5px; display:flex; flex-direction:column; gap:6px;">
+                  <div><strong style="color:#475569;">Domain:</strong> <a href="${c.websiteUrl}" target="_blank" style="color:#2563eb; text-decoration:none; font-family:var(--mono);">${c.domain} ↗</a></div>
+                  <div><strong style="color:#475569;">Inboxes:</strong> <span style="font-family:var(--mono); color:#0f172a;">${(c.businessEmails || []).join(', ')}</span></div>
+                  <div><strong style="color:#475569;">Hosting:</strong> <span style="color:#15803d;">Cloudflare Pages &bull; Strict TLS 1.3</span></div>
+                  <div><strong style="color:#475569;">Resend API:</strong> <span style="color:#15803d;">Sending &amp; Receiving Verified</span></div>
+                </div>
+              </div>
+
+              <div style="display:flex; gap:10px; padding-top:14px; border-top:1px solid #f4f4f5;">
+                <a href="portal.html?client=${c.id}" target="_blank" class="btn-console-primary" style="flex:1; text-align:center; justify-content:center; text-decoration:none; padding:9px 14px; font-size:13px;">
+                  Open Client Portal ↗
+                </a>
+                <a href="${c.websiteUrl}" target="_blank" rel="noopener" class="btn-console-outline" style="text-decoration:none; font-size:13px;">
+                  Visit Site
+                </a>
+              </div>
+            </div>
+          `;
+        });
+
+        // Add a "Register Next Client" card
+        html += `
+          <div style="background:#fafafa; border:2px dashed #e4e4e7; border-radius:12px; padding:28px 22px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:10px; min-height:220px;">
+            <div style="width:40px; height:40px; border-radius:50%; background:#f1f5f9; display:flex; align-items:center; justify-content:center; color:#71717a; font-size:20px; font-weight:700;">+</div>
+            <h4 style="margin:0; font-size:15px; font-weight:700; color:#18181b;">Add Next Client Hub</h4>
+            <p style="font-size:12.5px; color:#71717a; max-width:280px; margin:0;">Connect new client website, domain routing &amp; Resend webmail suite.</p>
+            <span style="font-size:11px; font-family:var(--mono); color:#2563eb; background:#eff6ff; padding:3px 10px; border-radius:12px;">Multi-Tenant Ready</span>
+          </div>
+        </div>`;
+
+        listEl.innerHTML = html;
+      }
+
   </script>
 </body>
 </html>

@@ -3,1011 +3,1020 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Client Portal — EaseYourFiling Hub</title>
+  <title>Mail — EaseYourFiling Workspace</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=4">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=4">
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=4">
   <link rel="shortcut icon" href="favicon.ico?v=4">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=8.7">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Google+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <script src="config.js?v=9.2"></script>
   <style>
     :root {
-      --portal-bg: #f8fafc;
-      --portal-card-bg: #ffffff;
-      --portal-border: #e2e8f0;
-      --portal-text: #0f172a;
-      --portal-text-muted: #64748b;
-      --portal-brand: #2563eb;
-      --portal-brand-hover: #1d4ed8;
-      --portal-brand-light: #eff6ff;
-      --portal-success: #16a34a;
-      --portal-success-light: #f0fdf4;
+      --gm-bg: #f6f8fc;
+      --gm-surface: #ffffff;
+      --gm-surface-hover: #f2f6fc;
+      --gm-surface-active: #d3e3fd;
+      --gm-text-main: #1f1f1f;
+      --gm-text-muted: #444746;
+      --gm-text-secondary: #5f6368;
+      --gm-border: #e0e2e6;
+      --gm-border-subtle: #f0f2f5;
+      --gm-primary: #0b57d0;
+      --gm-primary-container: #c2e7ff;
+      --gm-on-primary-container: #001d35;
+      --gm-danger: #b3261e;
+      --gm-font: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --gm-mono: 'DM Mono', monospace;
     }
 
-    body.portal-body {
-      background: var(--portal-bg);
-      color: var(--portal-text);
-      font-family: var(--sans);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+    * { box-sizing: border-box; }
+    html, body {
       margin: 0;
       padding: 0;
+      height: 100%;
+      background: var(--gm-bg);
+      color: var(--gm-text-main);
+      font-family: var(--gm-font);
       -webkit-font-smoothing: antialiased;
+      overflow: hidden;
     }
 
-    /* Top Navigation Header */
-    .portal-header {
-      background: #ffffff;
-      border-bottom: 1px solid var(--portal-border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+    /* SVG Icon Helper */
+    .gm-icon {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+      display: inline-block;
+      flex-shrink: 0;
     }
-    .portal-nav {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 14px 24px;
+
+    /* ================= Top Google App Bar ================= */
+    .gm-appbar {
+      height: 64px;
+      background: var(--gm-bg);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 0 16px;
       gap: 16px;
+      border-bottom: 1px solid transparent;
     }
-    .portal-brand-group {
+    .gm-appbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 240px;
+    }
+    .gm-logo-badge {
+      width: 38px;
+      height: 38px;
+      background: #0b57d0;
+      color: #ffffff;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 17px;
+      letter-spacing: -0.02em;
+    }
+    .gm-brand-title {
+      font-size: 19px;
+      font-weight: 500;
+      color: var(--gm-text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+    .gm-brand-title span.sub {
+      color: var(--gm-text-secondary);
+      font-weight: 400;
+    }
+
+    /* Google Style Wide Search Bar */
+    .gm-search-wrap {
+      flex: 1;
+      max-width: 720px;
+      height: 46px;
+      background: #eaf1fb;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      padding: 0 18px;
+      gap: 14px;
+      transition: background 0.15s ease, box-shadow 0.15s ease;
+    }
+    .gm-search-wrap:focus-within {
+      background: #ffffff;
+      box-shadow: 0 1px 3px rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+    }
+    .gm-search-wrap input {
+      border: none;
+      background: transparent;
+      outline: none;
+      width: 100%;
+      font-size: 15px;
+      color: var(--gm-text-main);
+      font-family: var(--gm-font);
+    }
+    .gm-search-wrap input::placeholder {
+      color: var(--gm-text-secondary);
+    }
+
+    .gm-appbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .gm-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #e6f4ea;
+      color: #137333;
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .gm-status-pill .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #137333;
+    }
+    .super-admin-badge {
+      background: #fce8e6;
+      color: #c5221f;
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-size: 11.5px;
+      font-weight: 600;
+      font-family: var(--gm-mono);
+    }
+    .gm-btn-nav {
+      background: transparent;
+      border: 1px solid var(--gm-border);
+      border-radius: 18px;
+      padding: 5px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--gm-text-muted);
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .gm-btn-nav:hover {
+      background: rgba(0,0,0,0.04);
+      color: var(--gm-text-main);
+    }
+    .gm-user-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #0b57d0;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* ================= Layout: Sidebar + Main Area ================= */
+    .gm-layout {
+      display: flex;
+      height: calc(100% - 64px);
+      padding: 0 16px 16px 12px;
+      gap: 12px;
+    }
+
+    /* Sidebar */
+    .gm-sidebar {
+      width: 256px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow-y: auto;
+    }
+
+    /* Google "+ Compose" Pill */
+    .gm-compose-btn {
+      background: var(--gm-primary-container);
+      color: var(--gm-on-primary-container);
+      border: none;
+      border-radius: 16px;
+      height: 56px;
+      padding: 0 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+      margin: 8px 0 16px 4px;
+      transition: box-shadow 0.15s ease, background 0.15s ease;
+      width: fit-content;
+    }
+    .gm-compose-btn:hover {
+      box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+      background: #b5e1fc;
+    }
+
+    .gm-nav-menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .gm-nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 38px;
+      padding: 0 16px 0 20px;
+      border-radius: 20px;
+      color: var(--gm-text-muted);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.1s ease;
+    }
+    .gm-nav-item:hover {
+      background: #eaebef;
+      color: var(--gm-text-main);
+    }
+    .gm-nav-item.active {
+      background: var(--gm-surface-active);
+      color: #001d35;
+      font-weight: 700;
+    }
+    .gm-nav-item-left {
       display: flex;
       align-items: center;
       gap: 14px;
     }
-    .portal-logo-badge {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #1e3a8a, #2563eb);
-      color: #ffffff;
-      font-weight: 800;
-      font-size: 18px;
-      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
-    }
-    .portal-title-block h1 {
-      font-size: 17px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      margin: 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .portal-title-block span {
+    .gm-nav-badge {
       font-size: 12px;
-      color: var(--portal-text-muted);
-      font-family: var(--mono);
+      font-weight: 600;
+    }
+
+    .gm-nav-heading {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--gm-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 18px 20px 8px;
+    }
+
+    .gm-sidebar-footer {
+      padding: 12px 16px;
+      border-top: 1px solid var(--gm-border-subtle);
+      font-size: 12px;
+      color: var(--gm-text-secondary);
+      line-height: 1.5;
+    }
+    .gm-sidebar-footer a {
+      color: var(--gm-primary);
+      text-decoration: none;
       font-weight: 500;
     }
-    .portal-domain-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--portal-success-light);
-      border: 1px solid #bbf7d0;
-      color: var(--portal-success);
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-family: var(--mono);
-    }
-    .portal-domain-badge .dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--portal-success);
-      box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2);
-    }
 
-    .portal-user-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .super-admin-pill {
-      background: #fef2f2;
-      border: 1px solid #fecaca;
-      color: #dc2626;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-family: var(--mono);
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .user-pill {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 5px 12px 5px 6px;
-      background: #f1f5f9;
-      border-radius: 30px;
-      border: 1px solid var(--portal-border);
-      font-size: 13px;
-      font-weight: 600;
-    }
-    .user-pill img {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-
-    /* Layout Wrapper */
-    .portal-container {
-      max-width: 1400px;
-      width: 100%;
-      margin: 24px auto;
-      padding: 0 24px;
-      display: grid;
-      grid-template-columns: 240px 1fr;
-      gap: 24px;
+    /* ================= Main Mail Workspace Card ================= */
+    .gm-mail-card {
       flex: 1;
-      box-sizing: border-box;
-    }
-
-    /* Sidebar */
-    .portal-sidebar {
-      background: var(--portal-card-bg);
-      border: 1px solid var(--portal-border);
-      border-radius: 12px;
-      padding: 20px 14px;
-      height: fit-content;
-      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
-    }
-    .sidebar-section-title {
-      font-size: 11px;
-      font-family: var(--mono);
-      font-weight: 700;
-      color: var(--portal-text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 8px 12px 6px;
-    }
-    .sidebar-menu {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 18px;
+      background: var(--gm-surface);
+      border-radius: 16px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
-    }
-    .sidebar-btn {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      padding: 10px 14px;
-      border-radius: 8px;
-      border: none;
-      background: transparent;
-      color: #334155;
-      font-family: var(--sans);
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      text-align: left;
-      transition: all 0.15s ease;
-    }
-    .sidebar-btn:hover {
-      background: #f1f5f9;
-      color: var(--portal-text);
-    }
-    .sidebar-btn.active {
-      background: var(--portal-brand-light);
-      color: var(--portal-brand);
-      font-weight: 700;
-    }
-    .sidebar-btn .btn-label {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .sidebar-badge {
-      font-size: 11px;
-      font-family: var(--mono);
-      padding: 2px 7px;
-      border-radius: 10px;
-      background: #e2e8f0;
-      color: #475569;
-    }
-    .sidebar-btn.active .sidebar-badge {
-      background: var(--portal-brand);
-      color: #ffffff;
-    }
-
-    .compose-trigger-btn {
-      width: 100%;
-      padding: 12px 16px;
-      background: var(--portal-brand);
-      color: #ffffff;
-      border: none;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 14px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
-      transition: all 0.15s ease;
-    }
-    .compose-trigger-btn:hover {
-      background: var(--portal-brand-hover);
-    }
-
-    /* Main Content Area */
-    .portal-main {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(60,64,67,0.08);
       min-width: 0;
     }
 
-    /* Metric Cards Bar */
-    .portal-stats-bar {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
+    /* Toolbar on Top of Email List */
+    .gm-toolbar {
+      height: 48px;
+      border-bottom: 1px solid var(--gm-border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      flex-shrink: 0;
+      background: #ffffff;
     }
-    .portal-stat-card {
-      background: var(--portal-card-bg);
-      border: 1px solid var(--portal-border);
-      border-radius: 10px;
-      padding: 16px 18px;
-      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.02);
+    .gm-toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
-    .portal-stat-card .label {
-      font-size: 11.5px;
+    .gm-icon-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      color: var(--gm-text-secondary);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s ease;
+    }
+    .gm-icon-btn:hover {
+      background: rgba(60,64,67,0.08);
+      color: var(--gm-text-main);
+    }
+
+    .gm-filter-chips {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: 8px;
+    }
+    .gm-chip {
+      height: 30px;
+      padding: 0 12px;
+      border-radius: 8px;
+      border: 1px solid var(--gm-border);
+      background: transparent;
+      color: var(--gm-text-secondary);
+      font-size: 12.5px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      font-family: var(--gm-font);
+    }
+    .gm-chip:hover {
+      background: var(--gm-surface-hover);
+      color: var(--gm-text-main);
+    }
+    .gm-chip.active {
+      background: #e8f0fe;
+      border-color: #d2e3fc;
+      color: var(--gm-primary);
       font-weight: 600;
-      color: var(--portal-text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+    }
+
+    .gm-toolbar-right {
+      font-size: 12px;
+      color: var(--gm-text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    /* Email List / Rows */
+    .gm-list-pane {
+      flex: 1;
+      overflow-y: auto;
+      background: #ffffff;
+    }
+    .gm-row {
+      display: flex;
+      align-items: center;
+      height: 44px;
+      padding: 0 16px 0 12px;
+      border-bottom: 1px solid var(--gm-border-subtle);
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.1s ease;
+      gap: 12px;
+      font-size: 14px;
+    }
+    .gm-row:hover {
+      background: var(--gm-surface-hover);
+      box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px 0 rgba(60,64,67,0.15);
+    }
+    .gm-row.unread {
+      background: #ffffff;
+      font-weight: 700;
+    }
+    .gm-row-checkbox {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--gm-primary);
+      cursor: pointer;
+    }
+    .gm-row-star {
+      color: #c4c7c5;
+      cursor: pointer;
+    }
+    .gm-row-star:hover {
+      color: #fbbc04;
+    }
+    .gm-row-sender {
+      width: 170px;
+      min-width: 170px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--gm-text-main);
+    }
+    .gm-mailbox-tag {
+      font-size: 11px;
+      font-family: var(--gm-mono);
+      background: #f1f3f4;
+      color: #444746;
+      padding: 2px 6px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .gm-row-content {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+    }
+    .gm-row-subject {
+      color: var(--gm-text-main);
+      margin-right: 4px;
+    }
+    .gm-row-snippet {
+      color: var(--gm-text-secondary);
+      font-weight: 400;
+    }
+    .gm-row-date {
+      font-size: 12px;
+      color: var(--gm-text-secondary);
+      white-space: nowrap;
+      margin-left: auto;
+      padding-left: 10px;
+      font-weight: 500;
+    }
+
+    /* Empty State */
+    .gm-empty-state {
+      padding: 80px 24px;
+      text-align: center;
+      color: var(--gm-text-secondary);
+    }
+    .gm-empty-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--gm-text-main);
       margin-bottom: 6px;
     }
-    .portal-stat-card .value {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--portal-text);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .portal-stat-card .sub {
-      font-size: 12px;
-      color: var(--portal-success);
-      margin-top: 4px;
-      font-weight: 600;
+    .gm-empty-sub {
+      font-size: 13.5px;
+      max-width: 420px;
+      margin: 0 auto;
+      line-height: 1.5;
     }
 
-    /* Panes / Card Containers */
-    .portal-panel {
+    /* ================= Email Reader Pane ================= */
+    .gm-reader-pane {
       display: none;
-      background: var(--portal-card-bg);
-      border: 1px solid var(--portal-border);
-      border-radius: 12px;
-      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.03);
-      overflow: hidden;
-    }
-    .portal-panel.active {
-      display: block;
-    }
-
-    .panel-header {
-      padding: 18px 24px;
-      border-bottom: 1px solid var(--portal-border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .panel-header-title h2 {
-      font-size: 18px;
-      font-weight: 800;
-      margin: 0;
-      letter-spacing: -0.02em;
-    }
-    .panel-header-title p {
-      font-size: 13px;
-      color: var(--portal-text-muted);
-      margin: 4px 0 0;
-    }
-
-    /* Filter & Search Bar */
-    .inbox-toolbar {
-      padding: 12px 24px;
-      background: #fafafa;
-      border-bottom: 1px solid var(--portal-border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .filter-pills {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .filter-pill {
-      border: 1px solid var(--portal-border);
-      background: #ffffff;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #475569;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-    .filter-pill:hover {
-      background: #f1f5f9;
-      border-color: #cbd5e1;
-    }
-    .filter-pill.active {
-      background: var(--portal-brand);
-      color: #ffffff;
-      border-color: var(--portal-brand);
-    }
-
-    .search-input-wrap {
-      position: relative;
-      min-width: 260px;
-    }
-    .search-input-wrap input {
-      width: 100%;
-      padding: 8px 12px 8px 32px;
-      font-size: 13px;
-      border: 1px solid var(--portal-border);
-      border-radius: 6px;
-      background: #ffffff;
-      font-family: var(--sans);
-      outline: none;
-      box-sizing: border-box;
-    }
-    .search-input-wrap input:focus {
-      border-color: var(--portal-brand);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-    }
-    .search-icon {
-      position: absolute;
-      left: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #94a3b8;
-      font-size: 14px;
-    }
-
-    .btn-secondary-action {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 14px;
-      border-radius: 6px;
-      border: 1px solid var(--portal-border);
-      background: #ffffff;
-      font-size: 13px;
-      font-weight: 600;
-      color: #334155;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-    .btn-secondary-action:hover {
-      background: #f8fafc;
-      border-color: #cbd5e1;
-    }
-
-    /* Email Split List / Grid */
-    .inbox-split-view {
-      display: grid;
-      grid-template-columns: 420px 1fr;
-      min-height: 580px;
-      border-collapse: collapse;
-    }
-    .email-list-column {
-      border-right: 1px solid var(--portal-border);
+      flex: 1;
       overflow-y: auto;
-      max-height: 700px;
+      padding: 20px 32px 32px;
       background: #ffffff;
     }
-    .email-item {
-      padding: 16px 20px;
-      border-bottom: 1px solid #f1f5f9;
-      cursor: pointer;
-      transition: all 0.15s ease;
+    .gm-reader-top-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--gm-border-subtle);
+    }
+    .gm-reader-subject {
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--gm-text-main);
+      margin: 0 0 20px;
+      line-height: 1.3;
+    }
+    .gm-reader-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+    .gm-reader-sender-info {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+    .gm-reader-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #1a73e8;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .gm-reader-names {
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      position: relative;
+      gap: 2px;
     }
-    .email-item:hover {
-      background: #f8fafc;
-    }
-    .email-item.active {
-      background: var(--portal-brand-light);
-      border-left: 3px solid var(--portal-brand);
-    }
-    .email-item-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-    .email-sender {
+    .gm-reader-from-name {
       font-size: 14px;
       font-weight: 700;
-      color: var(--portal-text);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      color: var(--gm-text-main);
     }
-    .email-time {
-      font-size: 11px;
-      color: var(--portal-text-muted);
-      font-family: var(--mono);
-      white-space: nowrap;
-    }
-    .email-recipient-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 10.5px;
-      font-family: var(--mono);
-      padding: 2px 7px;
-      border-radius: 4px;
-      background: #e2e8f0;
-      color: #475569;
-      width: fit-content;
-    }
-    .email-subject {
-      font-size: 13.5px;
-      font-weight: 600;
-      color: #1e293b;
-      margin: 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .email-snippet {
+    .gm-reader-from-addr {
       font-size: 12.5px;
-      color: var(--portal-text-muted);
-      line-height: 1.45;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+      color: var(--gm-text-secondary);
+      font-weight: 400;
+    }
+    .gm-reader-to {
+      font-size: 12px;
+      color: var(--gm-text-secondary);
+      margin-top: 2px;
+    }
+    .gm-reader-date {
+      font-size: 12.5px;
+      color: var(--gm-text-secondary);
     }
 
-    /* Email Detail Pane */
-    .email-detail-column {
-      padding: 24px 28px;
-      background: #fafafa;
-      overflow-y: auto;
-      max-height: 700px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .email-detail-card {
-      background: #ffffff;
-      border: 1px solid var(--portal-border);
-      border-radius: 10px;
-      padding: 24px;
-      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.02);
-    }
-    .detail-subject-title {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      margin: 0 0 16px;
-      color: var(--portal-text);
-    }
-    .detail-meta-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid #f1f5f9;
-      margin-bottom: 20px;
-      font-size: 13px;
-    }
-    .detail-meta-item strong {
-      color: var(--portal-text-muted);
-      font-weight: 600;
-      display: block;
-      font-size: 11px;
-      text-transform: uppercase;
-      margin-bottom: 2px;
-    }
-    .detail-body-view {
+    .gm-reader-body {
       font-size: 14.5px;
       line-height: 1.65;
-      color: #1e293b;
+      color: #202124;
       white-space: pre-wrap;
       word-break: break-word;
+      padding: 10px 0 30px;
     }
-    .detail-actions {
+    .gm-reader-footer-actions {
       display: flex;
-      gap: 10px;
-      margin-top: 20px;
-      padding-top: 16px;
-      border-top: 1px solid #f1f5f9;
+      gap: 12px;
+      border-top: 1px solid var(--gm-border-subtle);
+      padding-top: 20px;
+    }
+    .gm-btn-pill {
+      height: 38px;
+      padding: 0 20px;
+      border: 1px solid var(--gm-border);
+      border-radius: 20px;
+      background: #ffffff;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--gm-text-muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .gm-btn-pill:hover {
+      background: var(--gm-surface-hover);
+      color: var(--gm-text-main);
     }
 
-    /* Compose Form */
-    .compose-form-wrap {
-      padding: 24px 28px;
-      max-width: 800px;
+    /* ================= Floating Gmail-Style Compose Window ================= */
+    .gm-compose-modal {
+      position: fixed;
+      bottom: 0;
+      right: 32px;
+      width: 540px;
+      max-width: calc(100vw - 32px);
+      background: #ffffff;
+      border-radius: 8px 8px 0 0;
+      box-shadow: 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(0,0,0,0.2);
+      border: 1px solid #dadce0;
+      border-bottom: none;
+      display: none;
+      flex-direction: column;
+      z-index: 1000;
+      overflow: hidden;
     }
-    .form-group {
-      margin-bottom: 20px;
+    .gm-compose-header {
+      height: 40px;
+      background: #f2f6fc;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      border-bottom: 1px solid #e0e2e6;
+      cursor: pointer;
     }
-    .form-group label {
-      display: block;
-      font-size: 13px;
-      font-weight: 700;
-      color: #1e293b;
-      margin-bottom: 6px;
-    }
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%;
-      padding: 10px 14px;
-      border: 1px solid var(--portal-border);
-      border-radius: 8px;
-      font-family: var(--sans);
+    .gm-compose-title {
       font-size: 14px;
-      outline: none;
-      box-sizing: border-box;
-      background: #ffffff;
+      font-weight: 500;
+      color: var(--gm-text-main);
     }
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      border-color: var(--portal-brand);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-    }
-    .form-group textarea {
-      min-height: 220px;
-      line-height: 1.6;
-      resize: vertical;
-    }
-    .form-hint {
-      font-size: 12px;
-      color: var(--portal-text-muted);
-      margin-top: 5px;
-    }
-
-    /* Empty States */
-    .empty-state {
-      padding: 60px 24px;
-      text-align: center;
-      color: var(--portal-text-muted);
-    }
-    .empty-state-icon {
-      font-size: 40px;
-      margin-bottom: 12px;
-    }
-
-    /* Hosting Info Cards */
-    .hosting-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      padding: 24px;
-    }
-    .hosting-card {
-      border: 1px solid var(--portal-border);
-      border-radius: 10px;
-      padding: 20px;
-      background: #ffffff;
-    }
-    .hosting-card h4 {
-      margin: 0 0 10px;
-      font-size: 16px;
+    .gm-compose-controls {
       display: flex;
       align-items: center;
       gap: 8px;
     }
-    .hosting-card p {
-      font-size: 13.5px;
-      color: var(--portal-text-muted);
-      line-height: 1.6;
-      margin: 0 0 16px;
+    .gm-compose-ctrl-btn {
+      background: none;
+      border: none;
+      color: var(--gm-text-secondary);
+      cursor: pointer;
+      font-size: 16px;
+      padding: 2px 4px;
     }
-    .status-badge-inline {
+
+    .gm-compose-row {
+      display: flex;
+      align-items: center;
+      padding: 8px 16px;
+      border-bottom: 1px solid #f1f3f4;
+      font-size: 13.5px;
+    }
+    .gm-compose-label {
+      width: 60px;
+      color: var(--gm-text-secondary);
+      font-size: 13px;
+    }
+    .gm-compose-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-family: var(--gm-font);
+      font-size: 14px;
+      color: var(--gm-text-main);
+      background: transparent;
+    }
+    .gm-compose-select {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-family: var(--gm-font);
+      font-size: 13.5px;
+      color: var(--gm-text-main);
+      background: transparent;
+      cursor: pointer;
+    }
+    .gm-compose-body {
+      flex: 1;
+      min-height: 220px;
+      max-height: 340px;
+      padding: 16px;
+      border: none;
+      outline: none;
+      resize: vertical;
+      font-family: var(--gm-font);
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--gm-text-main);
+    }
+
+    .gm-compose-toolbar {
+      height: 52px;
+      padding: 0 16px;
+      border-top: 1px solid #f1f3f4;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #ffffff;
+    }
+    .gm-btn-send {
+      background: var(--gm-primary);
+      color: #ffffff;
+      border: none;
+      border-radius: 18px;
+      height: 36px;
+      padding: 0 24px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      color: #15803d;
-      font-size: 12px;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-family: var(--mono);
+    }
+    .gm-btn-send:hover {
+      background: #0842a0;
+      box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3);
     }
 
-    /* Toast Notification */
-    .portal-toast {
+    /* Modal for Domain/Hosting and Users */
+    .gm-modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+    .gm-modal-box {
+      background: #ffffff;
+      border-radius: 16px;
+      width: 520px;
+      max-width: calc(100vw - 32px);
+      padding: 24px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.2);
+    }
+    .gm-modal-title {
+      font-size: 18px;
+      font-weight: 500;
+      margin: 0 0 16px;
+    }
+    .gm-modal-close-btn {
+      float: right;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--gm-text-secondary);
+    }
+
+    /* Bottom Left Toast Notification */
+    .gm-toast {
       position: fixed;
       bottom: 24px;
-      right: 24px;
-      background: #0f172a;
+      left: 24px;
+      background: #323232;
       color: #ffffff;
       padding: 12px 20px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      z-index: 1000;
+      border-radius: 6px;
+      font-size: 13.5px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+      z-index: 3000;
       display: none;
-      animation: slideIn 0.2s ease-out;
-    }
-    @keyframes slideIn {
-      from { transform: translateY(10px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    /* Mobile Responsive */
-    @media (max-width: 960px) {
-      .portal-container {
-        grid-template-columns: 1fr;
-      }
-      .portal-stats-bar {
-        grid-template-columns: 1fr 1fr;
-      }
-      .inbox-split-view {
-        grid-template-columns: 1fr;
-      }
-      .email-detail-column {
-        border-top: 1px solid var(--portal-border);
-      }
-      .hosting-grid {
-        grid-template-columns: 1fr;
-      }
     }
   </style>
 </head>
-<body class="portal-body">
+<body>
 
-  <!-- Header Navigation -->
-  <header class="portal-header">
-    <div class="portal-nav">
-      <div class="portal-brand-group">
-        <div class="portal-logo-badge" id="client-avatar">EF</div>
-        <div class="portal-title-block">
-          <h1 id="portal-header-title">
-            EaseYourFiling
-            <span class="portal-domain-badge">
-              <span class="dot"></span>
-              <span id="portal-domain-name">easeyourfiling.com</span>
-            </span>
-          </h1>
-          <span>Powered by ZENSTRO Cloud & Edge Architecture</span>
-        </div>
-      </div>
+  <!-- Google App Bar -->
+  <header class="gm-appbar">
+    <div class="gm-appbar-left">
+      <img src="easeyourfilinglogo.png" alt="EaseYourFiling" style="height:32px; max-width:140px; object-fit:contain; display:block;" onerror="this.style.display='none'; document.getElementById('gm-logo-fallback').style.display='flex';">
+      <div class="gm-logo-badge" id="gm-logo-fallback" style="display:none;">EF</div>
+      <a href="portal.html?client=easeyourfiling" class="gm-brand-title">
+        EaseYourFiling <span class="sub">Mail</span>
+      </a>
+    </div>
 
-      <div class="portal-user-actions">
-        <div id="super-admin-indicator" style="display:none;" class="super-admin-pill">
-          👑 Super Admin Access
-        </div>
-        <a id="btn-master-admin" href="admin.html" class="btn-secondary-action" style="display:none;">
-          ⚙️ Master Admin Console
-        </a>
-        <div class="user-pill">
-          <img id="user-avatar" src="https://ui-avatars.com/api/?name=Ease+Your+Filing&background=2563eb&color=fff" alt="User">
-          <span id="user-email">official@easeyourfiling.com</span>
-        </div>
-        <button type="button" class="btn-secondary-action" onclick="logoutSession()">Sign Out</button>
-      </div>
+    <!-- Wide Google Search Bar -->
+    <div class="gm-search-wrap">
+      <svg class="gm-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <input type="text" id="gm-search-input" placeholder="Search in mail" oninput="handleSearch()">
+    </div>
+
+    <div class="gm-appbar-right">
+      <span class="gm-status-pill">
+        <span class="dot"></span>
+        <span>easeyourfiling.com</span>
+      </span>
+      <span id="super-admin-pill" class="super-admin-badge" style="display:none;">Super Admin</span>
+      <a id="btn-master-console" href="admin.html" class="gm-btn-nav" style="display:none;">Master Console ↗</a>
+      <div class="gm-user-avatar" id="user-avatar-initial" title="Signed in user">S</div>
+      <button type="button" class="gm-btn-nav" onclick="logoutSession()">Sign out</button>
     </div>
   </header>
 
-  <!-- Container -->
-  <div class="portal-container">
+  <!-- Layout: Sidebar + Main Content Card -->
+  <div class="gm-layout">
 
-    <!-- Sidebar -->
-    <aside class="portal-sidebar">
-      <button type="button" class="compose-trigger-btn" onclick="switchTab('compose')">
-        ✏️ Compose Email
-      </button>
+    <!-- Left Sidebar -->
+    <aside class="gm-sidebar">
+      <div>
+        <!-- Google Compose Button -->
+        <button type="button" class="gm-compose-btn" onclick="openCompose()">
+          <svg class="gm-icon" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+          Compose
+        </button>
 
-      <div class="sidebar-section-title">Email Workspace</div>
-      <ul class="sidebar-menu">
-        <li>
-          <button type="button" class="sidebar-btn active" id="btn-tab-inbox" onclick="switchTab('inbox')">
-            <span class="btn-label">📥 Inbox</span>
-            <span class="sidebar-badge" id="count-inbox">0</span>
-          </button>
-        </li>
-        <li>
-          <button type="button" class="sidebar-btn" id="btn-tab-outbox" onclick="switchTab('outbox')">
-            <span class="btn-label">📤 Sent Outbox</span>
-            <span class="sidebar-badge" id="count-outbox">0</span>
-          </button>
-        </li>
-      </ul>
+        <ul class="gm-nav-menu">
+          <li class="gm-nav-item active" id="nav-inbox" onclick="switchFolder('inbox')">
+            <div class="gm-nav-item-left">
+              <svg class="gm-icon" viewBox="0 0 24 24"><path d="M19 3H4.99c-1.11 0-1.98.89-1.98 2L3 19c0 1.1.88 2 1.99 2H19c1.1 0 2-.9 2-2V5c0-1.11-.9-2-2-2zm0 12h-4c0 1.66-1.35 3-3 3s-3-1.34-3-3H4.99V5H19v10z"/></svg>
+              <span>Inbox</span>
+            </div>
+            <span class="gm-nav-badge" id="badge-inbox-count">0</span>
+          </li>
+          <li class="gm-nav-item" id="nav-sent" onclick="switchFolder('sent')">
+            <div class="gm-nav-item-left">
+              <svg class="gm-icon" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+              <span>Sent</span>
+            </div>
+            <span class="gm-nav-badge" id="badge-sent-count">0</span>
+          </li>
+        </ul>
 
-      <div class="sidebar-section-title">Infrastructure</div>
-      <ul class="sidebar-menu">
-        <li>
-          <button type="button" class="sidebar-btn" id="btn-tab-hosting" onclick="switchTab('hosting')">
-            <span class="btn-label">🌐 Domain & Hosting</span>
-            <span class="sidebar-badge" style="background:#dcfce7; color:#15803d;">Active</span>
-          </button>
-        </li>
-        <li>
-          <button type="button" class="sidebar-btn" id="btn-tab-users" onclick="switchTab('users')">
-            <span class="btn-label">👥 Authorized Users</span>
-            <span class="sidebar-badge" id="count-users">4</span>
-          </button>
-        </li>
-      </ul>
+        <div class="gm-nav-heading">Inboxes</div>
+        <ul class="gm-nav-menu">
+          <li class="gm-nav-item" onclick="filterByMailbox('official@easeyourfiling.com', this)">
+            <div class="gm-nav-item-left">
+              <svg class="gm-icon" style="color:#1a73e8;" viewBox="0 0 24 24"><path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/></svg>
+              <span>official@</span>
+            </div>
+          </li>
+          <li class="gm-nav-item" onclick="filterByMailbox('help@easeyourfiling.com', this)">
+            <div class="gm-nav-item-left">
+              <svg class="gm-icon" style="color:#188038;" viewBox="0 0 24 24"><path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/></svg>
+              <span>help@</span>
+            </div>
+          </li>
+          <li class="gm-nav-item" onclick="filterByMailbox('info@easeyourfiling.com', this)">
+            <div class="gm-nav-item-left">
+              <svg class="gm-icon" style="color:#ea8600;" viewBox="0 0 24 24"><path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/></svg>
+              <span>info@</span>
+            </div>
+          </li>
+        </ul>
 
-      <div style="margin-top:28px; padding-top:16px; border-top:1px solid var(--portal-border); font-size:11.5px; color:var(--portal-text-muted); line-height:1.5;">
-        <strong>Resend & Cloudflare:</strong><br>
-        Direct edge routing active on <code>easeyourfiling.com</code>.
+        <div class="gm-nav-heading">Infrastructure</div>
+        <ul class="gm-nav-menu">
+          <li class="gm-nav-item" onclick="openModal('hosting')">
+            <div class="gm-nav-item-left">
+              <svg class="gm-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+              <span>Hosting &amp; Edge</span>
+            </div>
+          </li>
+          <li class="gm-nav-item" onclick="openModal('users')">
+            <div class="gm-nav-item-left">
+              <svg class="gm-icon" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+              <span>Authorized Users</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Storage / Infrastructure Status -->
+      <div class="gm-sidebar-footer">
+        <div><strong>Cloudflare Edge:</strong> Active</div>
+        <div>Resend Sending &amp; Receiving Active</div>
+        <div style="margin-top:4px;"><a href="https://easeyourfiling.com" target="_blank">easeyourfiling.com ↗</a></div>
       </div>
     </aside>
 
-    <!-- Main Content -->
-    <main class="portal-main">
+    <!-- Main Mail Workspace -->
+    <main class="gm-mail-card">
 
-      <!-- Stats Bar -->
-      <div class="portal-stats-bar">
-        <div class="portal-stat-card">
-          <div class="label">Received Inbound</div>
-          <div class="value" id="stat-total-received">0</div>
-          <div class="sub">Across all 3 domain addresses</div>
+      <!-- Action Toolbar (Gmail style) -->
+      <div class="gm-toolbar" id="gm-toolbar">
+        <div class="gm-toolbar-left">
+          <input type="checkbox" class="gm-row-checkbox" title="Select all" onclick="toggleSelectAll(this)">
+          <button type="button" class="gm-icon-btn" title="Refresh (Sync with Resend)" onclick="fetchInbox(true)">
+            <svg class="gm-icon" viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+          </button>
+
+          <!-- Filter Chips -->
+          <div class="gm-filter-chips">
+            <button type="button" class="gm-chip active" onclick="filterByMailbox('all', this)">All Mail</button>
+            <button type="button" class="gm-chip" onclick="filterByMailbox('official@easeyourfiling.com', this)">official@</button>
+            <button type="button" class="gm-chip" onclick="filterByMailbox('help@easeyourfiling.com', this)">help@</button>
+            <button type="button" class="gm-chip" onclick="filterByMailbox('info@easeyourfiling.com', this)">info@</button>
+          </div>
         </div>
-        <div class="portal-stat-card">
-          <div class="label">Sent Outbox</div>
-          <div class="value" id="stat-total-sent">0</div>
-          <div class="sub">Resend API Verified</div>
-        </div>
-        <div class="portal-stat-card">
-          <div class="label">Domain Health</div>
-          <div class="value" style="color:var(--portal-success);">100%</div>
-          <div class="sub">Cloudflare SSL TLS 1.3</div>
-        </div>
-        <div class="portal-stat-card">
-          <div class="label">Sender Inboxes</div>
-          <div class="value">3</div>
-          <div class="sub">info@, help@, official@</div>
+
+        <div class="gm-toolbar-right">
+          <span id="gm-counter-text">0 conversations</span>
         </div>
       </div>
 
-      <!-- INBOX PANEL -->
-      <section class="portal-panel active" id="panel-inbox">
-        <div class="panel-header">
-          <div class="panel-header-title">
-            <h2>Business Email Inbox</h2>
-            <p>Real-time emails received on <code>easeyourfiling.com</code> via Cloudflare Email Routing & Resend Gateway.</p>
-          </div>
-          <div style="display:flex; gap:10px;">
-            <button type="button" class="btn-secondary-action" onclick="fetchInbox(true)" id="btn-sync-inbox">
-              🔄 Sync with Resend
-            </button>
-          </div>
+      <!-- Email List Pane (Gmail row table) -->
+      <div class="gm-list-pane" id="gm-list-pane">
+        <div class="gm-empty-state">
+          <div class="gm-empty-title">Loading mail...</div>
+        </div>
+      </div>
+
+      <!-- Email Reader Pane (Opens when row clicked) -->
+      <div class="gm-reader-pane" id="gm-reader-pane">
+        <div class="gm-reader-top-actions">
+          <button type="button" class="gm-icon-btn" title="Back to inbox" onclick="closeReader()">
+            <svg class="gm-icon" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          </button>
+          <div style="font-size:13px; color:var(--gm-text-secondary);" id="reader-mailbox-indicator">official@easeyourfiling.com</div>
         </div>
 
-        <div class="inbox-toolbar">
-          <div class="filter-pills">
-            <button type="button" class="filter-pill active" onclick="filterByInbox('all', this)">All Inboxes</button>
-            <button type="button" class="filter-pill" onclick="filterByInbox('official@easeyourfiling.com', this)">official@</button>
-            <button type="button" class="filter-pill" onclick="filterByInbox('help@easeyourfiling.com', this)">help@</button>
-            <button type="button" class="filter-pill" onclick="filterByInbox('info@easeyourfiling.com', this)">info@</button>
-          </div>
+        <h2 class="gm-reader-subject" id="reader-subject">Subject</h2>
 
-          <div class="search-input-wrap">
-            <span class="search-icon">🔍</span>
-            <input type="text" id="inbox-search" placeholder="Search sender, subject or text..." oninput="handleInboxSearch()">
-          </div>
-        </div>
-
-        <div class="inbox-split-view">
-          <!-- Email List Column -->
-          <div class="email-list-column" id="email-list-container">
-            <div class="empty-state">
-              <div class="empty-state-icon">📥</div>
-              <p>Loading emails...</p>
+        <div class="gm-reader-header">
+          <div class="gm-reader-sender-info">
+            <div class="gm-reader-avatar" id="reader-avatar">S</div>
+            <div class="gm-reader-names">
+              <span class="gm-reader-from-name" id="reader-from-name">Sender Name</span>
+              <span class="gm-reader-from-addr" id="reader-from-addr">&lt;sender@example.com&gt;</span>
+              <span class="gm-reader-to" id="reader-to">to official@easeyourfiling.com</span>
             </div>
           </div>
-
-          <!-- Email Detail Pane -->
-          <div class="email-detail-column" id="email-detail-container">
-            <div class="empty-state">
-              <div class="empty-state-icon">✉️</div>
-              <p>Select an email from the left pane to view full conversation and details.</p>
-            </div>
-          </div>
+          <div class="gm-reader-date" id="reader-date">Oct 28, 2026</div>
         </div>
-      </section>
 
-      <!-- SENT OUTBOX PANEL -->
-      <section class="portal-panel" id="panel-outbox">
-        <div class="panel-header">
-          <div class="panel-header-title">
-            <h2>Sent Outbox</h2>
-            <p>Emails dispatched directly from your verified business addresses via Resend API.</p>
-          </div>
-          <button type="button" class="btn-secondary-action" onclick="fetchOutbox()">
-            🔄 Refresh Sent
+        <div style="display:flex; gap:8px; margin-bottom:16px;">
+          <button type="button" class="gm-chip active" id="btn-toggle-text" onclick="toggleReaderBody('text')">Plain Text</button>
+          <button type="button" class="gm-chip" id="btn-toggle-html" onclick="toggleReaderBody('html')">Formatted View</button>
+        </div>
+
+        <div class="gm-reader-body" id="reader-body-text">Loading message...</div>
+        <div class="gm-reader-body" id="reader-body-html" style="display:none; background:#ffffff; border:1px solid #e0e2e6; border-radius:8px; padding:20px;"></div>
+
+        <div class="gm-reader-footer-actions">
+          <button type="button" class="gm-btn-pill" onclick="replyCurrentEmail()">
+            <svg class="gm-icon" viewBox="0 0 24 24"><path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg>
+            Reply
+          </button>
+          <button type="button" class="gm-btn-pill" onclick="closeReader()">
+            Close
           </button>
         </div>
-
-        <div style="padding:20px 24px;">
-          <div id="sent-list-container">
-            <div class="empty-state">
-              <div class="empty-state-icon">📤</div>
-              <p>No sent emails yet. Click "Compose Email" to send your first message.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- COMPOSE PANEL -->
-      <section class="portal-panel" id="panel-compose">
-        <div class="panel-header">
-          <div class="panel-header-title">
-            <h2>Compose Business Email</h2>
-            <p>Send high-deliverability emails from your verified business domain <code>easeyourfiling.com</code>.</p>
-          </div>
-        </div>
-
-        <div class="compose-form-wrap">
-          <form id="compose-form" onsubmit="handleSendEmail(event)">
-            <div class="form-group">
-              <label for="compose-from">From (Verified Business Address)</label>
-              <select id="compose-from" required>
-                <option value="official">EaseYourFiling Official &lt;official@easeyourfiling.com&gt;</option>
-                <option value="help">EaseYourFiling Support &lt;help@easeyourfiling.com&gt;</option>
-                <option value="info">EaseYourFiling Info &lt;info@easeyourfiling.com&gt;</option>
-              </select>
-              <div class="form-hint">SPF, DKIM & DMARC 100% verified via Resend.</div>
-            </div>
-
-            <div class="form-group">
-              <label for="compose-to">To (Recipient Email)</label>
-              <input type="email" id="compose-to" placeholder="client@example.com" required>
-            </div>
-
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-              <div class="form-group">
-                <label for="compose-cc">CC (Optional)</label>
-                <input type="email" id="compose-cc" placeholder="team@example.com">
-              </div>
-              <div class="form-group">
-                <label for="compose-bcc">BCC (Optional)</label>
-                <input type="email" id="compose-bcc" placeholder="audit@example.com">
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="compose-subject">Subject</label>
-              <input type="text" id="compose-subject" placeholder="e.g. Filing Status Update / Invoice Receipt" required>
-            </div>
-
-            <div class="form-group">
-              <label for="compose-message">Message Body</label>
-              <textarea id="compose-message" placeholder="Type your message here..." required></textarea>
-              <div class="form-hint">Message will be formatted into an executive EaseYourFiling branded template.</div>
-            </div>
-
-            <div style="display:flex; justify-content:flex-end; gap:12px;">
-              <button type="button" class="btn-secondary-action" onclick="switchTab('inbox')">Cancel</button>
-              <button type="submit" class="compose-trigger-btn" id="btn-submit-send" style="width:auto; margin:0; padding:10px 24px;">
-                🚀 Send Email
-              </button>
-            </div>
-          </form>
-        </div>
-      </section>
-
-      <!-- DOMAIN & HOSTING PANEL -->
-      <section class="portal-panel" id="panel-hosting">
-        <div class="panel-header">
-          <div class="panel-header-title">
-            <h2>Cloudflare Hosting & Edge Infrastructure</h2>
-            <p>Managed hosting, SSL certificates, Anycast DNS and security protection for <code>easeyourfiling.com</code>.</p>
-          </div>
-          <a href="https://easeyourfiling.com" target="_blank" rel="noopener" class="btn-secondary-action">
-            🔗 Open Live Website ↗
-          </a>
-        </div>
-
-        <div class="hosting-grid">
-          <div class="hosting-card">
-            <h4>🌐 Website & Domain</h4>
-            <p>Domain <strong>easeyourfiling.com</strong> is live and routed globally through Cloudflare's 300+ city Edge network.</p>
-            <div class="status-badge-inline">
-              ✓ Edge Online &bull; 99.98% Uptime
-            </div>
-          </div>
-
-          <div class="hosting-card">
-            <h4>🔒 SSL / TLS Encryption</h4>
-            <p>Enterprise TLS 1.3 Full (Strict) SSL with automatic certificate rotation and HSTS enabled.</p>
-            <div class="status-badge-inline">
-              ✓ Strict SSL Verified
-            </div>
-          </div>
-
-          <div class="hosting-card">
-            <h4>🛡️ Security & DDoS Mitigation</h4>
-            <p>Layer 7 Web Application Firewall (WAF) and Cloudflare rate limiting active against brute force attacks.</p>
-            <div class="status-badge-inline">
-              ✓ DDoS Shield Active
-            </div>
-          </div>
-
-          <div class="hosting-card">
-            <h4>📬 Email Routing & Resend API</h4>
-            <p>Sending and receiving capabilities enabled on <code>easeyourfiling.com</code> with automated webhook delivery.</p>
-            <div class="status-badge-inline">
-              ✓ Resend Sending & Receiving Enabled
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- AUTHORIZED USERS PANEL -->
-      <section class="portal-panel" id="panel-users">
-        <div class="panel-header">
-          <div class="panel-header-title">
-            <h2>Authorized Portal Access</h2>
-            <p>Accounts authorized to log into the EaseYourFiling client hub via Google Sign-In.</p>
-          </div>
-        </div>
-
-        <div style="padding:24px;">
-          <div style="background:#f8fafc; border:1px solid var(--portal-border); border-radius:10px; padding:20px; margin-bottom:24px;">
-            <h4 style="margin:0 0 12px; font-size:15px;">Active Authorized Accounts</h4>
-            <ul id="authorized-users-list" style="margin:0; padding-left:20px; font-size:14px; line-height:2; font-family:var(--mono);">
-              <li>official@easeyourfiling.com</li>
-              <li>help@easeyourfiling.com</li>
-              <li>info@easeyourfiling.com</li>
-              <li>easeyourfiling@gmail.com</li>
-            </ul>
-          </div>
-
-          <div id="super-admin-add-user" style="display:none; background:#ffffff; border:1px solid var(--portal-border); border-radius:10px; padding:20px;">
-            <h4 style="margin:0 0 6px; font-size:15px;">👑 Super Admin: Authorize New Email Address</h4>
-            <p style="font-size:13px; color:var(--portal-text-muted); margin-bottom:14px;">Add a client Gmail or company email address to grant instant access to this dashboard.</p>
-            <div style="display:flex; gap:12px; max-width:500px;">
-              <input type="email" id="input-new-user-email" placeholder="client.email@gmail.com" style="flex:1; padding:8px 12px; border:1px solid var(--portal-border); border-radius:6px; font-size:14px;">
-              <button type="button" class="compose-trigger-btn" style="width:auto; margin:0; padding:8px 16px;" onclick="handleAddAuthorizedUser()">Add User</button>
-            </div>
-          </div>
-        </div>
-      </section>
+      </div>
 
     </main>
   </div>
 
+  <!-- ================= Floating Docked Gmail Compose Modal ================= -->
+  <div class="gm-compose-modal" id="gm-compose-modal">
+    <div class="gm-compose-header">
+      <div class="gm-compose-title">New Message</div>
+      <div class="gm-compose-controls">
+        <button type="button" class="gm-compose-ctrl-btn" onclick="closeCompose()">✕</button>
+      </div>
+    </div>
+
+    <form id="gm-compose-form" onsubmit="handleSendEmail(event)">
+      <div class="gm-compose-row">
+        <span class="gm-compose-label">From</span>
+        <select class="gm-compose-select" id="compose-from" required>
+          <option value="official">EaseYourFiling Official &lt;official@easeyourfiling.com&gt;</option>
+          <option value="help">EaseYourFiling Support &lt;help@easeyourfiling.com&gt;</option>
+          <option value="info">EaseYourFiling Info &lt;info@easeyourfiling.com&gt;</option>
+        </select>
+      </div>
+
+      <div class="gm-compose-row">
+        <span class="gm-compose-label">To</span>
+        <input type="email" class="gm-compose-input" id="compose-to" placeholder="Recipients" required>
+      </div>
+
+      <div class="gm-compose-row">
+        <input type="text" class="gm-compose-input" id="compose-subject" placeholder="Subject" required>
+      </div>
+
+      <textarea class="gm-compose-body" id="compose-body" placeholder="Write your message here..." required></textarea>
+
+      <div class="gm-compose-toolbar">
+        <button type="submit" class="gm-btn-send" id="btn-send-submit">
+          Send
+        </button>
+        <button type="button" class="gm-icon-btn" title="Discard draft" onclick="closeCompose()">
+          <svg class="gm-icon" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Modal: Domain & Hosting -->
+  <div class="gm-modal-overlay" id="modal-hosting" onclick="closeModalOnOverlay(event, 'hosting')">
+    <div class="gm-modal-box">
+      <button type="button" class="gm-modal-close-btn" onclick="closeModal('hosting')">✕</button>
+      <h3 class="gm-modal-title">Hosting &amp; Edge Infrastructure</h3>
+      <div style="font-size:14px; line-height:1.7; color:var(--gm-text-muted);">
+        <p><strong>Domain:</strong> <code>easeyourfiling.com</code></p>
+        <p><strong>Network:</strong> Cloudflare Global Anycast Edge (300+ Cities)</p>
+        <p><strong>SSL/TLS:</strong> Full Strict TLS 1.3 Encryption Active</p>
+        <p><strong>Email Routing:</strong> Resend Gateway (Sending &amp; Receiving Verified)</p>
+        <p><strong>Uptime:</strong> 99.98% Monitored</p>
+        <div style="margin-top:20px;">
+          <a href="https://easeyourfiling.com" target="_blank" class="gm-btn-pill" style="text-decoration:none;">Visit Live Website ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Authorized Users -->
+  <div class="gm-modal-overlay" id="modal-users" onclick="closeModalOnOverlay(event, 'users')">
+    <div class="gm-modal-box">
+      <button type="button" class="gm-modal-close-btn" onclick="closeModal('users')">✕</button>
+      <h3 class="gm-modal-title">Authorized Google Accounts</h3>
+      <p style="font-size:13.5px; color:var(--gm-text-secondary); margin-bottom:16px;">The following accounts are permitted to sign into the EaseYourFiling workspace:</p>
+      
+      <ul id="modal-users-list" style="margin:0 0 20px; padding-left:20px; font-size:14px; line-height:2; font-family:var(--gm-mono);">
+        <li>official@easeyourfiling.com</li>
+        <li>help@easeyourfiling.com</li>
+        <li>info@easeyourfiling.com</li>
+        <li>easeyourfiling@gmail.com</li>
+      </ul>
+
+      <div id="super-admin-add-user-wrap" style="display:none; padding-top:16px; border-top:1px solid #e0e2e6;">
+        <div style="font-size:13px; font-weight:600; margin-bottom:8px;">Add New Authorized Email:</div>
+        <div style="display:flex; gap:8px;">
+          <input type="email" id="input-new-auth-email" placeholder="client.email@gmail.com" style="flex:1; padding:8px 12px; border:1px solid #dadce0; border-radius:6px; font-size:14px;">
+          <button type="button" class="gm-btn-send" style="height:36px;" onclick="handleAddUser()">Authorize</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast -->
-  <div class="portal-toast" id="portal-toast"></div>
+  <div class="gm-toast" id="gm-toast"></div>
 
   <script>
     (function () {
@@ -1015,7 +1024,7 @@
       const urlParams = new URLSearchParams(window.location.search);
       const clientId = (urlParams.get('client') || 'easeyourfiling').toLowerCase();
 
-      // Check session
+      // Check Session
       let adminSession = null;
       let clientSession = null;
       try {
@@ -1026,46 +1035,33 @@
       const currentUserEmail = (adminSession && adminSession.email) || (clientSession && clientSession.email) || '';
       const isSuperAdmin = currentUserEmail === SUPER_ADMIN_EMAIL;
 
-      // If not logged in at all, redirect to login page
       if (!currentUserEmail) {
         window.location.href = `login.html?redirect=portal&client=${encodeURIComponent(clientId)}`;
         return;
       }
 
-      // UI setup based on role
       if (isSuperAdmin) {
-        document.getElementById('super-admin-indicator').style.display = 'inline-flex';
-        document.getElementById('btn-master-admin').style.display = 'inline-flex';
-        document.getElementById('super-admin-add-user').style.display = 'block';
+        document.getElementById('super-admin-pill').style.display = 'inline-flex';
+        document.getElementById('btn-master-console').style.display = 'inline-flex';
+        document.getElementById('super-admin-add-user-wrap').style.display = 'block';
       }
 
       const activeUser = adminSession || clientSession;
-      document.getElementById('user-email').textContent = activeUser.email;
-      if (activeUser.avatar) {
-        document.getElementById('user-avatar').src = activeUser.avatar;
-      }
+      const initial = (activeUser.name || activeUser.email || 'U').charAt(0).toUpperCase();
+      document.getElementById('user-avatar-initial').textContent = initial;
 
-      let allEmails = [];
-      let currentFilterInbox = 'all';
+      let currentFolder = 'inbox'; // 'inbox' or 'sent'
+      let currentFilterMailbox = 'all';
+      let allInboxEmails = [];
+      let allSentEmails = [];
+      let activeEmail = null;
 
       function showToast(msg) {
-        const toast = document.getElementById('portal-toast');
-        toast.textContent = msg;
-        toast.style.display = 'block';
-        setTimeout(() => { toast.style.display = 'none'; }, 4000);
+        const t = document.getElementById('gm-toast');
+        t.textContent = msg;
+        t.style.display = 'block';
+        setTimeout(() => { t.style.display = 'none'; }, 4000);
       }
-
-      window.switchTab = function(tabName) {
-        document.querySelectorAll('.portal-panel').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
-
-        const targetPanel = document.getElementById(`panel-${tabName}`);
-        const targetBtn = document.getElementById(`btn-tab-${tabName}`);
-        if (targetPanel) targetPanel.classList.add('active');
-        if (targetBtn) targetBtn.classList.add('active');
-
-        if (tabName === 'outbox') fetchOutbox();
-      };
 
       window.logoutSession = function() {
         localStorage.removeItem('zenstro_client_session');
@@ -1075,235 +1071,233 @@
         window.location.href = 'login.html?logout=true';
       };
 
+      // Folder Switching
+      window.switchFolder = function(folder) {
+        currentFolder = folder;
+        document.querySelectorAll('.gm-nav-menu .gm-nav-item').forEach(i => i.classList.remove('active'));
+        const targetNav = document.getElementById(`nav-${folder}`);
+        if (targetNav) targetNav.classList.add('active');
+
+        closeReader();
+        if (folder === 'sent') {
+          fetchSent();
+        } else {
+          fetchInbox();
+        }
+      };
+
+      window.filterByMailbox = function(mailbox, btn) {
+        currentFilterMailbox = mailbox;
+        document.querySelectorAll('.gm-filter-chips .gm-chip').forEach(c => c.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+        closeReader();
+        renderCurrentList();
+      };
+
       // Fetch Inbound Emails
       window.fetchInbox = async function(manualSync = false) {
-        const syncBtn = document.getElementById('btn-sync-inbox');
-        if (manualSync && syncBtn) syncBtn.innerHTML = '🔄 Syncing...';
+        const listPane = document.getElementById('gm-list-pane');
+        if (manualSync) showToast('Syncing with Resend...');
 
         try {
-          const syncQuery = manualSync ? '&sync=true' : '';
-          const res = await fetch(`/api/client-hub?action=inbox&client=${clientId}${syncQuery}`, {
+          const syncParam = manualSync ? '&sync=true' : '';
+          const res = await fetch(`/api/client-hub?action=inbox&client=${clientId}${syncParam}`, {
             headers: { 'X-Zenstro-User': currentUserEmail }
           });
           const data = await res.json();
           if (data.success && Array.isArray(data.emails)) {
-            allEmails = data.emails;
-            renderInboxList(allEmails);
-            document.getElementById('stat-total-received').textContent = allEmails.length;
-            document.getElementById('count-inbox').textContent = allEmails.length;
-            if (manualSync) showToast('Inbox synced with Resend!');
+            allInboxEmails = data.emails;
+            document.getElementById('badge-inbox-count').textContent = allInboxEmails.length;
+            if (currentFolder === 'inbox') renderCurrentList();
+            if (manualSync) showToast('Inbox updated.');
           }
-        } catch (err) {
-          console.error('Fetch inbox error:', err);
-          showToast('Failed to load inbox');
-        } finally {
-          if (manualSync && syncBtn) syncBtn.innerHTML = '🔄 Sync with Resend';
+        } catch (e) {
+          console.error(e);
+          showToast('Failed to load inbox.');
         }
       };
 
-      function renderInboxList(emails) {
-        const container = document.getElementById('email-list-container');
-        if (!emails || emails.length === 0) {
-          container.innerHTML = `
-            <div class="empty-state">
-              <div class="empty-state-icon">📭</div>
-              <p>No incoming emails found for this filter.<br><small style="color:#94a3b8;">When anyone emails info@, help@, or official@easeyourfiling.com, it will appear here in real time.</small></p>
-            </div>
-          `;
-          return;
-        }
-
-        container.innerHTML = emails.map((e, idx) => {
-          const dateStr = e.createdAt ? new Date(e.createdAt).toLocaleDateString([], { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' }) : '';
-          const cleanSnippet = (e.message || '').substring(0, 100);
-          return `
-            <div class="email-item ${idx === 0 ? 'active' : ''}" onclick="window.selectEmail('${e.id}', this)">
-              <div class="email-item-header">
-                <span class="email-sender">${escapeHtml(e.from)}</span>
-                <span class="email-time">${dateStr}</span>
-              </div>
-              <div class="email-recipient-tag">to: ${escapeHtml(e.to || 'official@easeyourfiling.com')}</div>
-              <div class="email-subject">${escapeHtml(e.subject || '(No Subject)')}</div>
-              <div class="email-snippet">${escapeHtml(cleanSnippet || '(No plain text snippet)')}</div>
-            </div>
-          `;
-        }).join('');
-
-        // Auto select first email
-        if (emails.length > 0) {
-          window.selectEmail(emails[0].id);
-        }
-      }
-
-      window.selectEmail = function(id, el) {
-        if (el) {
-          document.querySelectorAll('.email-item').forEach(i => i.classList.remove('active'));
-          el.classList.add('active');
-        }
-
-        const email = allEmails.find(e => e.id === id);
-        if (!email) return;
-
-        const detailContainer = document.getElementById('email-detail-container');
-        const dateStr = email.createdAt ? new Date(email.createdAt).toLocaleString() : '';
-        const hasHtml = !!email.htmlContent;
-
-        detailContainer.innerHTML = `
-          <div class="email-detail-card">
-            <h3 class="detail-subject-title">${escapeHtml(email.subject || '(No Subject)')}</h3>
-            <div class="detail-meta-grid">
-              <div class="detail-meta-item">
-                <strong>From</strong>
-                <span>${escapeHtml(email.from)}</span>
-              </div>
-              <div class="detail-meta-item">
-                <strong>To Address</strong>
-                <span>${escapeHtml(email.to || '')}</span>
-              </div>
-              <div class="detail-meta-item">
-                <strong>Date Received</strong>
-                <span>${dateStr}</span>
-              </div>
-              <div class="detail-meta-item">
-                <strong>Status</strong>
-                <span style="color:var(--portal-success); font-weight:700;">✓ Delivered via Edge</span>
-              </div>
-            </div>
-
-            <div style="margin-bottom:14px; display:flex; gap:8px;">
-              <button type="button" class="filter-pill active" id="btn-view-text" onclick="window.toggleEmailBodyView('text')">Plain Text</button>
-              ${hasHtml ? `<button type="button" class="filter-pill" id="btn-view-html" onclick="window.toggleEmailBodyView('html')">Formatted HTML</button>` : ''}
-            </div>
-
-            <div id="email-body-text" class="detail-body-view">${escapeHtml(email.message || '(Empty message content)')}</div>
-            ${hasHtml ? `<div id="email-body-html" style="display:none; background:#ffffff; border:1px solid #e2e8f0; border-radius:8px; padding:16px;">${email.htmlContent}</div>` : ''}
-
-            <div class="detail-actions">
-              <button type="button" class="compose-trigger-btn" style="width:auto; margin:0; padding:8px 18px;" onclick="window.replyToEmail('${escapeHtml(email.from)}', '${escapeHtml(email.subject || '')}')">
-                ↩ Reply to Sender
-              </button>
-            </div>
-          </div>
-        `;
-      };
-
-      window.toggleEmailBodyView = function(type) {
-        const textBtn = document.getElementById('btn-view-text');
-        const htmlBtn = document.getElementById('btn-view-html');
-        const textBody = document.getElementById('email-body-text');
-        const htmlBody = document.getElementById('email-body-html');
-
-        if (type === 'html' && htmlBody) {
-          textBody.style.display = 'none';
-          htmlBody.style.display = 'block';
-          if (htmlBtn) htmlBtn.classList.add('active');
-          if (textBtn) textBtn.classList.remove('active');
-        } else {
-          textBody.style.display = 'block';
-          if (htmlBody) htmlBody.style.display = 'none';
-          if (textBtn) textBtn.classList.add('active');
-          if (htmlBtn) htmlBtn.classList.remove('active');
-        }
-      };
-
-      window.replyToEmail = function(fromAddress, subject) {
-        switchTab('compose');
-        // Extract raw email
-        const match = fromAddress.match(/<([^>]+)>/);
-        const targetEmail = match ? match[1] : fromAddress;
-        document.getElementById('compose-to').value = targetEmail;
-        document.getElementById('compose-subject').value = subject.startsWith('Re:') ? subject : `Re: ${subject}`;
-        document.getElementById('compose-message').focus();
-      };
-
-      window.filterByInbox = function(inboxFilter, btn) {
-        document.querySelectorAll('.inbox-toolbar .filter-pill').forEach(p => p.classList.remove('active'));
-        if (btn) btn.classList.add('active');
-        currentFilterInbox = inboxFilter;
-
-        if (inboxFilter === 'all') {
-          renderInboxList(allEmails);
-        } else {
-          const filtered = allEmails.filter(e => String(e.to || '').toLowerCase().includes(inboxFilter.toLowerCase()));
-          renderInboxList(filtered);
-        }
-      };
-
-      window.handleInboxSearch = function() {
-        const q = (document.getElementById('inbox-search').value || '').toLowerCase().trim();
-        if (!q) {
-          renderInboxList(allEmails);
-          return;
-        }
-        const filtered = allEmails.filter(e =>
-          (e.from && e.from.toLowerCase().includes(q)) ||
-          (e.subject && e.subject.toLowerCase().includes(q)) ||
-          (e.message && e.message.toLowerCase().includes(q)) ||
-          (e.to && e.to.toLowerCase().includes(q))
-        );
-        renderInboxList(filtered);
-      };
-
-      // Fetch Outbox
-      window.fetchOutbox = async function() {
+      // Fetch Sent Emails
+      window.fetchSent = async function() {
         try {
           const res = await fetch(`/api/client-hub?action=outbox&client=${clientId}`, {
             headers: { 'X-Zenstro-User': currentUserEmail }
           });
           const data = await res.json();
           if (data.success && Array.isArray(data.emails)) {
-            document.getElementById('stat-total-sent').textContent = data.emails.length;
-            document.getElementById('count-outbox').textContent = data.emails.length;
-            renderOutboxList(data.emails);
+            allSentEmails = data.emails;
+            document.getElementById('badge-sent-count').textContent = allSentEmails.length;
+            if (currentFolder === 'sent') renderCurrentList();
           }
         } catch (e) {
           console.error(e);
         }
       };
 
-      function renderOutboxList(emails) {
-        const container = document.getElementById('sent-list-container');
-        if (!emails || emails.length === 0) {
-          container.innerHTML = `
-            <div class="empty-state">
-              <div class="empty-state-icon">📤</div>
-              <p>No sent emails recorded yet.</p>
+      function renderCurrentList() {
+        const listPane = document.getElementById('gm-list-pane');
+        const rawList = currentFolder === 'sent' ? allSentEmails : allInboxEmails;
+
+        let filtered = rawList;
+        if (currentFilterMailbox !== 'all') {
+          const target = currentFilterMailbox.toLowerCase();
+          filtered = rawList.filter(e => {
+            const field = currentFolder === 'sent' ? (e.from || '') : (e.to || '');
+            return field.toLowerCase().includes(target);
+          });
+        }
+
+        const q = (document.getElementById('gm-search-input').value || '').toLowerCase().trim();
+        if (q) {
+          filtered = filtered.filter(e => 
+            (e.from && e.from.toLowerCase().includes(q)) ||
+            (e.to && e.to.toLowerCase().includes(q)) ||
+            (e.subject && e.subject.toLowerCase().includes(q)) ||
+            (e.message && e.message.toLowerCase().includes(q))
+          );
+        }
+
+        document.getElementById('gm-counter-text').textContent = `${filtered.length} conversation${filtered.length === 1 ? '' : 's'}`;
+
+        if (filtered.length === 0) {
+          listPane.innerHTML = `
+            <div class="gm-empty-state">
+              <div class="gm-empty-title">Your ${currentFolder} is empty.</div>
+              <div class="gm-empty-sub">
+                ${currentFolder === 'inbox' 
+                  ? 'Incoming emails sent to info@, help@, or official@easeyourfiling.com will appear here in real time.' 
+                  : 'Messages dispatched from this client portal will be archived here.'}
+              </div>
             </div>
           `;
           return;
         }
 
-        container.innerHTML = emails.map(e => {
-          const dateStr = e.sentAt ? new Date(e.sentAt).toLocaleString() : '';
+        listPane.innerHTML = filtered.map(e => {
+          const dateStr = formatDate(e.createdAt || e.sentAt);
+          const mailboxTag = extractMailbox(currentFolder === 'sent' ? e.from : e.to);
+          const senderDisplay = currentFolder === 'sent' ? `To: ${escapeHtml(e.to)}` : escapeHtml(e.from || 'Unknown');
+          const subjectDisplay = escapeHtml(e.subject || '(no subject)');
+          const snippetDisplay = escapeHtml((e.message || '').substring(0, 90));
+
           return `
-            <div style="background:#ffffff; border:1px solid var(--portal-border); border-radius:8px; padding:16px 20px; margin-bottom:12px;">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                <strong style="font-size:15px; color:#0f172a;">${escapeHtml(e.subject || '(No Subject)')}</strong>
-                <span style="font-size:12px; font-family:var(--mono); color:var(--portal-text-muted);">${dateStr}</span>
+            <div class="gm-row" onclick="openReader('${e.id}')">
+              <input type="checkbox" class="gm-row-checkbox" onclick="event.stopPropagation()">
+              <span class="gm-row-star" onclick="event.stopPropagation()">☆</span>
+              <span class="gm-mailbox-tag">${mailboxTag}</span>
+              <span class="gm-row-sender">${senderDisplay}</span>
+              <div class="gm-row-content">
+                <span class="gm-row-subject">${subjectDisplay}</span>
+                <span class="gm-row-snippet">- ${snippetDisplay}</span>
               </div>
-              <div style="font-size:13px; color:#475569; margin-bottom:8px;">
-                <strong>To:</strong> <code>${escapeHtml(e.to)}</code> &bull; <strong>From:</strong> <code>${escapeHtml(e.from)}</code>
-              </div>
-              <div style="font-size:13.5px; color:#334155; line-height:1.5; white-space:pre-wrap; background:#f8fafc; padding:12px; border-radius:6px; border:1px solid #e2e8f0;">${escapeHtml((e.message || '').substring(0, 300))}</div>
+              <span class="gm-row-date">${dateStr}</span>
             </div>
           `;
         }).join('');
       }
 
-      // Handle Send Email
+      function extractMailbox(str) {
+        if (!str) return 'official@';
+        if (str.includes('help@')) return 'help@';
+        if (str.includes('info@')) return 'info@';
+        return 'official@';
+      }
+
+      function formatDate(isoStr) {
+        if (!isoStr) return '';
+        const d = new Date(isoStr);
+        const now = new Date();
+        if (d.toDateString() === now.toDateString()) {
+          return d.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+        }
+        return d.toLocaleDateString([], { month:'short', day:'numeric' });
+      }
+
+      // Email Reader
+      window.openReader = function(id) {
+        const rawList = currentFolder === 'sent' ? allSentEmails : allInboxEmails;
+        activeEmail = rawList.find(e => (e.id === id || e.emailId === id));
+        if (!activeEmail) return;
+
+        document.getElementById('gm-toolbar').style.display = 'none';
+        document.getElementById('gm-list-pane').style.display = 'none';
+        const reader = document.getElementById('gm-reader-pane');
+        reader.style.display = 'block';
+
+        document.getElementById('reader-subject').textContent = activeEmail.subject || '(no subject)';
+        document.getElementById('reader-from-name').textContent = activeEmail.from || 'Unknown';
+        document.getElementById('reader-from-addr').textContent = `<${activeEmail.from || ''}>`;
+        document.getElementById('reader-to').textContent = `to: ${activeEmail.to || ''}`;
+        document.getElementById('reader-date').textContent = new Date(activeEmail.createdAt || activeEmail.sentAt || Date.now()).toLocaleString();
+        document.getElementById('reader-avatar').textContent = (activeEmail.from || 'U').charAt(0).toUpperCase();
+
+        document.getElementById('reader-body-text').textContent = activeEmail.message || '(Empty content)';
+        const htmlContainer = document.getElementById('reader-body-html');
+        if (activeEmail.htmlContent) {
+          htmlContainer.innerHTML = activeEmail.htmlContent;
+        } else {
+          htmlContainer.innerHTML = `<div style="color:#5f6368;">No formatted HTML version available.</div>`;
+        }
+      };
+
+      window.closeReader = function() {
+        document.getElementById('gm-reader-pane').style.display = 'none';
+        document.getElementById('gm-toolbar').style.display = 'flex';
+        document.getElementById('gm-list-pane').style.display = 'block';
+      };
+
+      window.toggleReaderBody = function(type) {
+        const textBtn = document.getElementById('btn-toggle-text');
+        const htmlBtn = document.getElementById('btn-toggle-html');
+        const textBody = document.getElementById('reader-body-text');
+        const htmlBody = document.getElementById('reader-body-html');
+
+        if (type === 'html') {
+          textBody.style.display = 'none';
+          htmlBody.style.display = 'block';
+          htmlBtn.classList.add('active');
+          textBtn.classList.remove('active');
+        } else {
+          textBody.style.display = 'block';
+          htmlBody.style.display = 'none';
+          textBtn.classList.add('active');
+          htmlBtn.classList.remove('active');
+        }
+      };
+
+      window.replyCurrentEmail = function() {
+        if (!activeEmail) return;
+        openCompose();
+        const fromAddr = activeEmail.from || '';
+        const match = fromAddr.match(/<([^>]+)>/);
+        document.getElementById('compose-to').value = match ? match[1] : fromAddr;
+        const subj = activeEmail.subject || '';
+        document.getElementById('compose-subject').value = subj.startsWith('Re:') ? subj : `Re: ${subj}`;
+        document.getElementById('compose-body').focus();
+      };
+
+      // Compose Modal Controls
+      window.openCompose = function() {
+        const modal = document.getElementById('gm-compose-modal');
+        modal.style.display = 'flex';
+        document.getElementById('compose-to').focus();
+      };
+
+      window.closeCompose = function() {
+        document.getElementById('gm-compose-modal').style.display = 'none';
+      };
+
       window.handleSendEmail = async function(event) {
         event.preventDefault();
-        const submitBtn = document.getElementById('btn-submit-send');
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '⏳ Sending via Resend...';
+        const sendBtn = document.getElementById('btn-send-submit');
+        sendBtn.disabled = true;
+        sendBtn.textContent = 'Sending...';
 
         const payload = {
           from: document.getElementById('compose-from').value,
           to: document.getElementById('compose-to').value.trim(),
-          cc: document.getElementById('compose-cc').value.trim(),
-          bcc: document.getElementById('compose-bcc').value.trim(),
           subject: document.getElementById('compose-subject').value.trim(),
-          message: document.getElementById('compose-message').value.trim(),
+          message: document.getElementById('compose-body').value.trim(),
           requesterEmail: currentUserEmail
         };
 
@@ -1318,24 +1312,38 @@
           });
           const result = await res.json();
           if (res.ok && result.success) {
-            showToast('Email sent successfully via official business domain!');
-            document.getElementById('compose-form').reset();
-            fetchOutbox();
-            setTimeout(() => { switchTab('outbox'); }, 1000);
+            showToast('Message sent.');
+            document.getElementById('gm-compose-form').reset();
+            closeCompose();
+            fetchSent();
           } else {
-            showToast(result.error || 'Failed to send email.');
+            showToast(result.error || 'Failed to send.');
           }
-        } catch (err) {
-          showToast('Network error while sending email.');
+        } catch (e) {
+          showToast('Error sending message.');
         } finally {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = '🚀 Send Email';
+          sendBtn.disabled = false;
+          sendBtn.textContent = 'Send';
         }
       };
 
-      // Super Admin: Add Authorized Email
-      window.handleAddAuthorizedUser = async function() {
-        const input = document.getElementById('input-new-user-email');
+      // Modals
+      window.openModal = function(type) {
+        const m = document.getElementById(`modal-${type}`);
+        if (m) m.style.display = 'flex';
+      };
+      window.closeModal = function(type) {
+        const m = document.getElementById(`modal-${type}`);
+        if (m) m.style.display = 'none';
+      };
+      window.closeModalOnOverlay = function(e, type) {
+        if (e.target.classList.contains('gm-modal-overlay')) {
+          closeModal(type);
+        }
+      };
+
+      window.handleAddUser = async function() {
+        const input = document.getElementById('input-new-auth-email');
         const email = (input.value || '').trim();
         if (!email || !email.includes('@')) {
           alert('Please enter a valid email address.');
@@ -1351,20 +1359,29 @@
             },
             body: JSON.stringify({ email: email, operation: 'add', requesterEmail: currentUserEmail })
           });
-          const result = await res.json();
-          if (result.success) {
-            showToast(`Authorized ${email} successfully!`);
+          const data = await res.json();
+          if (data.success) {
+            showToast(`Authorized ${email}`);
             input.value = '';
-            const listEl = document.getElementById('authorized-users-list');
             const li = document.createElement('li');
             li.textContent = email;
-            listEl.appendChild(li);
+            document.getElementById('modal-users-list').appendChild(li);
           } else {
-            alert(result.error || 'Failed to add user');
+            alert(data.error || 'Failed to add');
           }
         } catch (e) {
           alert('Error adding user');
         }
+      };
+
+      window.handleSearch = function() {
+        renderCurrentList();
+      };
+
+      window.toggleSelectAll = function(masterCb) {
+        document.querySelectorAll('.gm-row-checkbox').forEach(cb => {
+          cb.checked = masterCb.checked;
+        });
       };
 
       function escapeHtml(str) {
@@ -1379,6 +1396,7 @@
 
       // Initial Fetch
       fetchInbox();
+      fetchSent();
     })();
   </script>
 </body>
