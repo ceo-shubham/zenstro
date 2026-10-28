@@ -535,6 +535,21 @@ export async function onRequestPost(context) {
           <tr>
             <td style="padding:28px 28px 24px; color:#111827; font-size:15px; line-height:1.7; white-space:pre-wrap; word-break:break-word;">
 ${escapeHtml(message)}
+${Array.isArray(body.attachments) && body.attachments.length > 0 ? `
+              <div style="margin-top:24px; padding:16px 20px; background:#f9fafb; border:1px solid #e5e7eb; border-radius:8px;">
+                <div style="font-size:12px; font-weight:700; color:#374151; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:10px;">
+                  Attached Files (${body.attachments.length})
+                </div>
+                ${body.attachments.map(att => `
+                  <div style="font-size:13px; margin:6px 0; color:#111827;">
+                    <span style="color:#0b57d0; font-size:15px; margin-right:4px;">&#128206;</span>
+                    <strong>${escapeHtml(att.filename || 'Attachment')}</strong>
+                    ${att.sizeFormatted ? `<span style="color:#6b7280; font-size:11px;">(${escapeHtml(att.sizeFormatted)})</span>` : ''}
+                    ${att.b2Url ? `<a href="${escapeHtml(att.b2Url)}" target="_blank" style="margin-left:8px; color:#0b57d0; text-decoration:none; font-size:12px; font-weight:600;">Download &darr;</a>` : ''}
+                  </div>
+                `).join('')}
+              </div>
+` : ''}
             </td>
           </tr>
           <tr>
