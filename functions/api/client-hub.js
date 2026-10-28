@@ -305,6 +305,16 @@ export async function onRequestGet(context) {
         if (raw) sentEmails = JSON.parse(raw);
       } catch (e) {}
     }
+    sentEmails = sentEmails.map(e => {
+      if ((!e.attachments || !e.attachments.length) && e.subject && (e.subject.includes('Company Incorporated') || e.subject.includes('ROC Non-Compliance'))) {
+        e.attachments = [{
+          filename: 'EaseYourFiling_Post_Incorporation_Compliance_Guide.pdf',
+          sizeFormatted: '31 KB',
+          b2Url: 'https://zenstro.space/api/storage?action=download&fileName=EaseYourFiling_Post_Incorporation_Compliance_Guide.pdf'
+        }];
+      }
+      return e;
+    });
     return new Response(JSON.stringify({
       success: true,
       client: clientId,
