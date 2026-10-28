@@ -690,9 +690,8 @@
       font-size: 14.5px;
       line-height: 1.65;
       color: #202124;
-      white-space: pre-wrap;
       word-break: break-word;
-      padding: 16px 0 32px;
+      padding: 16px 0 24px;
       border-bottom: 1px solid var(--gm-border-subtle);
     }
     .reader-actions-row {
@@ -2010,16 +2009,30 @@
         if (btnDel) btnDel.title = currentFolder === 'trash' ? 'Delete forever' : 'Move to Bin';
 
         document.getElementById('reader-subject').textContent = activeEmail.subject || '(no subject)';
-        document.getElementById('reader-sender-name').textContent = activeEmail.from || 'Unknown';
-        document.getElementById('reader-sender-email').textContent = `<${activeEmail.from || ''}>`;
+
+        const rawFrom = activeEmail.from || 'Unknown';
+        let displayName = rawFrom;
+        let displayEmail = rawFrom;
+        const fromMatch = rawFrom.match(/^(.*?)\s*<([^>]+)>$/);
+        if (fromMatch) {
+          displayName = fromMatch[1].trim() || fromMatch[2];
+          displayEmail = fromMatch[2].trim();
+        } else if (rawFrom.includes('@')) {
+          displayName = cleanSender(rawFrom);
+          displayEmail = rawFrom.trim();
+        }
+        document.getElementById('reader-sender-name').textContent = displayName;
+        document.getElementById('reader-sender-email').textContent = `<${displayEmail}>`;
         document.getElementById('reader-to-line').textContent = `to: ${activeEmail.to || ''}`;
         document.getElementById('reader-date').textContent = new Date(activeEmail.createdAt || activeEmail.sentAt || Date.now()).toLocaleString();
-        document.getElementById('reader-avatar').textContent = (activeEmail.from || 'E').charAt(0).toUpperCase();
+        document.getElementById('reader-avatar').textContent = displayName.charAt(0).toUpperCase();
 
         const bodyContainer = document.getElementById('reader-body');
         if (activeEmail.htmlContent) {
+          bodyContainer.style.whiteSpace = 'normal';
           bodyContainer.innerHTML = activeEmail.htmlContent;
         } else {
+          bodyContainer.style.whiteSpace = 'pre-wrap';
           bodyContainer.textContent = activeEmail.message || '(Empty message)';
         }
 

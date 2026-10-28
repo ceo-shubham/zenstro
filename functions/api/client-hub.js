@@ -549,44 +549,8 @@ export async function onRequestPost(context) {
       finalFrom = `${config.name} <official@${config.domain}>`;
     }
 
-    // Clean, natural corporate email format (No artificial boxes, real signature at the bottom)
-    const formattedHtml = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      </head>
-      <body style="margin:0; padding:20px 16px; background:#ffffff; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; color:#1f2937; -webkit-font-smoothing:antialiased;">
-        <div style="max-width:620px; margin:0 auto;">
-          <div style="font-size:15px; line-height:1.65; color:#111827; white-space:pre-wrap; word-break:break-word;">${escapeHtml(message)}</div>
-          
-          <div style="margin-top:28px; padding-top:18px; border-top:1px solid #e5e7eb;">
-            <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
-              <tr>
-                <td width="52" valign="middle" style="padding-right:14px; vertical-align:middle;">
-                  <img src="https://zenstro.space/easeyourfilinglogo.png" alt="${escapeHtml(config.name)}" width="46" height="46" style="display:block; width:46px; height:46px; border-radius:8px; object-fit:contain; background:#ffffff; border:1px solid #e5e7eb; padding:2px;" />
-                </td>
-                <td valign="middle" style="vertical-align:middle; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-                  <div style="font-size:14px; font-weight:700; color:#111827; letter-spacing:-0.01em;">${escapeHtml(config.name)}</div>
-                  <div style="font-size:12px; color:#4b5563; margin-top:2px; line-height:1.5;">
-                    <span style="white-space:nowrap;">Official Communications</span>
-                    <span style="color:#9ca3af; margin:0 4px;">&bull;</span>
-                    <span style="white-space:nowrap;">Website:&nbsp;<strong><a href="${escapeHtml(config.websiteUrl)}" style="color:#0b57d0; text-decoration:none;">${escapeHtml(config.displayDomain || ('www.' + config.domain))}</a></strong></span>
-                  </div>
-                  <div style="font-size:12px; margin-top:4px; line-height:1.5;">
-                    <span style="white-space:nowrap;"><a href="mailto:official@${escapeHtml(config.domain)}" style="color:#0b57d0; text-decoration:none; font-weight:500;">official@${escapeHtml(config.domain)}</a></span>
-                    <span style="color:#d1d5db; margin:0 6px;">&bull;</span>
-                    <span style="white-space:nowrap;"><a href="tel:${config.phoneRaw || '+916202735213'}" style="color:#0b57d0; text-decoration:none; font-weight:500;">${config.phone || '+91 62027 35213'}</a></span>
-                  </div>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </body>
-      </html>
-    `;
+    // Clean, natural corporate email format (No artificial boxes, robust corporate signature)
+    const formattedHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="margin:0; padding:16px 12px; background:#ffffff; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; color:#1f2937;"><div style="max-width:600px; margin:0;"><div style="font-size:14.5px; line-height:1.65; color:#111827; white-space:pre-wrap; word-break:break-word;">${escapeHtml(message)}</div><div style="margin-top:24px; padding-top:16px; border-top:1px solid #e5e7eb;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse; margin:0;"><tr><td width="52" valign="middle" style="padding-right:12px; vertical-align:middle; width:52px;"><img src="https://zenstro.space/easeyourfilinglogo.png" alt="${escapeHtml(config.name)}" width="44" height="44" style="display:block; width:44px; height:44px; border-radius:6px; object-fit:contain; background:#ffffff; border:1px solid #e5e7eb; padding:2px;" /></td><td valign="middle" style="vertical-align:middle; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;"><div style="font-size:14px; font-weight:700; color:#111827; line-height:1.3; margin-bottom:2px;">${escapeHtml(config.name)}</div><div style="font-size:12px; color:#4b5563; line-height:1.5;">Official Communications &bull; Website: <a href="${escapeHtml(config.websiteUrl)}" style="color:#0b57d0; text-decoration:none; font-weight:600;">${escapeHtml(config.displayDomain || ('www.' + config.domain))}</a></div><div style="font-size:12px; color:#4b5563; line-height:1.5; margin-top:2px;"><a href="mailto:official@${escapeHtml(config.domain)}" style="color:#0b57d0; text-decoration:none; font-weight:500;">official@${escapeHtml(config.domain)}</a> &bull; <a href="tel:${config.phoneRaw || '+916202735213'}" style="color:#0b57d0; text-decoration:none; font-weight:500;">${config.phone || '+91 62027 35213'}</a></div></td></tr></table></div></div></body></html>`;
 
     const resendPayload = {
       from: finalFrom,
