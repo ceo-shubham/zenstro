@@ -66,11 +66,9 @@ ${escapeHtml(message)}
                     <div style="font-size:12px; color:#4b5563; margin-top:2px; line-height:1.5;">
                       <span style="white-space:nowrap;">Official Client Communications</span>
                       <span style="color:#9ca3af; margin:0 4px;">&bull;</span>
-                      <span style="white-space:nowrap;">domain:&nbsp;<strong><a href="https://zenstro.space" style="color:#0b57d0; text-decoration:none;">zenstro.space</a></strong></span>
+                      <span style="white-space:nowrap;">Website:&nbsp;<strong><a href="https://zenstro.space" style="color:#0b57d0; text-decoration:none;">zenstro.space</a></strong></span>
                     </div>
                     <div style="font-size:12px; margin-top:4px; line-height:1.5;">
-                      <span style="white-space:nowrap;"><a href="https://zenstro.space" style="color:#0b57d0; text-decoration:none; font-weight:600;">zenstro.space</a></span>
-                      <span style="color:#d1d5db; margin:0 5px;">&bull;</span>
                       <span style="white-space:nowrap;"><a href="mailto:ceo@zenstro.space" style="color:#0b57d0; text-decoration:none;">ceo@zenstro.space</a></span>
                       <span style="color:#d1d5db; margin:0 5px;">&bull;</span>
                       <span style="white-space:nowrap;"><a href="mailto:support@zenstro.space" style="color:#0b57d0; text-decoration:none;">support@zenstro.space</a></span>
