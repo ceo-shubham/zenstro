@@ -518,22 +518,22 @@ export async function onRequestPost(context) {
       finalFrom = `${config.name} Official <official@${config.domain}>`;
     }
 
-    // Professional HTML template with client branding
+    // Professional HTML template with client branding and profile logo DP
     const formattedHtml = `
       <!DOCTYPE html>
       <html>
       <head><meta charset="utf-8"></head>
       <body style="margin:0; padding:24px 12px; background:#f8fafc; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-        <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="max-width:620px; margin:0 auto; background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; overflow:hidden; box-shadow:0 4px 6px -1px rgba(15,23,42,0.04);">
+        <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="max-width:620px; margin:0 auto; background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; overflow:hidden; box-shadow:0 4px 6px -1px rgba(15,23,42,0.05);">
           <tr>
             <td style="background:#0f172a; padding:22px 28px; border-bottom:2px solid #2563eb;">
               <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
                   <td>
-                    <div style="font-size:19px; font-weight:800; color:#ffffff; letter-spacing:-0.02em;">${escapeHtml(config.name)}</div>
-                    <div style="color:#94a3b8; font-size:11px; margin-top:4px; font-family:monospace; text-transform:uppercase; letter-spacing:0.06em;">${escapeHtml(config.tagline)}</div>
+                    <img src="https://zenstro.space/easeyourfilinglogo.png" alt="${escapeHtml(config.name)}" height="38" style="display:block; height:38px; width:auto; max-width:180px; border:0; outline:none;" />
+                    <div style="color:#94a3b8; font-size:11px; margin-top:6px; font-family:monospace; text-transform:uppercase; letter-spacing:0.06em;">${escapeHtml(config.tagline)}</div>
                   </td>
-                  <td align="right">
+                  <td align="right" valign="middle">
                     <span style="display:inline-block; background:rgba(37,99,235,0.2); border:1px solid rgba(59,130,246,0.4); color:#93c5fd; font-size:10px; padding:4px 9px; border-radius:20px; font-family:monospace; text-transform:uppercase;">&check; Verified Domain</span>
                   </td>
                 </tr>
@@ -546,16 +546,25 @@ ${escapeHtml(message)}
             </td>
           </tr>
           <tr>
-            <td style="background:#f1f5f9; padding:20px 28px; border-top:1px solid #e2e8f0; font-size:12px; color:#64748b; line-height:1.6;">
-              <div style="font-weight:700; color:#0f172a;">${escapeHtml(config.name)}</div>
-              <div>Official Communication &bull; Domain: <strong>${escapeHtml(config.domain)}</strong></div>
-              <div style="margin-top:6px;">
-                <a href="${escapeHtml(config.websiteUrl)}" style="color:#2563eb; text-decoration:none; font-weight:600;">${escapeHtml(config.domain)}</a>
-                <span style="margin:0 6px; color:#cbd5e1;">&bull;</span>
-                <a href="mailto:official@${escapeHtml(config.domain)}" style="color:#2563eb; text-decoration:none;">official@${escapeHtml(config.domain)}</a>
-                <span style="margin:0 6px; color:#cbd5e1;">&bull;</span>
-                <a href="mailto:help@${escapeHtml(config.domain)}" style="color:#2563eb; text-decoration:none;">help@${escapeHtml(config.domain)}</a>
-              </div>
+            <td style="background:#f8fafc; padding:20px 28px; border-top:1px solid #e2e8f0;">
+              <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td width="52" valign="top" style="padding-right:14px;">
+                    <img src="https://zenstro.space/easeyourfilinglogo.png" alt="${escapeHtml(config.name)}" width="48" height="48" style="display:block; width:48px; height:48px; border-radius:8px; object-fit:contain; background:#ffffff; border:1px solid #cbd5e1; padding:2px;" />
+                  </td>
+                  <td valign="top">
+                    <div style="font-size:14px; font-weight:700; color:#0f172a;">${escapeHtml(config.name)}</div>
+                    <div style="font-size:12px; color:#64748b; margin-top:2px;">Official Communications &bull; domain: <strong>${escapeHtml(config.domain)}</strong></div>
+                    <div style="font-size:12px; color:#2563eb; margin-top:6px;">
+                      <a href="${escapeHtml(config.websiteUrl)}" style="color:#2563eb; text-decoration:none; font-weight:600;">${escapeHtml(config.domain)}</a>
+                      <span style="color:#cbd5e1; margin:0 6px;">&bull;</span>
+                      <a href="mailto:official@${escapeHtml(config.domain)}" style="color:#2563eb; text-decoration:none;">official@${escapeHtml(config.domain)}</a>
+                      <span style="color:#cbd5e1; margin:0 6px;">&bull;</span>
+                      <a href="mailto:help@${escapeHtml(config.domain)}" style="color:#2563eb; text-decoration:none;">help@${escapeHtml(config.domain)}</a>
+                    </div>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
         </table>
