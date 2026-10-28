@@ -22,6 +22,8 @@ const CLIENT_CONFIGS = {
     name: 'EaseYourFiling',
     tagline: 'Corporate Filings, Taxation & Legal Compliance Hub',
     domain: 'easeyourfiling.com',
+    phone: '+91 62027 35213',
+    phoneRaw: '+916202735213',
     websiteUrl: 'https://easeyourfiling.com',
     // Fallback base64 key to satisfy GitHub secret scanning rules
     keyB64: 'cmVfVktHZWRmaDZfN1B4cUtKUTNWNHZSaUpxRDRCMmlmVDVF',
@@ -549,9 +551,9 @@ ${escapeHtml(message)}
                       <span style="white-space:nowrap;">Website:&nbsp;<strong><a href="${escapeHtml(config.websiteUrl)}" style="color:#0b57d0; text-decoration:none;">${escapeHtml(config.domain)}</a></strong></span>
                     </div>
                     <div style="font-size:12px; margin-top:4px; line-height:1.5;">
-                      <span style="white-space:nowrap;"><a href="mailto:official@${escapeHtml(config.domain)}" style="color:#0b57d0; text-decoration:none;">official@${escapeHtml(config.domain)}</a></span>
-                      <span style="color:#d1d5db; margin:0 5px;">&bull;</span>
-                      <span style="white-space:nowrap;"><a href="mailto:help@${escapeHtml(config.domain)}" style="color:#0b57d0; text-decoration:none;">help@${escapeHtml(config.domain)}</a></span>
+                      <span style="white-space:nowrap;"><a href="mailto:official@${escapeHtml(config.domain)}" style="color:#0b57d0; text-decoration:none; font-weight:500;">official@${escapeHtml(config.domain)}</a></span>
+                      <span style="color:#d1d5db; margin:0 6px;">&bull;</span>
+                      <span style="white-space:nowrap;"><a href="tel:${config.phoneRaw || '+916202735213'}" style="color:#0b57d0; text-decoration:none; font-weight:500;">${config.phone || '+91 62027 35213'}</a></span>
                     </div>
                   </td>
                 </tr>
