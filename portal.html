@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mail — EaseYourFiling Workspace</title>
+  <title>Inbox — EaseYourFiling Gmail Workspace</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=4">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=4">
   <link rel="shortcut icon" href="favicon.ico?v=4">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Google+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&family=Google+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <script src="config.js?v=9.2"></script>
   <style>
     :root {
@@ -20,15 +20,13 @@
       --gm-surface-active: #d3e3fd;
       --gm-text-main: #1f1f1f;
       --gm-text-muted: #444746;
-      --gm-text-secondary: #5f6368;
+      --gm-text-sub: #5f6368;
       --gm-border: #e0e2e6;
-      --gm-border-subtle: #f0f2f5;
+      --gm-border-subtle: #f2f2f2;
       --gm-primary: #0b57d0;
       --gm-primary-container: #c2e7ff;
       --gm-on-primary-container: #001d35;
-      --gm-danger: #b3261e;
-      --gm-font: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      --gm-mono: 'DM Mono', monospace;
+      --gm-font: 'Google Sans', 'Roboto', Arial, sans-serif;
     }
 
     * { box-sizing: border-box; }
@@ -43,8 +41,8 @@
       overflow: hidden;
     }
 
-    /* SVG Icon Helper */
-    .gm-icon {
+    /* SVG Icon Utility */
+    .icon {
       width: 20px;
       height: 20px;
       fill: currentColor;
@@ -52,8 +50,8 @@
       flex-shrink: 0;
     }
 
-    /* ================= Top Google App Bar ================= */
-    .gm-appbar {
+    /* ================= 1. Top Google App Bar ================= */
+    .appbar {
       height: 64px;
       background: var(--gm-bg);
       display: flex;
@@ -61,59 +59,74 @@
       justify-content: space-between;
       padding: 0 16px;
       gap: 16px;
-      border-bottom: 1px solid transparent;
     }
-    .gm-appbar-left {
+    .appbar-left {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       min-width: 240px;
     }
-    .gm-logo-badge {
-      width: 38px;
-      height: 38px;
-      background: #0b57d0;
-      color: #ffffff;
-      border-radius: 8px;
+    .btn-hamburger {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
-      font-size: 17px;
-      letter-spacing: -0.02em;
+      color: var(--gm-text-sub);
+      cursor: pointer;
     }
-    .gm-brand-title {
-      font-size: 19px;
-      font-weight: 500;
-      color: var(--gm-text-main);
+    .btn-hamburger:hover {
+      background: rgba(60,64,67,0.08);
+    }
+    .brand-link {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       text-decoration: none;
+      color: var(--gm-text-main);
     }
-    .gm-brand-title span.sub {
-      color: var(--gm-text-secondary);
+    .brand-logo-img {
+      height: 34px;
+      max-width: 150px;
+      object-fit: contain;
+      display: block;
+    }
+    .brand-text-gmail {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 21px;
+      color: #5f6368;
+      font-family: 'Google Sans', 'Roboto', sans-serif;
       font-weight: 400;
     }
+    .gmail-m-icon {
+      width: 28px;
+      height: 24px;
+      display: inline-block;
+    }
 
-    /* Google Style Wide Search Bar */
-    .gm-search-wrap {
+    /* Google Pill Search Bar */
+    .search-box-wrap {
       flex: 1;
       max-width: 720px;
-      height: 46px;
+      height: 48px;
       background: #eaf1fb;
       border-radius: 24px;
       display: flex;
       align-items: center;
       padding: 0 18px;
-      gap: 14px;
+      gap: 12px;
       transition: background 0.15s ease, box-shadow 0.15s ease;
     }
-    .gm-search-wrap:focus-within {
+    .search-box-wrap:focus-within {
       background: #ffffff;
       box-shadow: 0 1px 3px rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
     }
-    .gm-search-wrap input {
+    .search-box-wrap input {
       border: none;
       background: transparent;
       outline: none;
@@ -122,130 +135,126 @@
       color: var(--gm-text-main);
       font-family: var(--gm-font);
     }
-    .gm-search-wrap input::placeholder {
-      color: var(--gm-text-secondary);
+    .search-box-wrap input::placeholder {
+      color: var(--gm-text-sub);
+    }
+    .btn-search-slider {
+      background: none;
+      border: none;
+      color: var(--gm-text-sub);
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 50%;
     }
 
-    .gm-appbar-right {
+    /* Appbar Right */
+    .appbar-right {
       display: flex;
       align-items: center;
       gap: 10px;
     }
-    .gm-status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: #e6f4ea;
-      color: #137333;
-      padding: 4px 10px;
-      border-radius: 16px;
-      font-size: 12px;
-      font-weight: 500;
-    }
-    .gm-status-pill .dot {
-      width: 7px;
-      height: 7px;
+    .appbar-icon-btn {
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
-      background: #137333;
-    }
-    .super-admin-badge {
-      background: #fce8e6;
-      color: #c5221f;
-      padding: 4px 10px;
-      border-radius: 16px;
-      font-size: 11.5px;
-      font-weight: 600;
-      font-family: var(--gm-mono);
-    }
-    .gm-btn-nav {
+      border: none;
       background: transparent;
-      border: 1px solid var(--gm-border);
-      border-radius: 18px;
-      padding: 5px 12px;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--gm-text-muted);
+      color: var(--gm-text-sub);
       cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .gm-btn-nav:hover {
-      background: rgba(0,0,0,0.04);
-      color: var(--gm-text-main);
-    }
-    .gm-user-avatar {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: #0b57d0;
-      color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+    .appbar-icon-btn:hover {
+      background: rgba(60,64,67,0.08);
+      color: var(--gm-text-main);
+    }
+    .btn-upgrade-pill {
+      background: #e8f0fe;
+      color: #0b57d0;
+      border: 1px solid #d2e3fc;
+      border-radius: 20px;
+      height: 36px;
+      padding: 0 18px;
+      font-size: 13.5px;
       font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-upgrade-pill:hover {
+      background: #d3e3fd;
+    }
+    .avatar-circle {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #000000;
+      color: #ffffff;
+      font-weight: 700;
       font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
     }
 
-    /* ================= Layout: Sidebar + Main Area ================= */
-    .gm-layout {
-      display: flex;
+    /* ================= 2. Main App Viewport Grid ================= */
+    .main-viewport {
+      display: grid;
+      grid-template-columns: 256px 1fr 56px;
       height: calc(100% - 64px);
       padding: 0 16px 16px 12px;
       gap: 12px;
     }
 
-    /* Sidebar */
-    .gm-sidebar {
-      width: 256px;
-      flex-shrink: 0;
+    /* ================= 3. Left Gmail Sidebar ================= */
+    .sidebar {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
       overflow-y: auto;
+      padding-right: 8px;
     }
-
-    /* Google "+ Compose" Pill */
-    .gm-compose-btn {
+    /* Google + Compose Button */
+    .btn-compose {
       background: var(--gm-primary-container);
       color: var(--gm-on-primary-container);
       border: none;
       border-radius: 16px;
       height: 56px;
-      padding: 0 24px;
+      padding: 0 24px 0 18px;
       display: inline-flex;
       align-items: center;
       gap: 12px;
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
-      box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+      box-shadow: 0 1px 2px rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
       margin: 8px 0 16px 4px;
-      transition: box-shadow 0.15s ease, background 0.15s ease;
       width: fit-content;
+      transition: box-shadow 0.15s ease, background 0.15s ease;
     }
-    .gm-compose-btn:hover {
-      box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+    .btn-compose:hover {
+      box-shadow: 0 1px 3px rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
       background: #b5e1fc;
     }
 
-    .gm-nav-menu {
+    .nav-list {
       list-style: none;
       padding: 0;
       margin: 0;
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 1px;
     }
-    .gm-nav-item {
+    .nav-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 38px;
-      padding: 0 16px 0 20px;
-      border-radius: 20px;
+      height: 32px;
+      padding: 0 16px 0 24px;
+      border-radius: 0 16px 16px 0;
       color: var(--gm-text-muted);
       font-size: 14px;
       font-weight: 500;
@@ -253,50 +262,46 @@
       user-select: none;
       transition: background 0.1s ease;
     }
-    .gm-nav-item:hover {
+    .nav-item:hover {
       background: #eaebef;
       color: var(--gm-text-main);
     }
-    .gm-nav-item.active {
+    .nav-item.active {
       background: var(--gm-surface-active);
       color: #001d35;
       font-weight: 700;
     }
-    .gm-nav-item-left {
+    .nav-item-left {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 16px;
     }
-    .gm-nav-badge {
+    .nav-badge {
       font-size: 12px;
       font-weight: 600;
+      color: var(--gm-text-main);
     }
 
-    .gm-nav-heading {
-      font-size: 11.5px;
-      font-weight: 700;
-      color: var(--gm-text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      padding: 18px 20px 8px;
+    .sidebar-section-heading {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gm-text-main);
+      padding: 20px 24px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .sidebar-section-heading button {
+      background: none;
+      border: none;
+      font-size: 18px;
+      color: var(--gm-text-sub);
+      cursor: pointer;
+      padding: 2px 6px;
     }
 
-    .gm-sidebar-footer {
-      padding: 12px 16px;
-      border-top: 1px solid var(--gm-border-subtle);
-      font-size: 12px;
-      color: var(--gm-text-secondary);
-      line-height: 1.5;
-    }
-    .gm-sidebar-footer a {
-      color: var(--gm-primary);
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    /* ================= Main Mail Workspace Card ================= */
-    .gm-mail-card {
-      flex: 1;
+    /* ================= 4. Center Mail Card ================= */
+    .mail-card {
       background: var(--gm-surface);
       border-radius: 16px;
       display: flex;
@@ -304,290 +309,341 @@
       overflow: hidden;
       box-shadow: 0 1px 3px rgba(60,64,67,0.08);
       min-width: 0;
+      position: relative;
     }
 
-    /* Toolbar on Top of Email List */
-    .gm-toolbar {
+    /* Top Action Bar (Checkbox, Refresh, More, Pagination) */
+    .action-bar {
       height: 48px;
       border-bottom: 1px solid var(--gm-border-subtle);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 16px;
+      padding: 0 16px 0 14px;
       flex-shrink: 0;
       background: #ffffff;
     }
-    .gm-toolbar-left {
+    .action-bar-left {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
     }
-    .gm-icon-btn {
-      width: 36px;
-      height: 36px;
+    .action-btn {
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       border: none;
       background: transparent;
-      color: var(--gm-text-secondary);
+      color: var(--gm-text-sub);
       cursor: pointer;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.15s ease;
     }
-    .gm-icon-btn:hover {
+    .action-btn:hover {
       background: rgba(60,64,67,0.08);
       color: var(--gm-text-main);
     }
-
-    .gm-filter-chips {
+    .checkbox-select-wrap {
       display: flex;
       align-items: center;
-      gap: 6px;
-      margin-left: 8px;
-    }
-    .gm-chip {
-      height: 30px;
-      padding: 0 12px;
-      border-radius: 8px;
-      border: 1px solid var(--gm-border);
-      background: transparent;
-      color: var(--gm-text-secondary);
-      font-size: 12.5px;
-      font-weight: 500;
+      gap: 2px;
       cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      font-family: var(--gm-font);
+      padding: 4px;
+      border-radius: 4px;
     }
-    .gm-chip:hover {
-      background: var(--gm-surface-hover);
-      color: var(--gm-text-main);
+    .checkbox-select-wrap:hover {
+      background: rgba(60,64,67,0.08);
     }
-    .gm-chip.active {
-      background: #e8f0fe;
-      border-color: #d2e3fc;
-      color: var(--gm-primary);
-      font-weight: 600;
+    .gm-cb {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: var(--gm-primary);
     }
 
-    .gm-toolbar-right {
+    .action-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
       font-size: 12px;
-      color: var(--gm-text-secondary);
+      color: var(--gm-text-sub);
+    }
+
+    /* Category Tabs: Primary, Promotions, Social, Updates (Exact Gmail layout) */
+    .category-tabs {
+      display: flex;
+      height: 56px;
+      border-bottom: 1px solid var(--gm-border);
+      background: #ffffff;
+      flex-shrink: 0;
+    }
+    .cat-tab {
+      flex: 1;
+      max-width: 250px;
       display: flex;
       align-items: center;
       gap: 14px;
+      padding: 0 16px;
+      cursor: pointer;
+      user-select: none;
+      border-bottom: 3px solid transparent;
+      transition: background 0.15s ease;
+      position: relative;
+    }
+    .cat-tab:hover {
+      background: #f8fafc;
+    }
+    .cat-tab.active {
+      color: var(--gm-primary);
+      border-bottom: 3px solid var(--gm-primary);
+    }
+    .cat-tab-icon {
+      color: var(--gm-text-sub);
+    }
+    .cat-tab.active .cat-tab-icon {
+      color: var(--gm-primary);
+    }
+    .cat-tab-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      overflow: hidden;
+    }
+    .cat-tab-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .cat-tab-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: 10px;
+      color: #ffffff;
+    }
+    .badge-green { background: #137333; }
+    .badge-blue { background: #1a73e8; }
+    .badge-orange { background: #c26401; }
+    .cat-tab-snippet {
+      font-size: 12px;
+      color: var(--gm-text-sub);
+      font-weight: 400;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    /* Email List / Rows */
-    .gm-list-pane {
+    /* Email Table List Rows */
+    .email-table-pane {
       flex: 1;
       overflow-y: auto;
       background: #ffffff;
     }
-    .gm-row {
+    .email-row {
       display: flex;
       align-items: center;
-      height: 44px;
+      height: 40px;
       padding: 0 16px 0 12px;
       border-bottom: 1px solid var(--gm-border-subtle);
       cursor: pointer;
       user-select: none;
-      transition: background 0.1s ease;
-      gap: 12px;
       font-size: 14px;
+      gap: 12px;
+      background: #ffffff;
     }
-    .gm-row:hover {
+    .email-row:hover {
       background: var(--gm-surface-hover);
       box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px 0 rgba(60,64,67,0.15);
+      z-index: 1;
     }
-    .gm-row.unread {
+    .email-row.read {
+      background: #f8f9fa;
+      font-weight: 400;
+    }
+    .email-row.unread {
       background: #ffffff;
       font-weight: 700;
     }
-    .gm-row-checkbox {
-      width: 18px;
-      height: 18px;
-      accent-color: var(--gm-primary);
-      cursor: pointer;
-    }
-    .gm-row-star {
+    .star-icon {
       color: #c4c7c5;
+      font-size: 16px;
       cursor: pointer;
     }
-    .gm-row-star:hover {
+    .star-icon:hover {
       color: #fbbc04;
     }
-    .gm-row-sender {
-      width: 170px;
-      min-width: 170px;
+    .sender-cell {
+      width: 190px;
+      min-width: 190px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       color: var(--gm-text-main);
     }
-    .gm-mailbox-tag {
-      font-size: 11px;
-      font-family: var(--gm-mono);
-      background: #f1f3f4;
-      color: #444746;
-      padding: 2px 6px;
-      border-radius: 4px;
-      flex-shrink: 0;
-    }
-    .gm-row-content {
+    .content-cell {
       flex: 1;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       min-width: 0;
     }
-    .gm-row-subject {
+    .subject-text {
       color: var(--gm-text-main);
       margin-right: 4px;
     }
-    .gm-row-snippet {
-      color: var(--gm-text-secondary);
+    .snippet-text {
+      color: var(--gm-text-sub);
       font-weight: 400;
     }
-    .gm-row-date {
+    .date-cell {
       font-size: 12px;
-      color: var(--gm-text-secondary);
+      color: var(--gm-text-sub);
       white-space: nowrap;
       margin-left: auto;
-      padding-left: 10px;
+      padding-left: 12px;
       font-weight: 500;
     }
 
-    /* Empty State */
-    .gm-empty-state {
-      padding: 80px 24px;
-      text-align: center;
-      color: var(--gm-text-secondary);
-    }
-    .gm-empty-title {
-      font-size: 16px;
-      font-weight: 500;
-      color: var(--gm-text-main);
-      margin-bottom: 6px;
-    }
-    .gm-empty-sub {
-      font-size: 13.5px;
-      max-width: 420px;
-      margin: 0 auto;
-      line-height: 1.5;
-    }
-
-    /* ================= Email Reader Pane ================= */
-    .gm-reader-pane {
+    /* Email Reader Overlay (Gmail Thread View) */
+    .reader-pane {
       display: none;
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px 32px 32px;
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
       background: #ffffff;
+      z-index: 50;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 20px 32px 40px;
     }
-    .gm-reader-top-actions {
+    .reader-top-nav {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 24px;
-      padding-bottom: 12px;
+      gap: 16px;
+      padding-bottom: 16px;
       border-bottom: 1px solid var(--gm-border-subtle);
+      margin-bottom: 24px;
     }
-    .gm-reader-subject {
+    .reader-subject-title {
       font-size: 22px;
       font-weight: 400;
       color: var(--gm-text-main);
-      margin: 0 0 20px;
-      line-height: 1.3;
+      margin: 0 0 24px;
     }
-    .gm-reader-header {
+    .reader-header-line {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       margin-bottom: 24px;
     }
-    .gm-reader-sender-info {
+    .reader-sender-block {
       display: flex;
-      gap: 14px;
+      gap: 16px;
       align-items: center;
     }
-    .gm-reader-avatar {
-      width: 40px;
-      height: 40px;
+    .reader-avatar-icon {
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
-      background: #1a73e8;
+      background: #0b57d0;
       color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
+      font-size: 17px;
       font-weight: 600;
     }
-    .gm-reader-names {
+    .reader-names-col {
       display: flex;
       flex-direction: column;
       gap: 2px;
     }
-    .gm-reader-from-name {
-      font-size: 14px;
+    .reader-sender-name {
+      font-size: 14.5px;
       font-weight: 700;
       color: var(--gm-text-main);
     }
-    .gm-reader-from-addr {
-      font-size: 12.5px;
-      color: var(--gm-text-secondary);
+    .reader-sender-email {
+      font-size: 12px;
+      color: var(--gm-text-sub);
       font-weight: 400;
     }
-    .gm-reader-to {
+    .reader-to-line {
       font-size: 12px;
-      color: var(--gm-text-secondary);
+      color: var(--gm-text-sub);
       margin-top: 2px;
     }
-    .gm-reader-date {
-      font-size: 12.5px;
-      color: var(--gm-text-secondary);
+    .reader-timestamp {
+      font-size: 12px;
+      color: var(--gm-text-sub);
     }
-
-    .gm-reader-body {
+    .reader-body-content {
       font-size: 14.5px;
       line-height: 1.65;
       color: #202124;
       white-space: pre-wrap;
       word-break: break-word;
-      padding: 10px 0 30px;
+      padding: 16px 0 32px;
+      border-bottom: 1px solid var(--gm-border-subtle);
     }
-    .gm-reader-footer-actions {
+    .reader-actions-row {
       display: flex;
       gap: 12px;
-      border-top: 1px solid var(--gm-border-subtle);
-      padding-top: 20px;
+      margin-top: 24px;
     }
-    .gm-btn-pill {
+    .btn-gmail-reply {
       height: 38px;
-      padding: 0 20px;
-      border: 1px solid var(--gm-border);
-      border-radius: 20px;
+      padding: 0 24px;
+      border: 1px solid #dadce0;
+      border-radius: 19px;
       background: #ffffff;
-      font-size: 13.5px;
+      color: #444746;
+      font-size: 14px;
       font-weight: 500;
-      color: var(--gm-text-muted);
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 8px;
     }
-    .gm-btn-pill:hover {
-      background: var(--gm-surface-hover);
-      color: var(--gm-text-main);
+    .btn-gmail-reply:hover {
+      background: #f8fafc;
+      border-color: #c4c7c5;
     }
 
-    /* ================= Floating Gmail-Style Compose Window ================= */
-    .gm-compose-modal {
+    /* ================= 5. Far Right Side Rail (Google Apps) ================= */
+    .side-rail {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 8px;
+      gap: 20px;
+      border-left: 1px solid transparent;
+    }
+    .rail-app-icon {
+      width: 22px;
+      height: 22px;
+      cursor: pointer;
+      opacity: 0.85;
+      transition: opacity 0.15s ease;
+    }
+    .rail-app-icon:hover {
+      opacity: 1;
+    }
+    .rail-divider {
+      width: 20px;
+      height: 1px;
+      background: var(--gm-border);
+      margin: 4px 0;
+    }
+
+    /* ================= 6. Docked Floating Compose Window ================= */
+    .compose-modal {
       position: fixed;
       bottom: 0;
-      right: 32px;
-      width: 540px;
+      right: 48px;
+      width: 560px;
       max-width: calc(100vw - 32px);
       background: #ffffff;
       border-radius: 8px 8px 0 0;
@@ -599,7 +655,7 @@
       z-index: 1000;
       overflow: hidden;
     }
-    .gm-compose-header {
+    .compose-header {
       height: 40px;
       background: #f2f6fc;
       display: flex;
@@ -607,49 +663,45 @@
       justify-content: space-between;
       padding: 0 14px;
       border-bottom: 1px solid #e0e2e6;
-      cursor: pointer;
     }
-    .gm-compose-title {
+    .compose-title {
       font-size: 14px;
       font-weight: 500;
       color: var(--gm-text-main);
     }
-    .gm-compose-controls {
+    .compose-ctrls {
       display: flex;
-      align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
-    .gm-compose-ctrl-btn {
+    .compose-btn-ctrl {
       background: none;
       border: none;
-      color: var(--gm-text-secondary);
+      color: var(--gm-text-sub);
       cursor: pointer;
       font-size: 16px;
       padding: 2px 4px;
     }
-
-    .gm-compose-row {
+    .compose-field-row {
       display: flex;
       align-items: center;
       padding: 8px 16px;
       border-bottom: 1px solid #f1f3f4;
-      font-size: 13.5px;
+      font-size: 14px;
     }
-    .gm-compose-label {
+    .compose-field-label {
       width: 60px;
-      color: var(--gm-text-secondary);
+      color: var(--gm-text-sub);
       font-size: 13px;
     }
-    .gm-compose-input {
+    .compose-field-input {
       flex: 1;
       border: none;
       outline: none;
       font-family: var(--gm-font);
       font-size: 14px;
       color: var(--gm-text-main);
-      background: transparent;
     }
-    .gm-compose-select {
+    .compose-select {
       flex: 1;
       border: none;
       outline: none;
@@ -659,21 +711,19 @@
       background: transparent;
       cursor: pointer;
     }
-    .gm-compose-body {
+    .compose-textarea {
       flex: 1;
-      min-height: 220px;
-      max-height: 340px;
+      min-height: 240px;
+      max-height: 360px;
       padding: 16px;
       border: none;
       outline: none;
-      resize: vertical;
       font-family: var(--gm-font);
       font-size: 14px;
       line-height: 1.6;
-      color: var(--gm-text-main);
+      resize: vertical;
     }
-
-    .gm-compose-toolbar {
+    .compose-footer {
       height: 52px;
       padding: 0 16px;
       border-top: 1px solid #f1f3f4;
@@ -682,8 +732,8 @@
       justify-content: space-between;
       background: #ffffff;
     }
-    .gm-btn-send {
-      background: var(--gm-primary);
+    .btn-send-primary {
+      background: #0b57d0;
       color: #ffffff;
       border: none;
       border-radius: 18px;
@@ -696,44 +746,12 @@
       align-items: center;
       gap: 6px;
     }
-    .gm-btn-send:hover {
+    .btn-send-primary:hover {
       background: #0842a0;
-      box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3);
+      box-shadow: 0 1px 2px rgba(60,64,67,0.3);
     }
 
-    /* Modal for Domain/Hosting and Users */
-    .gm-modal-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.4);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-    }
-    .gm-modal-box {
-      background: #ffffff;
-      border-radius: 16px;
-      width: 520px;
-      max-width: calc(100vw - 32px);
-      padding: 24px;
-      box-shadow: 0 12px 28px rgba(0,0,0,0.2);
-    }
-    .gm-modal-title {
-      font-size: 18px;
-      font-weight: 500;
-      margin: 0 0 16px;
-    }
-    .gm-modal-close-btn {
-      float: right;
-      background: none;
-      border: none;
-      font-size: 20px;
-      cursor: pointer;
-      color: var(--gm-text-secondary);
-    }
-
-    /* Bottom Left Toast Notification */
+    /* Google Bottom-Left Notification Toast */
     .gm-toast {
       position: fixed;
       bottom: 24px;
@@ -741,8 +759,8 @@
       background: #323232;
       color: #ffffff;
       padding: 12px 20px;
-      border-radius: 6px;
-      font-size: 13.5px;
+      border-radius: 4px;
+      font-size: 14px;
       box-shadow: 0 3px 6px rgba(0,0,0,0.16);
       z-index: 3000;
       display: none;
@@ -751,275 +769,342 @@
 </head>
 <body>
 
-  <!-- Google App Bar -->
-  <header class="gm-appbar">
-    <div class="gm-appbar-left">
-      <a href="portal.html?client=easeyourfiling" style="display:flex; align-items:center; gap:8px; text-decoration:none;">
-        <img src="easeyourfilinglogo.png" alt="EaseYourFiling" style="height:36px; max-width:180px; object-fit:contain; display:block;" onerror="this.style.display='none'; document.getElementById('gm-logo-fallback').style.display='flex';">
-        <div class="gm-logo-badge" id="gm-logo-fallback" style="display:none;">EF</div>
-        <span style="font-size:20px; font-weight:400; color:var(--gm-text-secondary); letter-spacing:-0.02em;">Mail</span>
+  <!-- 1. Google App Bar -->
+  <header class="appbar">
+    <div class="appbar-left">
+      <button type="button" class="btn-hamburger" title="Main menu">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+      </button>
+
+      <a href="portal.html?client=easeyourfiling" class="brand-link">
+        <!-- Official Client Logo -->
+        <img src="easeyourfilinglogo.png" alt="EaseYourFiling" class="brand-logo-img" onerror="this.style.display='none'; document.getElementById('logo-gmail-text').style.display='flex';">
+        <div id="logo-gmail-text" class="brand-text-gmail" style="display:none;">
+          <svg class="gmail-m-icon" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M1.5 5.25v13.5c0 .966.784 1.75 1.75 1.75H6V9.75L1.5 5.25z"/>
+            <path fill="#34A853" d="M18 20.5h2.75c.966 0 1.75-.784 1.75-1.75V5.25L18 9.75v10.75z"/>
+            <path fill="#EA4335" d="M18 5.25l-6 4.5-6-4.5V3.75c0-1.465 1.636-2.32 2.844-1.492L12 4.618l3.156-2.36C16.364 1.43 18 2.285 18 3.75v1.5z"/>
+            <path fill="#FBBC04" d="M6 9.75V20.5H3.25A1.75 1.75 0 0 1 1.5 18.75V5.25L6 9.75z"/>
+          </svg>
+          <span>Gmail</span>
+        </div>
       </a>
     </div>
 
     <!-- Wide Google Search Bar -->
-    <div class="gm-search-wrap">
-      <svg class="gm-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-      <input type="text" id="gm-search-input" placeholder="Search in mail" oninput="handleSearch()">
+    <div class="search-box-wrap">
+      <svg class="icon" style="color:#5f6368;" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <input type="text" id="gm-search-input" placeholder="Search mail" oninput="handleSearch()">
+      <button type="button" class="btn-search-slider" title="Search options">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/></svg>
+      </button>
     </div>
 
-    <div class="gm-appbar-right">
-      <span class="gm-status-pill">
-        <span class="dot"></span>
-        <span>easeyourfiling.com</span>
-      </span>
-      <span id="super-admin-pill" class="super-admin-badge" style="display:none;">Super Admin</span>
-      <a id="btn-master-console" href="admin.html" class="gm-btn-nav" style="display:none;">Master Console ↗</a>
-      <div class="gm-user-avatar" id="user-avatar-initial" title="Signed in user">S</div>
-      <button type="button" class="gm-btn-nav" onclick="logoutSession()">Sign out</button>
+    <!-- Right Controls (Settings, Apps, Avatar, Upgrade) -->
+    <div class="appbar-right">
+      <button type="button" class="appbar-icon-btn" title="Support">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/></svg>
+      </button>
+      <button type="button" class="appbar-icon-btn" title="Settings">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+      </button>
+
+      <button type="button" class="btn-upgrade-pill" title="Resend & Cloudflare Active">
+        <svg class="icon" style="color:#0b57d0; width:16px; height:16px;" viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 3.99L19.53 19H4.47L12 5.99zM11 16h2v2h-2zm0-6h2v4h-2z"/></svg>
+        <span>Active</span>
+      </button>
+
+      <button type="button" class="appbar-icon-btn" title="Google apps">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM6 4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 12c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+      </button>
+
+      <div class="avatar-circle" id="user-avatar-btn" title="Sign out" onclick="logoutSession()">
+        Z
+      </div>
     </div>
   </header>
 
-  <!-- Layout: Sidebar + Main Content Card -->
-  <div class="gm-layout">
+  <!-- 2. Main App Viewport Grid -->
+  <div class="main-viewport">
 
-    <!-- Left Sidebar -->
-    <aside class="gm-sidebar">
-      <div>
-        <!-- Google Compose Button -->
-        <button type="button" class="gm-compose-btn" onclick="openCompose()">
-          <svg class="gm-icon" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-          Compose
-        </button>
+    <!-- 3. Left Gmail Sidebar -->
+    <aside class="sidebar">
+      <!-- + Compose Button -->
+      <button type="button" class="btn-compose" onclick="openCompose()">
+        <svg class="icon" style="color:#001d35;" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+        Compose
+      </button>
 
-        <ul class="gm-nav-menu">
-          <li class="gm-nav-item active" id="nav-inbox" onclick="switchFolder('inbox')">
-            <div class="gm-nav-item-left">
-              <svg class="gm-icon" viewBox="0 0 24 24"><path d="M19 3H4.99c-1.11 0-1.98.89-1.98 2L3 19c0 1.1.88 2 1.99 2H19c1.1 0 2-.9 2-2V5c0-1.11-.9-2-2-2zm0 12h-4c0 1.66-1.35 3-3 3s-3-1.34-3-3H4.99V5H19v10z"/></svg>
-              <span>Inbox</span>
-            </div>
-            <span class="gm-nav-badge" id="badge-inbox-count">0</span>
-          </li>
-          <li class="gm-nav-item" id="nav-sent" onclick="switchFolder('sent')">
-            <div class="gm-nav-item-left">
-              <svg class="gm-icon" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-              <span>Sent</span>
-            </div>
-            <span class="gm-nav-badge" id="badge-sent-count">0</span>
-          </li>
-        </ul>
+      <ul class="nav-list">
+        <li class="nav-item active" id="nav-inbox" onclick="switchFolder('inbox')">
+          <div class="nav-item-left">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M19 3H4.99c-1.11 0-1.98.89-1.98 2L3 19c0 1.1.88 2 1.99 2H19c1.1 0 2-.9 2-2V5c0-1.11-.9-2-2-2zm0 12h-4c0 1.66-1.35 3-3 3s-3-1.34-3-3H4.99V5H19v10z"/></svg>
+            <span>Inbox</span>
+          </div>
+          <span class="nav-badge" id="badge-inbox">0</span>
+        </li>
+        <li class="nav-item" id="nav-starred" onclick="filterStarred()">
+          <div class="nav-item-left">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <span>Starred</span>
+          </div>
+        </li>
+        <li class="nav-item" id="nav-snoozed">
+          <div class="nav-item-left">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+            <span>Snoozed</span>
+          </div>
+        </li>
+        <li class="nav-item" id="nav-sent" onclick="switchFolder('sent')">
+          <div class="nav-item-left">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            <span>Sent</span>
+          </div>
+          <span class="nav-badge" id="badge-sent">0</span>
+        </li>
+        <li class="nav-item" id="nav-drafts">
+          <div class="nav-item-left">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M6 2c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6H6zm7 7V3.5L18.5 9H13z"/></svg>
+            <span>Drafts</span>
+          </div>
+        </li>
+      </ul>
 
-        <div class="gm-nav-heading">Inboxes</div>
-        <ul class="gm-nav-menu">
-          <li class="gm-nav-item" onclick="filterByMailbox('official@easeyourfiling.com', this)">
-            <div class="gm-nav-item-left">
-              <svg class="gm-icon" style="color:#1a73e8;" viewBox="0 0 24 24"><path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/></svg>
-              <span>official@</span>
-            </div>
-          </li>
-          <li class="gm-nav-item" onclick="filterByMailbox('help@easeyourfiling.com', this)">
-            <div class="gm-nav-item-left">
-              <svg class="gm-icon" style="color:#188038;" viewBox="0 0 24 24"><path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/></svg>
-              <span>help@</span>
-            </div>
-          </li>
-          <li class="gm-nav-item" onclick="filterByMailbox('info@easeyourfiling.com', this)">
-            <div class="gm-nav-item-left">
-              <svg class="gm-icon" style="color:#ea8600;" viewBox="0 0 24 24"><path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/></svg>
-              <span>info@</span>
-            </div>
-          </li>
-        </ul>
-
-        <div class="gm-nav-heading">Infrastructure</div>
-        <ul class="gm-nav-menu">
-          <li class="gm-nav-item" onclick="openModal('hosting')">
-            <div class="gm-nav-item-left">
-              <svg class="gm-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-              <span>Hosting &amp; Edge</span>
-            </div>
-          </li>
-          <li class="gm-nav-item" onclick="openModal('users')">
-            <div class="gm-nav-item-left">
-              <svg class="gm-icon" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-              <span>Authorized Users</span>
-            </div>
-          </li>
-        </ul>
+      <!-- Labels / Mailboxes -->
+      <div class="sidebar-section-heading">
+        <span>Labels</span>
+        <button type="button" title="Add label">+</button>
       </div>
 
-      <!-- Storage / Infrastructure Status -->
-      <div class="gm-sidebar-footer">
-        <div><strong>Cloudflare Edge:</strong> Active</div>
-        <div>Resend Sending &amp; Receiving Active</div>
-        <div style="margin-top:4px;"><a href="https://easeyourfiling.com" target="_blank">easeyourfiling.com ↗</a></div>
+      <ul class="nav-list">
+        <li class="nav-item" onclick="switchCategory('official')">
+          <div class="nav-item-left">
+            <svg class="icon" style="color:#1a73e8;" viewBox="0 0 24 24"><path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/></svg>
+            <span>official@</span>
+          </div>
+        </li>
+        <li class="nav-item" onclick="switchCategory('help')">
+          <div class="nav-item-left">
+            <svg class="icon" style="color:#137333;" viewBox="0 0 24 24"><path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/></svg>
+            <span>help@</span>
+          </div>
+        </li>
+        <li class="nav-item" onclick="switchCategory('info')">
+          <div class="nav-item-left">
+            <svg class="icon" style="color:#c26401;" viewBox="0 0 24 24"><path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/></svg>
+            <span>info@</span>
+          </div>
+        </li>
+      </ul>
+
+      <div style="margin-top:auto; padding:20px 24px 8px; font-size:12px; color:var(--gm-text-sub); line-height:1.6;">
+        <div><strong>EaseYourFiling Suite</strong></div>
+        <div>Protected by Cloudflare Edge</div>
+        <div style="margin-top:4px;"><a href="admin.html" id="link-admin-console" style="color:var(--gm-primary); text-decoration:none; display:none;">Admin Console ↗</a></div>
       </div>
     </aside>
 
-    <!-- Main Mail Workspace -->
-    <main class="gm-mail-card">
+    <!-- 4. Center Mail Card -->
+    <main class="mail-card">
 
-      <!-- Action Toolbar (Gmail style) -->
-      <div class="gm-toolbar" id="gm-toolbar">
-        <div class="gm-toolbar-left">
-          <input type="checkbox" class="gm-row-checkbox" title="Select all" onclick="toggleSelectAll(this)">
-          <button type="button" class="gm-icon-btn" title="Refresh (Sync with Resend)" onclick="fetchInbox(true)">
-            <svg class="gm-icon" viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
-          </button>
-
-          <!-- Filter Chips -->
-          <div class="gm-filter-chips">
-            <button type="button" class="gm-chip active" onclick="filterByMailbox('all', this)">All Mail</button>
-            <button type="button" class="gm-chip" onclick="filterByMailbox('official@easeyourfiling.com', this)">official@</button>
-            <button type="button" class="gm-chip" onclick="filterByMailbox('help@easeyourfiling.com', this)">help@</button>
-            <button type="button" class="gm-chip" onclick="filterByMailbox('info@easeyourfiling.com', this)">info@</button>
+      <!-- Action Bar (Select all checkbox, refresh, pagination) -->
+      <div class="action-bar" id="action-bar">
+        <div class="action-bar-left">
+          <div class="checkbox-select-wrap">
+            <input type="checkbox" class="gm-cb" title="Select" onclick="toggleSelectAll(this)">
+            <svg class="icon" style="width:14px; height:14px; color:var(--gm-text-sub);" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
           </div>
-        </div>
 
-        <div class="gm-toolbar-right">
-          <span id="gm-counter-text">0 conversations</span>
-        </div>
-      </div>
-
-      <!-- Email List Pane (Gmail row table) -->
-      <div class="gm-list-pane" id="gm-list-pane">
-        <div class="gm-empty-state">
-          <div class="gm-empty-title">Loading mail...</div>
-        </div>
-      </div>
-
-      <!-- Email Reader Pane (Opens when row clicked) -->
-      <div class="gm-reader-pane" id="gm-reader-pane">
-        <div class="gm-reader-top-actions">
-          <button type="button" class="gm-icon-btn" title="Back to inbox" onclick="closeReader()">
-            <svg class="gm-icon" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          <button type="button" class="action-btn" title="Refresh" onclick="fetchInbox(true)">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
           </button>
-          <div style="font-size:13px; color:var(--gm-text-secondary);" id="reader-mailbox-indicator">official@easeyourfiling.com</div>
+
+          <button type="button" class="action-btn" title="More">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+          </button>
         </div>
 
-        <h2 class="gm-reader-subject" id="reader-subject">Subject</h2>
+        <div class="action-bar-right">
+          <span id="counter-range-text">1–50 of 50</span>
+          <button type="button" class="action-btn" title="Newer">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          </button>
+          <button type="button" class="action-btn" title="Older">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </button>
+        </div>
+      </div>
 
-        <div class="gm-reader-header">
-          <div class="gm-reader-sender-info">
-            <div class="gm-reader-avatar" id="reader-avatar">S</div>
-            <div class="gm-reader-names">
-              <span class="gm-reader-from-name" id="reader-from-name">Sender Name</span>
-              <span class="gm-reader-from-addr" id="reader-from-addr">&lt;sender@example.com&gt;</span>
-              <span class="gm-reader-to" id="reader-to">to official@easeyourfiling.com</span>
+      <!-- Category Tabs (Primary, Official, Help, Info - exact screenshot tabs!) -->
+      <div class="category-tabs" id="category-tabs">
+        <div class="cat-tab active" id="tab-cat-primary" onclick="switchCategory('primary')">
+          <svg class="icon cat-tab-icon" viewBox="0 0 24 24"><path d="M19 3H4.99c-1.11 0-1.98.89-1.98 2L3 19c0 1.1.88 2 1.99 2H19c1.1 0 2-.9 2-2V5c0-1.11-.9-2-2-2zm0 12h-4c0 1.66-1.35 3-3 3s-3-1.34-3-3H4.99V5H19v10z"/></svg>
+          <div class="cat-tab-info">
+            <div class="cat-tab-header">
+              <span>Primary</span>
             </div>
           </div>
-          <div class="gm-reader-date" id="reader-date">Oct 28, 2026</div>
         </div>
 
-        <div style="display:flex; gap:8px; margin-bottom:16px;">
-          <button type="button" class="gm-chip active" id="btn-toggle-text" onclick="toggleReaderBody('text')">Plain Text</button>
-          <button type="button" class="gm-chip" id="btn-toggle-html" onclick="toggleReaderBody('html')">Formatted View</button>
+        <div class="cat-tab" id="tab-cat-official" onclick="switchCategory('official')">
+          <svg class="icon cat-tab-icon" viewBox="0 0 24 24"><path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z"/></svg>
+          <div class="cat-tab-info">
+            <div class="cat-tab-header">
+              <span>Official</span>
+              <span class="cat-tab-badge badge-blue" id="badge-cat-official">official@</span>
+            </div>
+            <div class="cat-tab-snippet">Corporate filings &amp; legal inquiries</div>
+          </div>
         </div>
 
-        <div class="gm-reader-body" id="reader-body-text">Loading message...</div>
-        <div class="gm-reader-body" id="reader-body-html" style="display:none; background:#ffffff; border:1px solid #e0e2e6; border-radius:8px; padding:20px;"></div>
+        <div class="cat-tab" id="tab-cat-help" onclick="switchCategory('help')">
+          <svg class="icon cat-tab-icon" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+          <div class="cat-tab-info">
+            <div class="cat-tab-header">
+              <span>Support</span>
+              <span class="cat-tab-badge badge-green" id="badge-cat-help">help@</span>
+            </div>
+            <div class="cat-tab-snippet">Customer desk &amp; live tickets</div>
+          </div>
+        </div>
 
-        <div class="gm-reader-footer-actions">
-          <button type="button" class="gm-btn-pill" onclick="replyCurrentEmail()">
-            <svg class="gm-icon" viewBox="0 0 24 24"><path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg>
+        <div class="cat-tab" id="tab-cat-info" onclick="switchCategory('info')">
+          <svg class="icon cat-tab-icon" viewBox="0 0 24 24"><path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z"/></svg>
+          <div class="cat-tab-info">
+            <div class="cat-tab-header">
+              <span>General</span>
+              <span class="cat-tab-badge badge-orange" id="badge-cat-info">info@</span>
+            </div>
+            <div class="cat-tab-snippet">General requests &amp; partnerships</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Email List Container (Gmail Rows) -->
+      <div class="email-table-pane" id="email-table-pane">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Full Message Reader View (Gmail Thread View) -->
+      <div class="reader-pane" id="reader-pane">
+        <div class="reader-top-nav">
+          <button type="button" class="action-btn" title="Back to inbox" onclick="closeReader()">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          </button>
+          <button type="button" class="action-btn" title="Delete">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+          </button>
+          <button type="button" class="action-btn" title="Mark as unread">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/></svg>
+          </button>
+        </div>
+
+        <h1 class="reader-subject-title" id="reader-subject">Subject line</h1>
+
+        <div class="reader-header-line">
+          <div class="reader-sender-block">
+            <div class="reader-avatar-icon" id="reader-avatar">E</div>
+            <div class="reader-names-col">
+              <div>
+                <span class="reader-sender-name" id="reader-sender-name">Sender</span>
+                <span class="reader-sender-email" id="reader-sender-email">&lt;email&gt;</span>
+              </div>
+              <div class="reader-to-line" id="reader-to-line">to official@easeyourfiling.com</div>
+            </div>
+          </div>
+          <div class="reader-timestamp" id="reader-date">11:08 PM</div>
+        </div>
+
+        <div class="reader-body-content" id="reader-body">
+          Message body
+        </div>
+
+        <div class="reader-actions-row">
+          <button type="button" class="btn-gmail-reply" onclick="replyCurrent()">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg>
             Reply
           </button>
-          <button type="button" class="gm-btn-pill" onclick="closeReader()">
+          <button type="button" class="btn-gmail-reply" onclick="closeReader()">
             Close
           </button>
         </div>
       </div>
 
     </main>
+
+    <!-- 5. Far Right Side Rail (Google Apps: Calendar, Keep, Tasks, Contacts) -->
+    <aside class="side-rail">
+      <!-- Calendar Icon -->
+      <svg class="rail-app-icon" title="Calendar" viewBox="0 0 24 24">
+        <path fill="#4285F4" d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>
+      </svg>
+      <!-- Keep (Lightbulb) -->
+      <svg class="rail-app-icon" title="Keep" viewBox="0 0 24 24">
+        <path fill="#FBBC04" d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/>
+      </svg>
+      <!-- Tasks (Checkmark) -->
+      <svg class="rail-app-icon" title="Tasks" viewBox="0 0 24 24">
+        <path fill="#4285F4" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
+      </svg>
+      <!-- Contacts (Person) -->
+      <svg class="rail-app-icon" title="Contacts" viewBox="0 0 24 24">
+        <path fill="#1A73E8" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+      </svg>
+      <div class="rail-divider"></div>
+      <!-- Add -->
+      <svg class="rail-app-icon" style="color:#5f6368;" title="Get add-ons" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+      </svg>
+    </aside>
+
   </div>
 
-  <!-- ================= Floating Docked Gmail Compose Modal ================= -->
-  <div class="gm-compose-modal" id="gm-compose-modal">
-    <div class="gm-compose-header">
-      <div class="gm-compose-title">New Message</div>
-      <div class="gm-compose-controls">
-        <button type="button" class="gm-compose-ctrl-btn" onclick="closeCompose()">✕</button>
+  <!-- 6. Docked Floating Gmail Compose Window -->
+  <div class="compose-modal" id="compose-modal">
+    <div class="compose-header">
+      <div class="compose-title">New Message</div>
+      <div class="compose-ctrls">
+        <button type="button" class="compose-btn-ctrl" onclick="closeCompose()">✕</button>
       </div>
     </div>
 
-    <form id="gm-compose-form" onsubmit="handleSendEmail(event)">
-      <div class="gm-compose-row">
-        <span class="gm-compose-label">From</span>
-        <select class="gm-compose-select" id="compose-from" required>
+    <form id="compose-form" onsubmit="handleSend(event)">
+      <div class="compose-field-row">
+        <span class="compose-field-label">From</span>
+        <select class="compose-select" id="compose-from" required>
           <option value="official">EaseYourFiling Official &lt;official@easeyourfiling.com&gt;</option>
           <option value="help">EaseYourFiling Support &lt;help@easeyourfiling.com&gt;</option>
           <option value="info">EaseYourFiling Info &lt;info@easeyourfiling.com&gt;</option>
         </select>
       </div>
 
-      <div class="gm-compose-row">
-        <span class="gm-compose-label">To</span>
-        <input type="email" class="gm-compose-input" id="compose-to" placeholder="Recipients" required>
+      <div class="compose-field-row">
+        <span class="compose-field-label">To</span>
+        <input type="email" class="compose-field-input" id="compose-to" placeholder="Recipients" required>
       </div>
 
-      <div class="gm-compose-row">
-        <input type="text" class="gm-compose-input" id="compose-subject" placeholder="Subject" required>
+      <div class="compose-field-row">
+        <input type="text" class="compose-field-input" id="compose-subject" placeholder="Subject" required>
       </div>
 
-      <textarea class="gm-compose-body" id="compose-body" placeholder="Write your message here..." required></textarea>
+      <textarea class="compose-textarea" id="compose-body" placeholder="Write message..." required></textarea>
 
-      <div class="gm-compose-toolbar">
-        <button type="submit" class="gm-btn-send" id="btn-send-submit">
+      <div class="compose-footer">
+        <button type="submit" class="btn-send-primary" id="btn-send-action">
           Send
         </button>
-        <button type="button" class="gm-icon-btn" title="Discard draft" onclick="closeCompose()">
-          <svg class="gm-icon" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+        <button type="button" class="action-btn" title="Discard draft" onclick="closeCompose()">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
         </button>
       </div>
     </form>
   </div>
 
-  <!-- Modal: Domain & Hosting -->
-  <div class="gm-modal-overlay" id="modal-hosting" onclick="closeModalOnOverlay(event, 'hosting')">
-    <div class="gm-modal-box">
-      <button type="button" class="gm-modal-close-btn" onclick="closeModal('hosting')">✕</button>
-      <h3 class="gm-modal-title">Hosting &amp; Edge Infrastructure</h3>
-      <div style="font-size:14px; line-height:1.7; color:var(--gm-text-muted);">
-        <p><strong>Domain:</strong> <code>easeyourfiling.com</code></p>
-        <p><strong>Network:</strong> Cloudflare Global Anycast Edge (300+ Cities)</p>
-        <p><strong>SSL/TLS:</strong> Full Strict TLS 1.3 Encryption Active</p>
-        <p><strong>Email Routing:</strong> Resend Gateway (Sending &amp; Receiving Verified)</p>
-        <p><strong>Uptime:</strong> 99.98% Monitored</p>
-        <div style="margin-top:20px;">
-          <a href="https://easeyourfiling.com" target="_blank" class="gm-btn-pill" style="text-decoration:none;">Visit Live Website ↗</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal: Authorized Users -->
-  <div class="gm-modal-overlay" id="modal-users" onclick="closeModalOnOverlay(event, 'users')">
-    <div class="gm-modal-box">
-      <button type="button" class="gm-modal-close-btn" onclick="closeModal('users')">✕</button>
-      <h3 class="gm-modal-title">Authorized Google Accounts</h3>
-      <p style="font-size:13.5px; color:var(--gm-text-secondary); margin-bottom:16px;">The following accounts are permitted to sign into the EaseYourFiling workspace:</p>
-      
-      <ul id="modal-users-list" style="margin:0 0 20px; padding-left:20px; font-size:14px; line-height:2; font-family:var(--gm-mono);">
-        <li>official@easeyourfiling.com</li>
-        <li>help@easeyourfiling.com</li>
-        <li>info@easeyourfiling.com</li>
-        <li>easeyourfiling@gmail.com</li>
-      </ul>
-
-      <div id="super-admin-add-user-wrap" style="display:none; padding-top:16px; border-top:1px solid #e0e2e6;">
-        <div style="font-size:13px; font-weight:600; margin-bottom:8px;">Add New Authorized Email:</div>
-        <div style="display:flex; gap:8px;">
-          <input type="email" id="input-new-auth-email" placeholder="client.email@gmail.com" style="flex:1; padding:8px 12px; border:1px solid #dadce0; border-radius:6px; font-size:14px;">
-          <button type="button" class="gm-btn-send" style="height:36px;" onclick="handleAddUser()">Authorize</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- Toast -->
-  <div class="gm-toast" id="gm-toast"></div>
+  <div class="gm-toast" id="gm-toast">Message sent.</div>
 
   <script>
-    (function () {
+    (function() {
       const SUPER_ADMIN_EMAIL = "ceo.shubhampathak@gmail.com";
       const urlParams = new URLSearchParams(window.location.search);
       const clientId = (urlParams.get('client') || 'easeyourfiling').toLowerCase();
@@ -1041,17 +1126,15 @@
       }
 
       if (isSuperAdmin) {
-        document.getElementById('super-admin-pill').style.display = 'inline-flex';
-        document.getElementById('btn-master-console').style.display = 'inline-flex';
-        document.getElementById('super-admin-add-user-wrap').style.display = 'block';
+        document.getElementById('link-admin-console').style.display = 'inline-block';
       }
 
       const activeUser = adminSession || clientSession;
-      const initial = (activeUser.name || activeUser.email || 'U').charAt(0).toUpperCase();
-      document.getElementById('user-avatar-initial').textContent = initial;
+      const initialLetter = (activeUser.name || activeUser.email || 'Z').charAt(0).toUpperCase();
+      document.getElementById('user-avatar-btn').textContent = initialLetter;
 
       let currentFolder = 'inbox'; // 'inbox' or 'sent'
-      let currentFilterMailbox = 'all';
+      let currentCategory = 'primary'; // 'primary', 'official', 'help', 'info'
       let allInboxEmails = [];
       let allSentEmails = [];
       let activeEmail = null;
@@ -1071,34 +1154,39 @@
         window.location.href = 'login.html?logout=true';
       };
 
-      // Folder Switching
+      // Navigation & Folder switching
       window.switchFolder = function(folder) {
         currentFolder = folder;
-        document.querySelectorAll('.gm-nav-menu .gm-nav-item').forEach(i => i.classList.remove('active'));
-        const targetNav = document.getElementById(`nav-${folder}`);
-        if (targetNav) targetNav.classList.add('active');
+        document.querySelectorAll('.nav-list .nav-item').forEach(i => i.classList.remove('active'));
+        const navEl = document.getElementById(`nav-${folder}`);
+        if (navEl) navEl.classList.add('active');
 
         closeReader();
         if (folder === 'sent') {
+          document.getElementById('category-tabs').style.display = 'none';
           fetchSent();
         } else {
+          document.getElementById('category-tabs').style.display = 'flex';
           fetchInbox();
         }
       };
 
-      window.filterByMailbox = function(mailbox, btn) {
-        currentFilterMailbox = mailbox;
-        document.querySelectorAll('.gm-filter-chips .gm-chip').forEach(c => c.classList.remove('active'));
-        if (btn) btn.classList.add('active');
+      window.switchCategory = function(cat) {
+        currentCategory = cat;
+        document.querySelectorAll('.category-tabs .cat-tab').forEach(t => t.classList.remove('active'));
+        const activeTab = document.getElementById(`tab-cat-${cat}`);
+        if (activeTab) activeTab.classList.add('active');
         closeReader();
-        renderCurrentList();
+        renderTable();
       };
 
-      // Fetch Inbound Emails
-      window.fetchInbox = async function(manualSync = false) {
-        const listPane = document.getElementById('gm-list-pane');
-        if (manualSync) showToast('Syncing with Resend...');
+      window.filterStarred = function() {
+        showToast('No starred messages.');
+      };
 
+      // Fetch Inbound
+      window.fetchInbox = async function(manualSync = false) {
+        if (manualSync) showToast('Checking for new mail...');
         try {
           const syncParam = manualSync ? '&sync=true' : '';
           const res = await fetch(`/api/client-hub?action=inbox&client=${clientId}${syncParam}`, {
@@ -1107,17 +1195,16 @@
           const data = await res.json();
           if (data.success && Array.isArray(data.emails)) {
             allInboxEmails = data.emails;
-            document.getElementById('badge-inbox-count').textContent = allInboxEmails.length;
-            if (currentFolder === 'inbox') renderCurrentList();
+            document.getElementById('badge-inbox').textContent = allInboxEmails.length;
+            renderTable();
             if (manualSync) showToast('Inbox updated.');
           }
         } catch (e) {
           console.error(e);
-          showToast('Failed to load inbox.');
         }
       };
 
-      // Fetch Sent Emails
+      // Fetch Sent
       window.fetchSent = async function() {
         try {
           const res = await fetch(`/api/client-hub?action=outbox&client=${clientId}`, {
@@ -1126,25 +1213,23 @@
           const data = await res.json();
           if (data.success && Array.isArray(data.emails)) {
             allSentEmails = data.emails;
-            document.getElementById('badge-sent-count').textContent = allSentEmails.length;
-            if (currentFolder === 'sent') renderCurrentList();
+            document.getElementById('badge-sent').textContent = allSentEmails.length;
+            renderTable();
           }
         } catch (e) {
           console.error(e);
         }
       };
 
-      function renderCurrentList() {
-        const listPane = document.getElementById('gm-list-pane');
+      // Render Gmail Row Table
+      function renderTable() {
+        const pane = document.getElementById('email-table-pane');
         const rawList = currentFolder === 'sent' ? allSentEmails : allInboxEmails;
 
         let filtered = rawList;
-        if (currentFilterMailbox !== 'all') {
-          const target = currentFilterMailbox.toLowerCase();
-          filtered = rawList.filter(e => {
-            const field = currentFolder === 'sent' ? (e.from || '') : (e.to || '');
-            return field.toLowerCase().includes(target);
-          });
+        if (currentFolder === 'inbox' && currentCategory !== 'primary') {
+          const target = `${currentCategory}@`;
+          filtered = rawList.filter(e => String(e.to || '').toLowerCase().includes(target));
         }
 
         const q = (document.getElementById('gm-search-input').value || '').toLowerCase().trim();
@@ -1157,55 +1242,53 @@
           );
         }
 
-        document.getElementById('gm-counter-text').textContent = `${filtered.length} conversation${filtered.length === 1 ? '' : 's'}`;
+        document.getElementById('counter-range-text').textContent = filtered.length > 0 ? `1–${filtered.length} of ${filtered.length}` : '0–0 of 0';
 
         if (filtered.length === 0) {
-          listPane.innerHTML = `
-            <div class="gm-empty-state">
-              <div class="gm-empty-title">Your ${currentFolder} is empty.</div>
-              <div class="gm-empty-sub">
-                ${currentFolder === 'inbox' 
-                  ? 'Incoming emails sent to info@, help@, or official@easeyourfiling.com will appear here in real time.' 
-                  : 'Messages dispatched from this client portal will be archived here.'}
+          pane.innerHTML = `
+            <div style="padding:80px 24px; text-align:center; color:#5f6368;">
+              <div style="font-size:16px; font-weight:500; color:#1f1f1f; margin-bottom:6px;">Your ${currentFolder} is empty.</div>
+              <div style="font-size:13.5px; max-width:440px; margin:0 auto; line-height:1.5;">
+                ${currentFolder === 'inbox'
+                  ? 'Messages sent to official@, help@, or info@easeyourfiling.com will appear here in real time.'
+                  : 'Messages dispatched from this mailbox will be archived here.'}
               </div>
             </div>
           `;
           return;
         }
 
-        listPane.innerHTML = filtered.map(e => {
-          const dateStr = formatDate(e.createdAt || e.sentAt);
-          const mailboxTag = extractMailbox(currentFolder === 'sent' ? e.from : e.to);
-          const senderDisplay = currentFolder === 'sent' ? `To: ${escapeHtml(e.to)}` : escapeHtml(e.from || 'Unknown');
-          const subjectDisplay = escapeHtml(e.subject || '(no subject)');
-          const snippetDisplay = escapeHtml((e.message || '').substring(0, 90));
+        pane.innerHTML = filtered.map(e => {
+          const sender = currentFolder === 'sent' ? `To: ${cleanSender(e.to)}` : cleanSender(e.from);
+          const subj = escapeHtml(e.subject || '(no subject)');
+          const snippet = escapeHtml((e.message || '').substring(0, 110));
+          const dateStr = formatGmailDate(e.createdAt || e.sentAt);
 
           return `
-            <div class="gm-row" onclick="openReader('${e.id}')">
-              <input type="checkbox" class="gm-row-checkbox" onclick="event.stopPropagation()">
-              <span class="gm-row-star" onclick="event.stopPropagation()">☆</span>
-              <span class="gm-mailbox-tag">${mailboxTag}</span>
-              <span class="gm-row-sender">${senderDisplay}</span>
-              <div class="gm-row-content">
-                <span class="gm-row-subject">${subjectDisplay}</span>
-                <span class="gm-row-snippet">- ${snippetDisplay}</span>
+            <div class="email-row unread" onclick="openMessage('${e.id}')">
+              <input type="checkbox" class="gm-cb" onclick="event.stopPropagation()">
+              <span class="star-icon" onclick="toggleStar(event, this)">☆</span>
+              <span class="sender-cell">${escapeHtml(sender)}</span>
+              <div class="content-cell">
+                <span class="subject-text">${subj}</span>
+                <span class="snippet-text">- ${snippet}</span>
               </div>
-              <span class="gm-row-date">${dateStr}</span>
+              <span class="date-cell">${dateStr}</span>
             </div>
           `;
         }).join('');
       }
 
-      function extractMailbox(str) {
-        if (!str) return 'official@';
-        if (str.includes('help@')) return 'help@';
-        if (str.includes('info@')) return 'info@';
-        return 'official@';
+      function cleanSender(str) {
+        if (!str) return 'Unknown';
+        const match = str.match(/^([^<]+)/);
+        if (match && match[1].trim()) return match[1].trim();
+        return str;
       }
 
-      function formatDate(isoStr) {
-        if (!isoStr) return '';
-        const d = new Date(isoStr);
+      function formatGmailDate(iso) {
+        if (!iso) return '';
+        const d = new Date(iso);
         const now = new Date();
         if (d.toDateString() === now.toDateString()) {
           return d.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
@@ -1213,59 +1296,46 @@
         return d.toLocaleDateString([], { month:'short', day:'numeric' });
       }
 
-      // Email Reader
-      window.openReader = function(id) {
+      window.toggleStar = function(e, el) {
+        e.stopPropagation();
+        if (el.textContent === '☆') {
+          el.textContent = '★';
+          el.style.color = '#fbbc04';
+        } else {
+          el.textContent = '☆';
+          el.style.color = '#c4c7c5';
+        }
+      };
+
+      // Message Thread Reader
+      window.openMessage = function(id) {
         const rawList = currentFolder === 'sent' ? allSentEmails : allInboxEmails;
         activeEmail = rawList.find(e => (e.id === id || e.emailId === id));
         if (!activeEmail) return;
 
-        document.getElementById('gm-toolbar').style.display = 'none';
-        document.getElementById('gm-list-pane').style.display = 'none';
-        const reader = document.getElementById('gm-reader-pane');
-        reader.style.display = 'block';
+        const reader = document.getElementById('reader-pane');
+        reader.style.display = 'flex';
 
         document.getElementById('reader-subject').textContent = activeEmail.subject || '(no subject)';
-        document.getElementById('reader-from-name').textContent = activeEmail.from || 'Unknown';
-        document.getElementById('reader-from-addr').textContent = `<${activeEmail.from || ''}>`;
-        document.getElementById('reader-to').textContent = `to: ${activeEmail.to || ''}`;
+        document.getElementById('reader-sender-name').textContent = activeEmail.from || 'Unknown';
+        document.getElementById('reader-sender-email').textContent = `<${activeEmail.from || ''}>`;
+        document.getElementById('reader-to-line').textContent = `to: ${activeEmail.to || ''}`;
         document.getElementById('reader-date').textContent = new Date(activeEmail.createdAt || activeEmail.sentAt || Date.now()).toLocaleString();
-        document.getElementById('reader-avatar').textContent = (activeEmail.from || 'U').charAt(0).toUpperCase();
+        document.getElementById('reader-avatar').textContent = (activeEmail.from || 'E').charAt(0).toUpperCase();
 
-        document.getElementById('reader-body-text').textContent = activeEmail.message || '(Empty content)';
-        const htmlContainer = document.getElementById('reader-body-html');
+        const bodyContainer = document.getElementById('reader-body');
         if (activeEmail.htmlContent) {
-          htmlContainer.innerHTML = activeEmail.htmlContent;
+          bodyContainer.innerHTML = activeEmail.htmlContent;
         } else {
-          htmlContainer.innerHTML = `<div style="color:#5f6368;">No formatted HTML version available.</div>`;
+          bodyContainer.textContent = activeEmail.message || '(Empty message)';
         }
       };
 
       window.closeReader = function() {
-        document.getElementById('gm-reader-pane').style.display = 'none';
-        document.getElementById('gm-toolbar').style.display = 'flex';
-        document.getElementById('gm-list-pane').style.display = 'block';
+        document.getElementById('reader-pane').style.display = 'none';
       };
 
-      window.toggleReaderBody = function(type) {
-        const textBtn = document.getElementById('btn-toggle-text');
-        const htmlBtn = document.getElementById('btn-toggle-html');
-        const textBody = document.getElementById('reader-body-text');
-        const htmlBody = document.getElementById('reader-body-html');
-
-        if (type === 'html') {
-          textBody.style.display = 'none';
-          htmlBody.style.display = 'block';
-          htmlBtn.classList.add('active');
-          textBtn.classList.remove('active');
-        } else {
-          textBody.style.display = 'block';
-          htmlBody.style.display = 'none';
-          textBtn.classList.add('active');
-          htmlBtn.classList.remove('active');
-        }
-      };
-
-      window.replyCurrentEmail = function() {
+      window.replyCurrent = function() {
         if (!activeEmail) return;
         openCompose();
         const fromAddr = activeEmail.from || '';
@@ -1276,22 +1346,21 @@
         document.getElementById('compose-body').focus();
       };
 
-      // Compose Modal Controls
+      // Compose Modal
       window.openCompose = function() {
-        const modal = document.getElementById('gm-compose-modal');
-        modal.style.display = 'flex';
+        document.getElementById('compose-modal').style.display = 'flex';
         document.getElementById('compose-to').focus();
       };
 
       window.closeCompose = function() {
-        document.getElementById('gm-compose-modal').style.display = 'none';
+        document.getElementById('compose-modal').style.display = 'none';
       };
 
-      window.handleSendEmail = async function(event) {
-        event.preventDefault();
-        const sendBtn = document.getElementById('btn-send-submit');
-        sendBtn.disabled = true;
-        sendBtn.textContent = 'Sending...';
+      window.handleSend = async function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('btn-send-action');
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
 
         const payload = {
           from: document.getElementById('compose-from').value,
@@ -1313,75 +1382,28 @@
           const result = await res.json();
           if (res.ok && result.success) {
             showToast('Message sent.');
-            document.getElementById('gm-compose-form').reset();
+            document.getElementById('compose-form').reset();
             closeCompose();
             fetchSent();
           } else {
             showToast(result.error || 'Failed to send.');
           }
-        } catch (e) {
-          showToast('Error sending message.');
+        } catch (err) {
+          showToast('Error sending email.');
         } finally {
-          sendBtn.disabled = false;
-          sendBtn.textContent = 'Send';
+          btn.disabled = false;
+          btn.textContent = 'Send';
         }
       };
 
-      // Modals
-      window.openModal = function(type) {
-        const m = document.getElementById(`modal-${type}`);
-        if (m) m.style.display = 'flex';
-      };
-      window.closeModal = function(type) {
-        const m = document.getElementById(`modal-${type}`);
-        if (m) m.style.display = 'none';
-      };
-      window.closeModalOnOverlay = function(e, type) {
-        if (e.target.classList.contains('gm-modal-overlay')) {
-          closeModal(type);
-        }
-      };
-
-      window.handleAddUser = async function() {
-        const input = document.getElementById('input-new-auth-email');
-        const email = (input.value || '').trim();
-        if (!email || !email.includes('@')) {
-          alert('Please enter a valid email address.');
-          return;
-        }
-
-        try {
-          const res = await fetch(`/api/client-hub?action=manage_users&client=${clientId}`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-Zenstro-User': currentUserEmail
-            },
-            body: JSON.stringify({ email: email, operation: 'add', requesterEmail: currentUserEmail })
-          });
-          const data = await res.json();
-          if (data.success) {
-            showToast(`Authorized ${email}`);
-            input.value = '';
-            const li = document.createElement('li');
-            li.textContent = email;
-            document.getElementById('modal-users-list').appendChild(li);
-          } else {
-            alert(data.error || 'Failed to add');
-          }
-        } catch (e) {
-          alert('Error adding user');
-        }
+      window.toggleSelectAll = function(master) {
+        document.querySelectorAll('.email-table-pane .gm-cb').forEach(cb => {
+          cb.checked = master.checked;
+        });
       };
 
       window.handleSearch = function() {
-        renderCurrentList();
-      };
-
-      window.toggleSelectAll = function(masterCb) {
-        document.querySelectorAll('.gm-row-checkbox').forEach(cb => {
-          cb.checked = masterCb.checked;
-        });
+        renderTable();
       };
 
       function escapeHtml(str) {
@@ -1394,7 +1416,7 @@
           .replace(/'/g, '&#039;');
       }
 
-      // Initial Fetch
+      // Initial Load
       fetchInbox();
       fetchSent();
     })();
