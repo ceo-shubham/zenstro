@@ -43,7 +43,8 @@ window.ZENSTRO_CONFIG = {
         "official@easeyourfiling.com",
         "help@easeyourfiling.com",
         "info@easeyourfiling.com",
-        "easeyourfiling@gmail.com"
+        "easeyourfiling@gmail.com",
+        "csshrikantdubey@gmail.com"
       ]
     }
   ]

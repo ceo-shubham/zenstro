@@ -34,7 +34,8 @@ const CLIENT_CONFIGS = {
       'official@easeyourfiling.com',
       'help@easeyourfiling.com',
       'info@easeyourfiling.com',
-      'easeyourfiling@gmail.com'
+      'easeyourfiling@gmail.com',
+      'csshrikantdubey@gmail.com'
     ],
     hosting: {
       provider: 'Cloudflare Pages / Global Edge Network',
