@@ -1402,6 +1402,8 @@
           Message body
         </div>
 
+        <div id="reader-attachments-zone" style="margin-top:16px; display:none;"></div>
+
         <div class="reader-actions-row">
           <button type="button" class="btn-gmail-reply" onclick="replyCurrent()">
             <svg class="icon" viewBox="0 0 24 24"><path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg>
@@ -2018,6 +2020,30 @@
         } else {
           bodyContainer.textContent = activeEmail.message || '(Empty message)';
         }
+
+        const attZone = document.getElementById('reader-attachments-zone');
+        if (attZone) {
+          if (Array.isArray(activeEmail.attachments) && activeEmail.attachments.length > 0) {
+            attZone.style.display = 'block';
+            attZone.innerHTML = `
+              <div style="font-size:12px; font-weight:600; color:#5f6368; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:8px;">
+                ${activeEmail.attachments.length} Attachment${activeEmail.attachments.length > 1 ? 's' : ''}
+              </div>
+              <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                ${activeEmail.attachments.map(att => `
+                  <div style="display:inline-flex; align-items:center; gap:8px; padding:6px 12px; background:#f1f3f4; border:1px solid #e0e0e0; border-radius:18px; font-size:12.5px; color:#1f1f1f;">
+                    <svg class="icon" style="width:14px; height:14px; color:#5f6368;" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                    <span><strong>${escapeHtml(att.filename || 'Attachment')}</strong> ${att.sizeFormatted ? `(${escapeHtml(att.sizeFormatted)})` : ''}</span>
+                    ${att.b2Url ? `<a href="${escapeHtml(att.b2Url)}" target="_blank" style="color:#0b57d0; text-decoration:none; font-weight:600; margin-left:4px;">Download &darr;</a>` : ''}
+                  </div>
+                `).join('')}
+              </div>
+            `;
+          } else {
+            attZone.style.display = 'none';
+            attZone.innerHTML = '';
+          }
+        }
       };
 
       window.closeReader = function() {
@@ -2080,12 +2106,17 @@
           attachedFiles.push(item);
           renderAttachmentChips();
 
-          // 1. Read base64 for direct email attachment
-          const reader = new FileReader();
-          reader.onload = function(evt) {
-            item.content = evt.target.result;
-          };
-          reader.readAsDataURL(file);
+          // 1. Read base64 directly for native email attachment
+          try {
+            item.content = await new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = () => resolve(reader.result);
+              reader.onerror = reject;
+              reader.readAsDataURL(file);
+            });
+          } catch (readErr) {
+            console.error('File read error:', readErr);
+          }
 
           // 2. Upload to Backblaze B2 Storage (/api/storage)
           try {
@@ -2149,6 +2180,10 @@
 
       window.handleSend = async function(e) {
         e.preventDefault();
+        if (attachedFiles.some(f => f.status === 'uploading')) {
+          showToast('Please wait for file attachment to finish uploading...');
+          return;
+        }
         const btn = document.getElementById('btn-send-action');
         btn.disabled = true;
         btn.textContent = 'Sending...';

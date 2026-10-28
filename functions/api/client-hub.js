@@ -539,7 +539,7 @@ export async function onRequestPost(context) {
       finalFrom = `${config.name} <official@${config.domain}>`;
     }
 
-    // Clean, high-trust business email HTML template (No dark boxes, 100% clean light design)
+    // Clean, natural corporate email format (No artificial boxes, real signature at the bottom)
     const formattedHtml = `
       <!DOCTYPE html>
       <html>
@@ -547,53 +547,33 @@ export async function onRequestPost(context) {
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
       </head>
-      <body style="margin:0; padding:24px 16px; background:#ffffff; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; color:#1f2937;">
-        <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="max-width:640px; margin:0 auto; background:#ffffff; border:1px solid #e5e7eb; border-radius:10px; overflow:hidden;">
-          <tr>
-            <td style="padding:28px 28px 24px; color:#111827; font-size:15px; line-height:1.7; white-space:pre-wrap; word-break:break-word;">
-${escapeHtml(message)}
-${Array.isArray(body.attachments) && body.attachments.length > 0 ? `
-              <div style="margin-top:24px; padding:16px 20px; background:#f9fafb; border:1px solid #e5e7eb; border-radius:8px;">
-                <div style="font-size:12px; font-weight:700; color:#374151; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:10px;">
-                  Attached Files (${body.attachments.length})
-                </div>
-                ${body.attachments.map(att => `
-                  <div style="font-size:13px; margin:6px 0; color:#111827;">
-                    <span style="color:#0b57d0; font-size:15px; margin-right:4px;">&#128206;</span>
-                    <strong>${escapeHtml(att.filename || 'Attachment')}</strong>
-                    ${att.sizeFormatted ? `<span style="color:#6b7280; font-size:11px;">(${escapeHtml(att.sizeFormatted)})</span>` : ''}
-                    ${att.b2Url ? `<a href="${escapeHtml(att.b2Url)}" target="_blank" style="margin-left:8px; color:#0b57d0; text-decoration:none; font-size:12px; font-weight:600;">Download &darr;</a>` : ''}
+      <body style="margin:0; padding:20px 16px; background:#ffffff; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; color:#1f2937; -webkit-font-smoothing:antialiased;">
+        <div style="max-width:620px; margin:0 auto;">
+          <div style="font-size:15px; line-height:1.65; color:#111827; white-space:pre-wrap; word-break:break-word;">${escapeHtml(message)}</div>
+          
+          <div style="margin-top:28px; padding-top:18px; border-top:1px solid #e5e7eb;">
+            <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+              <tr>
+                <td width="52" valign="middle" style="padding-right:14px; vertical-align:middle;">
+                  <img src="https://zenstro.space/easeyourfilinglogo.png" alt="${escapeHtml(config.name)}" width="46" height="46" style="display:block; width:46px; height:46px; border-radius:8px; object-fit:contain; background:#ffffff; border:1px solid #e5e7eb; padding:2px;" />
+                </td>
+                <td valign="middle" style="vertical-align:middle; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+                  <div style="font-size:14px; font-weight:700; color:#111827; letter-spacing:-0.01em;">${escapeHtml(config.name)}</div>
+                  <div style="font-size:12px; color:#4b5563; margin-top:2px; line-height:1.5;">
+                    <span style="white-space:nowrap;">Official Communications</span>
+                    <span style="color:#9ca3af; margin:0 4px;">&bull;</span>
+                    <span style="white-space:nowrap;">Website:&nbsp;<strong><a href="${escapeHtml(config.websiteUrl)}" style="color:#0b57d0; text-decoration:none;">${escapeHtml(config.displayDomain || ('www.' + config.domain))}</a></strong></span>
                   </div>
-                `).join('')}
-              </div>
-` : ''}
-            </td>
-          </tr>
-          <tr>
-            <td style="background:#f9fafb; padding:20px 28px; border-top:1px solid #e5e7eb;">
-              <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                  <td width="52" valign="middle" style="padding-right:14px;">
-                    <img src="https://zenstro.space/easeyourfilinglogo.png" alt="${escapeHtml(config.name)}" width="48" height="48" style="display:block; width:48px; height:48px; border-radius:8px; object-fit:contain; background:#ffffff; border:1px solid #e5e7eb; padding:2px;" />
-                  </td>
-                  <td valign="middle">
-                    <div style="font-size:14px; font-weight:700; color:#111827; letter-spacing:-0.01em;">${escapeHtml(config.name)}</div>
-                    <div style="font-size:12px; color:#4b5563; margin-top:2px; line-height:1.5;">
-                      <span style="white-space:nowrap;">Official Communications</span>
-                      <span style="color:#9ca3af; margin:0 4px;">&bull;</span>
-                      <span style="white-space:nowrap;">Website:&nbsp;<strong><a href="${escapeHtml(config.websiteUrl)}" style="color:#0b57d0; text-decoration:none;">${escapeHtml(config.displayDomain || ('www.' + config.domain))}</a></strong></span>
-                    </div>
-                    <div style="font-size:12px; margin-top:4px; line-height:1.5;">
-                      <span style="white-space:nowrap;"><a href="mailto:official@${escapeHtml(config.domain)}" style="color:#0b57d0; text-decoration:none; font-weight:500;">official@${escapeHtml(config.domain)}</a></span>
-                      <span style="color:#d1d5db; margin:0 6px;">&bull;</span>
-                      <span style="white-space:nowrap;"><a href="tel:${config.phoneRaw || '+916202735213'}" style="color:#0b57d0; text-decoration:none; font-weight:500;">${config.phone || '+91 62027 35213'}</a></span>
-                    </div>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
+                  <div style="font-size:12px; margin-top:4px; line-height:1.5;">
+                    <span style="white-space:nowrap;"><a href="mailto:official@${escapeHtml(config.domain)}" style="color:#0b57d0; text-decoration:none; font-weight:500;">official@${escapeHtml(config.domain)}</a></span>
+                    <span style="color:#d1d5db; margin:0 6px;">&bull;</span>
+                    <span style="white-space:nowrap;"><a href="tel:${config.phoneRaw || '+916202735213'}" style="color:#0b57d0; text-decoration:none; font-weight:500;">${config.phone || '+91 62027 35213'}</a></span>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
       </body>
       </html>
     `;
@@ -615,11 +595,16 @@ ${Array.isArray(body.attachments) && body.attachments.length > 0 ? `
         if (typeof content === 'string' && content.includes(',')) {
           content = content.split(',')[1];
         }
-        return {
-          filename: att.filename || att.name || 'attachment',
-          content: content
+        const obj = {
+          filename: att.filename || att.name || 'attachment.pdf'
         };
-      });
+        if (content && content.length > 0) {
+          obj.content = content;
+        } else if (att.b2Url) {
+          obj.path = att.b2Url;
+        }
+        return obj;
+      }).filter(a => Boolean(a.content || a.path));
     }
 
     try {
@@ -648,6 +633,12 @@ ${Array.isArray(body.attachments) && body.attachments.length > 0 ? `
         bcc,
         subject,
         message,
+        htmlContent: formattedHtml,
+        attachments: Array.isArray(body.attachments) ? body.attachments.map(a => ({
+          filename: a.filename || a.name || 'Attachment',
+          sizeFormatted: a.sizeFormatted || '',
+          b2Url: a.b2Url || null
+        })) : [],
         sentAt: new Date().toISOString(),
         sentBy: requesterEmail || 'client_portal'
       };
