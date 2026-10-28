@@ -24,5 +24,27 @@ window.ZENSTRO_CONFIG = {
   resendSubdomainFrom: "ZENSTRO Admin <admin@mail.zenstro.space>",
 
   /* Custom Formspree / Webhook endpoint (optional) */
-  formspreeEndpoint: ""
+  formspreeEndpoint: "",
+
+  /* Registered Clients for Portal Access */
+  clients: [
+    {
+      id: "easeyourfiling",
+      name: "EaseYourFiling",
+      tagline: "Corporate Filings, Taxation & Legal Compliance Suite",
+      domain: "easeyourfiling.com",
+      websiteUrl: "https://easeyourfiling.com",
+      businessEmails: [
+        "official@easeyourfiling.com",
+        "help@easeyourfiling.com",
+        "info@easeyourfiling.com"
+      ],
+      authorizedEmails: [
+        "official@easeyourfiling.com",
+        "help@easeyourfiling.com",
+        "info@easeyourfiling.com",
+        "easeyourfiling@gmail.com"
+      ]
+    }
+  ]
 };

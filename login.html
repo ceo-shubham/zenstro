@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css?v=8.7">
-  <script src="config.js?v=9.1"></script>
+  <script src="config.js?v=9.2"></script>
   <script defer data-cfasync="false" src="https://mqleads.zenstro.space/mqleads.js" data-site-id="6ad4a0d013eaf75f9ee43c9b"></script>
   <!-- Google Identity Services library -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -195,6 +195,31 @@
       }
 
       const SOLE_ADMIN_EMAIL = "ceo.shubhampathak@gmail.com";
+      const REGISTERED_CLIENTS = (window.ZENSTRO_CONFIG && window.ZENSTRO_CONFIG.clients) || [
+        {
+          id: "easeyourfiling",
+          name: "EaseYourFiling",
+          domain: "easeyourfiling.com",
+          authorizedEmails: [
+            "official@easeyourfiling.com",
+            "help@easeyourfiling.com",
+            "info@easeyourfiling.com",
+            "easeyourfiling@gmail.com"
+          ]
+        }
+      ];
+
+      function findClientForEmail(cleanEmail) {
+        for (const client of REGISTERED_CLIENTS) {
+          if (Array.isArray(client.authorizedEmails) && client.authorizedEmails.map(e => e.toLowerCase()).includes(cleanEmail)) {
+            return client;
+          }
+          if (client.domain && cleanEmail.endsWith('@' + client.domain.toLowerCase())) {
+            return client;
+          }
+        }
+        return null;
+      }
 
       function attemptLogin(email, displayName, avatarUrl) {
         const cleanEmail = String(email || '').trim().toLowerCase();
@@ -203,54 +228,92 @@
           return;
         }
 
-        if (cleanEmail !== SOLE_ADMIN_EMAIL) {
-          // Log out immediately and show access denied message
+        const isSuperAdmin = (cleanEmail === SOLE_ADMIN_EMAIL);
+        const matchedClient = !isSuperAdmin ? findClientForEmail(cleanEmail) : null;
+
+        if (!isSuperAdmin && !matchedClient) {
           localStorage.removeItem('zenstro_admin_session');
           sessionStorage.removeItem('zenstro_admin_session');
-          localStorage.removeItem('zenstro_user_session');
-          sessionStorage.removeItem('zenstro_user_session');
+          localStorage.removeItem('zenstro_client_session');
+          sessionStorage.removeItem('zenstro_client_session');
           try {
             if (window.google && window.google.accounts && window.google.accounts.id) {
               window.google.accounts.id.disableAutoSelect();
             }
           } catch (e) {}
 
-          showAlert('You are not a member of ZENSTRO yet.', true);
+          showAlert('Your Google Account (' + cleanEmail + ') is not authorized. If you are an active client of ZENSTRO, please request authorization from ceo@zenstro.space.', true);
           return;
         }
 
-        const session = {
-          email: cleanEmail,
-          name: displayName || cleanEmail.split('@')[0],
-          avatar: avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName || cleanEmail)}&background=2563eb&color=fff`,
-          role: 'Owner / Lead Systems Architect',
-          isAdmin: true,
-          token: 'zen_' + Math.random().toString(36).substring(2) + Date.now().toString(36),
-          loginAt: new Date().toISOString()
-        };
+        if (isSuperAdmin) {
+          const session = {
+            email: cleanEmail,
+            name: displayName || cleanEmail.split('@')[0],
+            avatar: avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName || cleanEmail)}&background=2563eb&color=fff`,
+            role: 'Owner / Lead Systems Architect',
+            isAdmin: true,
+            token: 'zen_' + Math.random().toString(36).substring(2) + Date.now().toString(36),
+            loginAt: new Date().toISOString()
+          };
 
-        // Store sessions for ceo.shubhampathak@gmail.com
-        localStorage.setItem('zenstro_admin_session', JSON.stringify(session));
-        sessionStorage.setItem('zenstro_admin_session', JSON.stringify(session));
-        localStorage.setItem('zenstro_user_session', JSON.stringify(session));
-        sessionStorage.setItem('zenstro_user_session', JSON.stringify(session));
+          localStorage.setItem('zenstro_admin_session', JSON.stringify(session));
+          sessionStorage.setItem('zenstro_admin_session', JSON.stringify(session));
+          localStorage.setItem('zenstro_user_session', JSON.stringify(session));
+          sessionStorage.setItem('zenstro_user_session', JSON.stringify(session));
 
-        // Identify authenticated visitor in MQLeads
-        try {
-          if (window.MQLeads && typeof window.MQLeads.identify === 'function') {
-            window.MQLeads.identify({
-              name: session.name,
-              email: session.email,
-              handle: session.email.split('@')[0],
-              via: "login"
-            });
+          try {
+            if (window.MQLeads && typeof window.MQLeads.identify === 'function') {
+              window.MQLeads.identify({
+                name: session.name,
+                email: session.email,
+                handle: session.email.split('@')[0],
+                via: "login"
+              });
+            }
+          } catch (e) {}
+
+          const redirectParam = urlParams.get('redirect');
+          const clientParam = urlParams.get('client');
+          if (redirectParam === 'portal' && clientParam) {
+            showAlert(`Welcome Shubham! Redirecting to ${clientParam} Client Portal...`, false);
+            setTimeout(() => {
+              window.location.href = `portal.html?client=${encodeURIComponent(clientParam)}`;
+            }, 500);
+            return;
           }
-        } catch (e) {}
 
-        showAlert(`Welcome, ${session.name}! Redirecting to Admin Console...`, false);
-        setTimeout(() => {
-          window.location.href = 'admin.html';
-        }, 500);
+          showAlert(`Welcome, ${session.name}! Redirecting to Admin Console...`, false);
+          setTimeout(() => {
+            window.location.href = 'admin.html';
+          }, 500);
+          return;
+        }
+
+        // CLIENT LOGIN (e.g. EaseYourFiling)
+        if (matchedClient) {
+          const clientSession = {
+            email: cleanEmail,
+            name: displayName || cleanEmail.split('@')[0],
+            avatar: avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName || cleanEmail)}&background=0284c7&color=fff`,
+            role: 'Client Partner',
+            isClient: true,
+            clientId: matchedClient.id,
+            clientName: matchedClient.name,
+            clientDomain: matchedClient.domain,
+            token: 'zen_cli_' + Math.random().toString(36).substring(2) + Date.now().toString(36),
+            loginAt: new Date().toISOString()
+          };
+
+          localStorage.setItem('zenstro_client_session', JSON.stringify(clientSession));
+          sessionStorage.setItem('zenstro_client_session', JSON.stringify(clientSession));
+
+          showAlert(`Welcome to ${matchedClient.name} Portal! Redirecting...`, false);
+          setTimeout(() => {
+            window.location.href = `portal.html?client=${encodeURIComponent(matchedClient.id)}`;
+          }, 500);
+          return;
+        }
       }
 
       // Global Callback for Google GIS

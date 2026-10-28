@@ -1,0 +1,1385 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Client Portal — EaseYourFiling Hub</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=4">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=4">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=4">
+  <link rel="shortcut icon" href="favicon.ico?v=4">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=8.7">
+  <script src="config.js?v=9.2"></script>
+  <style>
+    :root {
+      --portal-bg: #f8fafc;
+      --portal-card-bg: #ffffff;
+      --portal-border: #e2e8f0;
+      --portal-text: #0f172a;
+      --portal-text-muted: #64748b;
+      --portal-brand: #2563eb;
+      --portal-brand-hover: #1d4ed8;
+      --portal-brand-light: #eff6ff;
+      --portal-success: #16a34a;
+      --portal-success-light: #f0fdf4;
+    }
+
+    body.portal-body {
+      background: var(--portal-bg);
+      color: var(--portal-text);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top Navigation Header */
+    .portal-header {
+      background: #ffffff;
+      border-bottom: 1px solid var(--portal-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .portal-nav {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .portal-brand-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .portal-logo-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #1e3a8a, #2563eb);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 18px;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+    }
+    .portal-title-block h1 {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .portal-title-block span {
+      font-size: 12px;
+      color: var(--portal-text-muted);
+      font-family: var(--mono);
+      font-weight: 500;
+    }
+    .portal-domain-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--portal-success-light);
+      border: 1px solid #bbf7d0;
+      color: var(--portal-success);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-family: var(--mono);
+    }
+    .portal-domain-badge .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--portal-success);
+      box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2);
+    }
+
+    .portal-user-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .super-admin-pill {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #dc2626;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-family: var(--mono);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 5px 12px 5px 6px;
+      background: #f1f5f9;
+      border-radius: 30px;
+      border: 1px solid var(--portal-border);
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .user-pill img {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    /* Layout Wrapper */
+    .portal-container {
+      max-width: 1400px;
+      width: 100%;
+      margin: 24px auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 24px;
+      flex: 1;
+      box-sizing: border-box;
+    }
+
+    /* Sidebar */
+    .portal-sidebar {
+      background: var(--portal-card-bg);
+      border: 1px solid var(--portal-border);
+      border-radius: 12px;
+      padding: 20px 14px;
+      height: fit-content;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+    }
+    .sidebar-section-title {
+      font-size: 11px;
+      font-family: var(--mono);
+      font-weight: 700;
+      color: var(--portal-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 8px 12px 6px;
+    }
+    .sidebar-menu {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sidebar-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: #334155;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s ease;
+    }
+    .sidebar-btn:hover {
+      background: #f1f5f9;
+      color: var(--portal-text);
+    }
+    .sidebar-btn.active {
+      background: var(--portal-brand-light);
+      color: var(--portal-brand);
+      font-weight: 700;
+    }
+    .sidebar-btn .btn-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .sidebar-badge {
+      font-size: 11px;
+      font-family: var(--mono);
+      padding: 2px 7px;
+      border-radius: 10px;
+      background: #e2e8f0;
+      color: #475569;
+    }
+    .sidebar-btn.active .sidebar-badge {
+      background: var(--portal-brand);
+      color: #ffffff;
+    }
+
+    .compose-trigger-btn {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--portal-brand);
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+      transition: all 0.15s ease;
+    }
+    .compose-trigger-btn:hover {
+      background: var(--portal-brand-hover);
+    }
+
+    /* Main Content Area */
+    .portal-main {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-width: 0;
+    }
+
+    /* Metric Cards Bar */
+    .portal-stats-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .portal-stat-card {
+      background: var(--portal-card-bg);
+      border: 1px solid var(--portal-border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.02);
+    }
+    .portal-stat-card .label {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--portal-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+    .portal-stat-card .value {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--portal-text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .portal-stat-card .sub {
+      font-size: 12px;
+      color: var(--portal-success);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    /* Panes / Card Containers */
+    .portal-panel {
+      display: none;
+      background: var(--portal-card-bg);
+      border: 1px solid var(--portal-border);
+      border-radius: 12px;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.03);
+      overflow: hidden;
+    }
+    .portal-panel.active {
+      display: block;
+    }
+
+    .panel-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--portal-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .panel-header-title h2 {
+      font-size: 18px;
+      font-weight: 800;
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+    .panel-header-title p {
+      font-size: 13px;
+      color: var(--portal-text-muted);
+      margin: 4px 0 0;
+    }
+
+    /* Filter & Search Bar */
+    .inbox-toolbar {
+      padding: 12px 24px;
+      background: #fafafa;
+      border-bottom: 1px solid var(--portal-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .filter-pills {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .filter-pill {
+      border: 1px solid var(--portal-border);
+      background: #ffffff;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .filter-pill:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+    .filter-pill.active {
+      background: var(--portal-brand);
+      color: #ffffff;
+      border-color: var(--portal-brand);
+    }
+
+    .search-input-wrap {
+      position: relative;
+      min-width: 260px;
+    }
+    .search-input-wrap input {
+      width: 100%;
+      padding: 8px 12px 8px 32px;
+      font-size: 13px;
+      border: 1px solid var(--portal-border);
+      border-radius: 6px;
+      background: #ffffff;
+      font-family: var(--sans);
+      outline: none;
+      box-sizing: border-box;
+    }
+    .search-input-wrap input:focus {
+      border-color: var(--portal-brand);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+      font-size: 14px;
+    }
+
+    .btn-secondary-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--portal-border);
+      background: #ffffff;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-secondary-action:hover {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+    }
+
+    /* Email Split List / Grid */
+    .inbox-split-view {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      min-height: 580px;
+      border-collapse: collapse;
+    }
+    .email-list-column {
+      border-right: 1px solid var(--portal-border);
+      overflow-y: auto;
+      max-height: 700px;
+      background: #ffffff;
+    }
+    .email-item {
+      padding: 16px 20px;
+      border-bottom: 1px solid #f1f5f9;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+    }
+    .email-item:hover {
+      background: #f8fafc;
+    }
+    .email-item.active {
+      background: var(--portal-brand-light);
+      border-left: 3px solid var(--portal-brand);
+    }
+    .email-item-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .email-sender {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--portal-text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .email-time {
+      font-size: 11px;
+      color: var(--portal-text-muted);
+      font-family: var(--mono);
+      white-space: nowrap;
+    }
+    .email-recipient-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10.5px;
+      font-family: var(--mono);
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: #e2e8f0;
+      color: #475569;
+      width: fit-content;
+    }
+    .email-subject {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #1e293b;
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .email-snippet {
+      font-size: 12.5px;
+      color: var(--portal-text-muted);
+      line-height: 1.45;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Email Detail Pane */
+    .email-detail-column {
+      padding: 24px 28px;
+      background: #fafafa;
+      overflow-y: auto;
+      max-height: 700px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .email-detail-card {
+      background: #ffffff;
+      border: 1px solid var(--portal-border);
+      border-radius: 10px;
+      padding: 24px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.02);
+    }
+    .detail-subject-title {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 0 0 16px;
+      color: var(--portal-text);
+    }
+    .detail-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #f1f5f9;
+      margin-bottom: 20px;
+      font-size: 13px;
+    }
+    .detail-meta-item strong {
+      color: var(--portal-text-muted);
+      font-weight: 600;
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+    .detail-body-view {
+      font-size: 14.5px;
+      line-height: 1.65;
+      color: #1e293b;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .detail-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    /* Compose Form */
+    .compose-form-wrap {
+      padding: 24px 28px;
+      max-width: 800px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--portal-border);
+      border-radius: 8px;
+      font-family: var(--sans);
+      font-size: 14px;
+      outline: none;
+      box-sizing: border-box;
+      background: #ffffff;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--portal-brand);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    .form-group textarea {
+      min-height: 220px;
+      line-height: 1.6;
+      resize: vertical;
+    }
+    .form-hint {
+      font-size: 12px;
+      color: var(--portal-text-muted);
+      margin-top: 5px;
+    }
+
+    /* Empty States */
+    .empty-state {
+      padding: 60px 24px;
+      text-align: center;
+      color: var(--portal-text-muted);
+    }
+    .empty-state-icon {
+      font-size: 40px;
+      margin-bottom: 12px;
+    }
+
+    /* Hosting Info Cards */
+    .hosting-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      padding: 24px;
+    }
+    .hosting-card {
+      border: 1px solid var(--portal-border);
+      border-radius: 10px;
+      padding: 20px;
+      background: #ffffff;
+    }
+    .hosting-card h4 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hosting-card p {
+      font-size: 13.5px;
+      color: var(--portal-text-muted);
+      line-height: 1.6;
+      margin: 0 0 16px;
+    }
+    .status-badge-inline {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #15803d;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-family: var(--mono);
+    }
+
+    /* Toast Notification */
+    .portal-toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 1000;
+      display: none;
+      animation: slideIn 0.2s ease-out;
+    }
+    @keyframes slideIn {
+      from { transform: translateY(10px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 960px) {
+      .portal-container {
+        grid-template-columns: 1fr;
+      }
+      .portal-stats-bar {
+        grid-template-columns: 1fr 1fr;
+      }
+      .inbox-split-view {
+        grid-template-columns: 1fr;
+      }
+      .email-detail-column {
+        border-top: 1px solid var(--portal-border);
+      }
+      .hosting-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body class="portal-body">
+
+  <!-- Header Navigation -->
+  <header class="portal-header">
+    <div class="portal-nav">
+      <div class="portal-brand-group">
+        <div class="portal-logo-badge" id="client-avatar">EF</div>
+        <div class="portal-title-block">
+          <h1 id="portal-header-title">
+            EaseYourFiling
+            <span class="portal-domain-badge">
+              <span class="dot"></span>
+              <span id="portal-domain-name">easeyourfiling.com</span>
+            </span>
+          </h1>
+          <span>Powered by ZENSTRO Cloud & Edge Architecture</span>
+        </div>
+      </div>
+
+      <div class="portal-user-actions">
+        <div id="super-admin-indicator" style="display:none;" class="super-admin-pill">
+          👑 Super Admin Access
+        </div>
+        <a id="btn-master-admin" href="admin.html" class="btn-secondary-action" style="display:none;">
+          ⚙️ Master Admin Console
+        </a>
+        <div class="user-pill">
+          <img id="user-avatar" src="https://ui-avatars.com/api/?name=Ease+Your+Filing&background=2563eb&color=fff" alt="User">
+          <span id="user-email">official@easeyourfiling.com</span>
+        </div>
+        <button type="button" class="btn-secondary-action" onclick="logoutSession()">Sign Out</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Container -->
+  <div class="portal-container">
+
+    <!-- Sidebar -->
+    <aside class="portal-sidebar">
+      <button type="button" class="compose-trigger-btn" onclick="switchTab('compose')">
+        ✏️ Compose Email
+      </button>
+
+      <div class="sidebar-section-title">Email Workspace</div>
+      <ul class="sidebar-menu">
+        <li>
+          <button type="button" class="sidebar-btn active" id="btn-tab-inbox" onclick="switchTab('inbox')">
+            <span class="btn-label">📥 Inbox</span>
+            <span class="sidebar-badge" id="count-inbox">0</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="sidebar-btn" id="btn-tab-outbox" onclick="switchTab('outbox')">
+            <span class="btn-label">📤 Sent Outbox</span>
+            <span class="sidebar-badge" id="count-outbox">0</span>
+          </button>
+        </li>
+      </ul>
+
+      <div class="sidebar-section-title">Infrastructure</div>
+      <ul class="sidebar-menu">
+        <li>
+          <button type="button" class="sidebar-btn" id="btn-tab-hosting" onclick="switchTab('hosting')">
+            <span class="btn-label">🌐 Domain & Hosting</span>
+            <span class="sidebar-badge" style="background:#dcfce7; color:#15803d;">Active</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="sidebar-btn" id="btn-tab-users" onclick="switchTab('users')">
+            <span class="btn-label">👥 Authorized Users</span>
+            <span class="sidebar-badge" id="count-users">4</span>
+          </button>
+        </li>
+      </ul>
+
+      <div style="margin-top:28px; padding-top:16px; border-top:1px solid var(--portal-border); font-size:11.5px; color:var(--portal-text-muted); line-height:1.5;">
+        <strong>Resend & Cloudflare:</strong><br>
+        Direct edge routing active on <code>easeyourfiling.com</code>.
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="portal-main">
+
+      <!-- Stats Bar -->
+      <div class="portal-stats-bar">
+        <div class="portal-stat-card">
+          <div class="label">Received Inbound</div>
+          <div class="value" id="stat-total-received">0</div>
+          <div class="sub">Across all 3 domain addresses</div>
+        </div>
+        <div class="portal-stat-card">
+          <div class="label">Sent Outbox</div>
+          <div class="value" id="stat-total-sent">0</div>
+          <div class="sub">Resend API Verified</div>
+        </div>
+        <div class="portal-stat-card">
+          <div class="label">Domain Health</div>
+          <div class="value" style="color:var(--portal-success);">100%</div>
+          <div class="sub">Cloudflare SSL TLS 1.3</div>
+        </div>
+        <div class="portal-stat-card">
+          <div class="label">Sender Inboxes</div>
+          <div class="value">3</div>
+          <div class="sub">info@, help@, official@</div>
+        </div>
+      </div>
+
+      <!-- INBOX PANEL -->
+      <section class="portal-panel active" id="panel-inbox">
+        <div class="panel-header">
+          <div class="panel-header-title">
+            <h2>Business Email Inbox</h2>
+            <p>Real-time emails received on <code>easeyourfiling.com</code> via Cloudflare Email Routing & Resend Gateway.</p>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <button type="button" class="btn-secondary-action" onclick="fetchInbox(true)" id="btn-sync-inbox">
+              🔄 Sync with Resend
+            </button>
+          </div>
+        </div>
+
+        <div class="inbox-toolbar">
+          <div class="filter-pills">
+            <button type="button" class="filter-pill active" onclick="filterByInbox('all', this)">All Inboxes</button>
+            <button type="button" class="filter-pill" onclick="filterByInbox('official@easeyourfiling.com', this)">official@</button>
+            <button type="button" class="filter-pill" onclick="filterByInbox('help@easeyourfiling.com', this)">help@</button>
+            <button type="button" class="filter-pill" onclick="filterByInbox('info@easeyourfiling.com', this)">info@</button>
+          </div>
+
+          <div class="search-input-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="inbox-search" placeholder="Search sender, subject or text..." oninput="handleInboxSearch()">
+          </div>
+        </div>
+
+        <div class="inbox-split-view">
+          <!-- Email List Column -->
+          <div class="email-list-column" id="email-list-container">
+            <div class="empty-state">
+              <div class="empty-state-icon">📥</div>
+              <p>Loading emails...</p>
+            </div>
+          </div>
+
+          <!-- Email Detail Pane -->
+          <div class="email-detail-column" id="email-detail-container">
+            <div class="empty-state">
+              <div class="empty-state-icon">✉️</div>
+              <p>Select an email from the left pane to view full conversation and details.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SENT OUTBOX PANEL -->
+      <section class="portal-panel" id="panel-outbox">
+        <div class="panel-header">
+          <div class="panel-header-title">
+            <h2>Sent Outbox</h2>
+            <p>Emails dispatched directly from your verified business addresses via Resend API.</p>
+          </div>
+          <button type="button" class="btn-secondary-action" onclick="fetchOutbox()">
+            🔄 Refresh Sent
+          </button>
+        </div>
+
+        <div style="padding:20px 24px;">
+          <div id="sent-list-container">
+            <div class="empty-state">
+              <div class="empty-state-icon">📤</div>
+              <p>No sent emails yet. Click "Compose Email" to send your first message.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COMPOSE PANEL -->
+      <section class="portal-panel" id="panel-compose">
+        <div class="panel-header">
+          <div class="panel-header-title">
+            <h2>Compose Business Email</h2>
+            <p>Send high-deliverability emails from your verified business domain <code>easeyourfiling.com</code>.</p>
+          </div>
+        </div>
+
+        <div class="compose-form-wrap">
+          <form id="compose-form" onsubmit="handleSendEmail(event)">
+            <div class="form-group">
+              <label for="compose-from">From (Verified Business Address)</label>
+              <select id="compose-from" required>
+                <option value="official">EaseYourFiling Official &lt;official@easeyourfiling.com&gt;</option>
+                <option value="help">EaseYourFiling Support &lt;help@easeyourfiling.com&gt;</option>
+                <option value="info">EaseYourFiling Info &lt;info@easeyourfiling.com&gt;</option>
+              </select>
+              <div class="form-hint">SPF, DKIM & DMARC 100% verified via Resend.</div>
+            </div>
+
+            <div class="form-group">
+              <label for="compose-to">To (Recipient Email)</label>
+              <input type="email" id="compose-to" placeholder="client@example.com" required>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+              <div class="form-group">
+                <label for="compose-cc">CC (Optional)</label>
+                <input type="email" id="compose-cc" placeholder="team@example.com">
+              </div>
+              <div class="form-group">
+                <label for="compose-bcc">BCC (Optional)</label>
+                <input type="email" id="compose-bcc" placeholder="audit@example.com">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="compose-subject">Subject</label>
+              <input type="text" id="compose-subject" placeholder="e.g. Filing Status Update / Invoice Receipt" required>
+            </div>
+
+            <div class="form-group">
+              <label for="compose-message">Message Body</label>
+              <textarea id="compose-message" placeholder="Type your message here..." required></textarea>
+              <div class="form-hint">Message will be formatted into an executive EaseYourFiling branded template.</div>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; gap:12px;">
+              <button type="button" class="btn-secondary-action" onclick="switchTab('inbox')">Cancel</button>
+              <button type="submit" class="compose-trigger-btn" id="btn-submit-send" style="width:auto; margin:0; padding:10px 24px;">
+                🚀 Send Email
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- DOMAIN & HOSTING PANEL -->
+      <section class="portal-panel" id="panel-hosting">
+        <div class="panel-header">
+          <div class="panel-header-title">
+            <h2>Cloudflare Hosting & Edge Infrastructure</h2>
+            <p>Managed hosting, SSL certificates, Anycast DNS and security protection for <code>easeyourfiling.com</code>.</p>
+          </div>
+          <a href="https://easeyourfiling.com" target="_blank" rel="noopener" class="btn-secondary-action">
+            🔗 Open Live Website ↗
+          </a>
+        </div>
+
+        <div class="hosting-grid">
+          <div class="hosting-card">
+            <h4>🌐 Website & Domain</h4>
+            <p>Domain <strong>easeyourfiling.com</strong> is live and routed globally through Cloudflare's 300+ city Edge network.</p>
+            <div class="status-badge-inline">
+              ✓ Edge Online &bull; 99.98% Uptime
+            </div>
+          </div>
+
+          <div class="hosting-card">
+            <h4>🔒 SSL / TLS Encryption</h4>
+            <p>Enterprise TLS 1.3 Full (Strict) SSL with automatic certificate rotation and HSTS enabled.</p>
+            <div class="status-badge-inline">
+              ✓ Strict SSL Verified
+            </div>
+          </div>
+
+          <div class="hosting-card">
+            <h4>🛡️ Security & DDoS Mitigation</h4>
+            <p>Layer 7 Web Application Firewall (WAF) and Cloudflare rate limiting active against brute force attacks.</p>
+            <div class="status-badge-inline">
+              ✓ DDoS Shield Active
+            </div>
+          </div>
+
+          <div class="hosting-card">
+            <h4>📬 Email Routing & Resend API</h4>
+            <p>Sending and receiving capabilities enabled on <code>easeyourfiling.com</code> with automated webhook delivery.</p>
+            <div class="status-badge-inline">
+              ✓ Resend Sending & Receiving Enabled
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- AUTHORIZED USERS PANEL -->
+      <section class="portal-panel" id="panel-users">
+        <div class="panel-header">
+          <div class="panel-header-title">
+            <h2>Authorized Portal Access</h2>
+            <p>Accounts authorized to log into the EaseYourFiling client hub via Google Sign-In.</p>
+          </div>
+        </div>
+
+        <div style="padding:24px;">
+          <div style="background:#f8fafc; border:1px solid var(--portal-border); border-radius:10px; padding:20px; margin-bottom:24px;">
+            <h4 style="margin:0 0 12px; font-size:15px;">Active Authorized Accounts</h4>
+            <ul id="authorized-users-list" style="margin:0; padding-left:20px; font-size:14px; line-height:2; font-family:var(--mono);">
+              <li>official@easeyourfiling.com</li>
+              <li>help@easeyourfiling.com</li>
+              <li>info@easeyourfiling.com</li>
+              <li>easeyourfiling@gmail.com</li>
+            </ul>
+          </div>
+
+          <div id="super-admin-add-user" style="display:none; background:#ffffff; border:1px solid var(--portal-border); border-radius:10px; padding:20px;">
+            <h4 style="margin:0 0 6px; font-size:15px;">👑 Super Admin: Authorize New Email Address</h4>
+            <p style="font-size:13px; color:var(--portal-text-muted); margin-bottom:14px;">Add a client Gmail or company email address to grant instant access to this dashboard.</p>
+            <div style="display:flex; gap:12px; max-width:500px;">
+              <input type="email" id="input-new-user-email" placeholder="client.email@gmail.com" style="flex:1; padding:8px 12px; border:1px solid var(--portal-border); border-radius:6px; font-size:14px;">
+              <button type="button" class="compose-trigger-btn" style="width:auto; margin:0; padding:8px 16px;" onclick="handleAddAuthorizedUser()">Add User</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div class="portal-toast" id="portal-toast"></div>
+
+  <script>
+    (function () {
+      const SUPER_ADMIN_EMAIL = "ceo.shubhampathak@gmail.com";
+      const urlParams = new URLSearchParams(window.location.search);
+      const clientId = (urlParams.get('client') || 'easeyourfiling').toLowerCase();
+
+      // Check session
+      let adminSession = null;
+      let clientSession = null;
+      try {
+        adminSession = JSON.parse(localStorage.getItem('zenstro_admin_session') || sessionStorage.getItem('zenstro_admin_session') || 'null');
+        clientSession = JSON.parse(localStorage.getItem('zenstro_client_session') || sessionStorage.getItem('zenstro_client_session') || 'null');
+      } catch (e) {}
+
+      const currentUserEmail = (adminSession && adminSession.email) || (clientSession && clientSession.email) || '';
+      const isSuperAdmin = currentUserEmail === SUPER_ADMIN_EMAIL;
+
+      // If not logged in at all, redirect to login page
+      if (!currentUserEmail) {
+        window.location.href = `login.html?redirect=portal&client=${encodeURIComponent(clientId)}`;
+        return;
+      }
+
+      // UI setup based on role
+      if (isSuperAdmin) {
+        document.getElementById('super-admin-indicator').style.display = 'inline-flex';
+        document.getElementById('btn-master-admin').style.display = 'inline-flex';
+        document.getElementById('super-admin-add-user').style.display = 'block';
+      }
+
+      const activeUser = adminSession || clientSession;
+      document.getElementById('user-email').textContent = activeUser.email;
+      if (activeUser.avatar) {
+        document.getElementById('user-avatar').src = activeUser.avatar;
+      }
+
+      let allEmails = [];
+      let currentFilterInbox = 'all';
+
+      function showToast(msg) {
+        const toast = document.getElementById('portal-toast');
+        toast.textContent = msg;
+        toast.style.display = 'block';
+        setTimeout(() => { toast.style.display = 'none'; }, 4000);
+      }
+
+      window.switchTab = function(tabName) {
+        document.querySelectorAll('.portal-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
+
+        const targetPanel = document.getElementById(`panel-${tabName}`);
+        const targetBtn = document.getElementById(`btn-tab-${tabName}`);
+        if (targetPanel) targetPanel.classList.add('active');
+        if (targetBtn) targetBtn.classList.add('active');
+
+        if (tabName === 'outbox') fetchOutbox();
+      };
+
+      window.logoutSession = function() {
+        localStorage.removeItem('zenstro_client_session');
+        sessionStorage.removeItem('zenstro_client_session');
+        localStorage.removeItem('zenstro_admin_session');
+        sessionStorage.removeItem('zenstro_admin_session');
+        window.location.href = 'login.html?logout=true';
+      };
+
+      // Fetch Inbound Emails
+      window.fetchInbox = async function(manualSync = false) {
+        const syncBtn = document.getElementById('btn-sync-inbox');
+        if (manualSync && syncBtn) syncBtn.innerHTML = '🔄 Syncing...';
+
+        try {
+          const syncQuery = manualSync ? '&sync=true' : '';
+          const res = await fetch(`/api/client-hub?action=inbox&client=${clientId}${syncQuery}`, {
+            headers: { 'X-Zenstro-User': currentUserEmail }
+          });
+          const data = await res.json();
+          if (data.success && Array.isArray(data.emails)) {
+            allEmails = data.emails;
+            renderInboxList(allEmails);
+            document.getElementById('stat-total-received').textContent = allEmails.length;
+            document.getElementById('count-inbox').textContent = allEmails.length;
+            if (manualSync) showToast('Inbox synced with Resend!');
+          }
+        } catch (err) {
+          console.error('Fetch inbox error:', err);
+          showToast('Failed to load inbox');
+        } finally {
+          if (manualSync && syncBtn) syncBtn.innerHTML = '🔄 Sync with Resend';
+        }
+      };
+
+      function renderInboxList(emails) {
+        const container = document.getElementById('email-list-container');
+        if (!emails || emails.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">📭</div>
+              <p>No incoming emails found for this filter.<br><small style="color:#94a3b8;">When anyone emails info@, help@, or official@easeyourfiling.com, it will appear here in real time.</small></p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = emails.map((e, idx) => {
+          const dateStr = e.createdAt ? new Date(e.createdAt).toLocaleDateString([], { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' }) : '';
+          const cleanSnippet = (e.message || '').substring(0, 100);
+          return `
+            <div class="email-item ${idx === 0 ? 'active' : ''}" onclick="window.selectEmail('${e.id}', this)">
+              <div class="email-item-header">
+                <span class="email-sender">${escapeHtml(e.from)}</span>
+                <span class="email-time">${dateStr}</span>
+              </div>
+              <div class="email-recipient-tag">to: ${escapeHtml(e.to || 'official@easeyourfiling.com')}</div>
+              <div class="email-subject">${escapeHtml(e.subject || '(No Subject)')}</div>
+              <div class="email-snippet">${escapeHtml(cleanSnippet || '(No plain text snippet)')}</div>
+            </div>
+          `;
+        }).join('');
+
+        // Auto select first email
+        if (emails.length > 0) {
+          window.selectEmail(emails[0].id);
+        }
+      }
+
+      window.selectEmail = function(id, el) {
+        if (el) {
+          document.querySelectorAll('.email-item').forEach(i => i.classList.remove('active'));
+          el.classList.add('active');
+        }
+
+        const email = allEmails.find(e => e.id === id);
+        if (!email) return;
+
+        const detailContainer = document.getElementById('email-detail-container');
+        const dateStr = email.createdAt ? new Date(email.createdAt).toLocaleString() : '';
+        const hasHtml = !!email.htmlContent;
+
+        detailContainer.innerHTML = `
+          <div class="email-detail-card">
+            <h3 class="detail-subject-title">${escapeHtml(email.subject || '(No Subject)')}</h3>
+            <div class="detail-meta-grid">
+              <div class="detail-meta-item">
+                <strong>From</strong>
+                <span>${escapeHtml(email.from)}</span>
+              </div>
+              <div class="detail-meta-item">
+                <strong>To Address</strong>
+                <span>${escapeHtml(email.to || '')}</span>
+              </div>
+              <div class="detail-meta-item">
+                <strong>Date Received</strong>
+                <span>${dateStr}</span>
+              </div>
+              <div class="detail-meta-item">
+                <strong>Status</strong>
+                <span style="color:var(--portal-success); font-weight:700;">✓ Delivered via Edge</span>
+              </div>
+            </div>
+
+            <div style="margin-bottom:14px; display:flex; gap:8px;">
+              <button type="button" class="filter-pill active" id="btn-view-text" onclick="window.toggleEmailBodyView('text')">Plain Text</button>
+              ${hasHtml ? `<button type="button" class="filter-pill" id="btn-view-html" onclick="window.toggleEmailBodyView('html')">Formatted HTML</button>` : ''}
+            </div>
+
+            <div id="email-body-text" class="detail-body-view">${escapeHtml(email.message || '(Empty message content)')}</div>
+            ${hasHtml ? `<div id="email-body-html" style="display:none; background:#ffffff; border:1px solid #e2e8f0; border-radius:8px; padding:16px;">${email.htmlContent}</div>` : ''}
+
+            <div class="detail-actions">
+              <button type="button" class="compose-trigger-btn" style="width:auto; margin:0; padding:8px 18px;" onclick="window.replyToEmail('${escapeHtml(email.from)}', '${escapeHtml(email.subject || '')}')">
+                ↩ Reply to Sender
+              </button>
+            </div>
+          </div>
+        `;
+      };
+
+      window.toggleEmailBodyView = function(type) {
+        const textBtn = document.getElementById('btn-view-text');
+        const htmlBtn = document.getElementById('btn-view-html');
+        const textBody = document.getElementById('email-body-text');
+        const htmlBody = document.getElementById('email-body-html');
+
+        if (type === 'html' && htmlBody) {
+          textBody.style.display = 'none';
+          htmlBody.style.display = 'block';
+          if (htmlBtn) htmlBtn.classList.add('active');
+          if (textBtn) textBtn.classList.remove('active');
+        } else {
+          textBody.style.display = 'block';
+          if (htmlBody) htmlBody.style.display = 'none';
+          if (textBtn) textBtn.classList.add('active');
+          if (htmlBtn) htmlBtn.classList.remove('active');
+        }
+      };
+
+      window.replyToEmail = function(fromAddress, subject) {
+        switchTab('compose');
+        // Extract raw email
+        const match = fromAddress.match(/<([^>]+)>/);
+        const targetEmail = match ? match[1] : fromAddress;
+        document.getElementById('compose-to').value = targetEmail;
+        document.getElementById('compose-subject').value = subject.startsWith('Re:') ? subject : `Re: ${subject}`;
+        document.getElementById('compose-message').focus();
+      };
+
+      window.filterByInbox = function(inboxFilter, btn) {
+        document.querySelectorAll('.inbox-toolbar .filter-pill').forEach(p => p.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+        currentFilterInbox = inboxFilter;
+
+        if (inboxFilter === 'all') {
+          renderInboxList(allEmails);
+        } else {
+          const filtered = allEmails.filter(e => String(e.to || '').toLowerCase().includes(inboxFilter.toLowerCase()));
+          renderInboxList(filtered);
+        }
+      };
+
+      window.handleInboxSearch = function() {
+        const q = (document.getElementById('inbox-search').value || '').toLowerCase().trim();
+        if (!q) {
+          renderInboxList(allEmails);
+          return;
+        }
+        const filtered = allEmails.filter(e =>
+          (e.from && e.from.toLowerCase().includes(q)) ||
+          (e.subject && e.subject.toLowerCase().includes(q)) ||
+          (e.message && e.message.toLowerCase().includes(q)) ||
+          (e.to && e.to.toLowerCase().includes(q))
+        );
+        renderInboxList(filtered);
+      };
+
+      // Fetch Outbox
+      window.fetchOutbox = async function() {
+        try {
+          const res = await fetch(`/api/client-hub?action=outbox&client=${clientId}`, {
+            headers: { 'X-Zenstro-User': currentUserEmail }
+          });
+          const data = await res.json();
+          if (data.success && Array.isArray(data.emails)) {
+            document.getElementById('stat-total-sent').textContent = data.emails.length;
+            document.getElementById('count-outbox').textContent = data.emails.length;
+            renderOutboxList(data.emails);
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      };
+
+      function renderOutboxList(emails) {
+        const container = document.getElementById('sent-list-container');
+        if (!emails || emails.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">📤</div>
+              <p>No sent emails recorded yet.</p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = emails.map(e => {
+          const dateStr = e.sentAt ? new Date(e.sentAt).toLocaleString() : '';
+          return `
+            <div style="background:#ffffff; border:1px solid var(--portal-border); border-radius:8px; padding:16px 20px; margin-bottom:12px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <strong style="font-size:15px; color:#0f172a;">${escapeHtml(e.subject || '(No Subject)')}</strong>
+                <span style="font-size:12px; font-family:var(--mono); color:var(--portal-text-muted);">${dateStr}</span>
+              </div>
+              <div style="font-size:13px; color:#475569; margin-bottom:8px;">
+                <strong>To:</strong> <code>${escapeHtml(e.to)}</code> &bull; <strong>From:</strong> <code>${escapeHtml(e.from)}</code>
+              </div>
+              <div style="font-size:13.5px; color:#334155; line-height:1.5; white-space:pre-wrap; background:#f8fafc; padding:12px; border-radius:6px; border:1px solid #e2e8f0;">${escapeHtml((e.message || '').substring(0, 300))}</div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Handle Send Email
+      window.handleSendEmail = async function(event) {
+        event.preventDefault();
+        const submitBtn = document.getElementById('btn-submit-send');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '⏳ Sending via Resend...';
+
+        const payload = {
+          from: document.getElementById('compose-from').value,
+          to: document.getElementById('compose-to').value.trim(),
+          cc: document.getElementById('compose-cc').value.trim(),
+          bcc: document.getElementById('compose-bcc').value.trim(),
+          subject: document.getElementById('compose-subject').value.trim(),
+          message: document.getElementById('compose-message').value.trim(),
+          requesterEmail: currentUserEmail
+        };
+
+        try {
+          const res = await fetch(`/api/client-hub?action=send&client=${clientId}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Zenstro-User': currentUserEmail
+            },
+            body: JSON.stringify(payload)
+          });
+          const result = await res.json();
+          if (res.ok && result.success) {
+            showToast('Email sent successfully via official business domain!');
+            document.getElementById('compose-form').reset();
+            fetchOutbox();
+            setTimeout(() => { switchTab('outbox'); }, 1000);
+          } else {
+            showToast(result.error || 'Failed to send email.');
+          }
+        } catch (err) {
+          showToast('Network error while sending email.');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '🚀 Send Email';
+        }
+      };
+
+      // Super Admin: Add Authorized Email
+      window.handleAddAuthorizedUser = async function() {
+        const input = document.getElementById('input-new-user-email');
+        const email = (input.value || '').trim();
+        if (!email || !email.includes('@')) {
+          alert('Please enter a valid email address.');
+          return;
+        }
+
+        try {
+          const res = await fetch(`/api/client-hub?action=manage_users&client=${clientId}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Zenstro-User': currentUserEmail
+            },
+            body: JSON.stringify({ email: email, operation: 'add', requesterEmail: currentUserEmail })
+          });
+          const result = await res.json();
+          if (result.success) {
+            showToast(`Authorized ${email} successfully!`);
+            input.value = '';
+            const listEl = document.getElementById('authorized-users-list');
+            const li = document.createElement('li');
+            li.textContent = email;
+            listEl.appendChild(li);
+          } else {
+            alert(result.error || 'Failed to add user');
+          }
+        } catch (e) {
+          alert('Error adding user');
+        }
+      };
+
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      // Initial Fetch
+      fetchInbox();
+    })();
+  </script>
+</body>
+</html>
