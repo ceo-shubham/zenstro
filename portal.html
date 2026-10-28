@@ -1590,7 +1590,7 @@
             showToast(result.error || 'Failed to send.');
           }
         } catch (err) {
-          showToast('Error sending email.');
+          showToast(err && err.message ? err.message : 'Error sending email.');
         } finally {
           btn.disabled = false;
           btn.textContent = 'Send';
