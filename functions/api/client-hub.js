@@ -29,7 +29,7 @@ const CLIENT_CONFIGS = {
     // Fallback base64 key to satisfy GitHub secret scanning rules
     keyB64: 'cmVfVktHZWRmaDZfN1B4cUtKUTNWNHZSaUpxRDRCMmlmVDVF',
     allowedFromAddresses: [
-      { id: 'official', name: 'EaseYourFiling Official', email: 'official@easeyourfiling.com' },
+      { id: 'official', name: 'EaseYourFiling', email: 'official@easeyourfiling.com' },
       { id: 'help', name: 'EaseYourFiling Support', email: 'help@easeyourfiling.com' },
       { id: 'info', name: 'EaseYourFiling Information', email: 'info@easeyourfiling.com' }
     ],
@@ -519,7 +519,7 @@ export async function onRequestPost(context) {
     } else if (fromSelect === 'info') {
       finalFrom = `${config.name} <info@${config.domain}>`;
     } else if (fromSelect === 'official') {
-      finalFrom = `${config.name} Official <official@${config.domain}>`;
+      finalFrom = `${config.name} <official@${config.domain}>`;
     }
 
     // Clean, high-trust business email HTML template (No dark boxes, 100% clean light design)
@@ -576,6 +576,19 @@ ${escapeHtml(message)}
 
     if (cc.length > 0) resendPayload.cc = cc;
     if (bcc.length > 0) resendPayload.bcc = bcc;
+
+    if (Array.isArray(body.attachments) && body.attachments.length > 0) {
+      resendPayload.attachments = body.attachments.map(att => {
+        let content = att.content || '';
+        if (typeof content === 'string' && content.includes(',')) {
+          content = content.split(',')[1];
+        }
+        return {
+          filename: att.filename || att.name || 'attachment',
+          content: content
+        };
+      });
+    }
 
     try {
       const resendRes = await fetch('https://api.resend.com/emails', {
