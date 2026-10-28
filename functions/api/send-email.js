@@ -47,59 +47,39 @@ export async function onRequestPost(context) {
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
       </head>
-      <body style="margin:0; padding:24px 12px; background:#f1f5f9; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-        <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="max-width:620px; margin:0 auto; background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; overflow:hidden; box-shadow:0 4px 6px -1px rgba(15,23,42,0.05);">
-          <!-- Header with Company Logo and Brand Identity -->
+      <body style="margin:0; padding:24px 16px; background:#ffffff; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; color:#1f2937;">
+        <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="max-width:640px; margin:0 auto; background:#ffffff; border:1px solid #e5e7eb; border-radius:10px; overflow:hidden;">
           <tr>
-            <td style="background:#0f172a; padding:24px 28px; border-bottom:1px solid #1e293b;">
-              <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                  <td>
-                    <img src="https://zenstro.space/white_logo.png" alt="ZENSTRO" width="140" style="display:block; height:auto; max-height:42px; border:0; outline:none;" />
-                    <p style="color:#94a3b8; margin:6px 0 0; font-size:11px; font-family:-apple-system,BlinkMacSystemFont,'SF Mono',Consolas,monospace; text-transform:uppercase; letter-spacing:0.08em;">
-                      Enterprise Software &bull; Cloud &bull; AI Automation
-                    </p>
-                  </td>
-                  <td align="right" valign="middle">
-                    <span style="display:inline-block; background:rgba(37,99,235,0.18); border:1px solid rgba(59,130,246,0.4); color:#93c5fd; font-size:10px; font-family:-apple-system,BlinkMacSystemFont,monospace; padding:4px 9px; border-radius:20px; text-transform:uppercase; letter-spacing:0.06em;">
-                      &check; Verified Domain
-                    </span>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-
-          <!-- Message Body -->
-          <tr>
-            <td style="padding:32px 28px; color:#1e293b; font-size:15px; line-height:1.7; white-space:pre-wrap; word-break:break-word;">
+            <td style="padding:28px 28px 24px; color:#111827; font-size:15px; line-height:1.7; white-space:pre-wrap; word-break:break-word;">
 ${escapeHtml(message)}
             </td>
           </tr>
-
-          <!-- Executive Email Profile & Verification Signature -->
           <tr>
-            <td style="background:#f8fafc; padding:24px 28px; border-top:1px solid #e2e8f0;">
+            <td style="background:#f9fafb; padding:20px 28px; border-top:1px solid #e5e7eb;">
               <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
-                  <td width="48" valign="top" style="padding-right:14px;">
-                    <img src="https://zenstro.space/logo.png" alt="ZENSTRO Profile" width="44" height="44" style="display:block; border-radius:8px; border:1px solid #cbd5e1;" />
+                  <td width="50" valign="middle" style="padding-right:14px;">
+                    <img src="https://zenstro.space/logo.png" alt="ZENSTRO Profile" width="46" height="46" style="display:block; border-radius:8px; border:1px solid #e5e7eb;" />
                   </td>
-                  <td valign="top">
-                    <div style="font-size:14px; font-weight:700; color:#0f172a;">ZENSTRO Technology Studio</div>
-                    <div style="font-size:12px; color:#64748b; margin-top:2px;">Official Client Communications &bull; domain: <strong>zenstro.space</strong></div>
-                    <div style="font-size:12px; color:#2563eb; margin-top:6px;">
-                      <a href="https://zenstro.space" style="color:#2563eb; text-decoration:none; font-weight:600;">zenstro.space</a>
-                      <span style="color:#cbd5e1; margin:0 6px;">&bull;</span>
-                      <a href="mailto:ceo@zenstro.space" style="color:#2563eb; text-decoration:none;">ceo@zenstro.space</a>
-                      <span style="color:#cbd5e1; margin:0 6px;">&bull;</span>
-                      <a href="mailto:support@zenstro.space" style="color:#2563eb; text-decoration:none;">support@zenstro.space</a>
+                  <td valign="middle">
+                    <div style="font-size:14px; font-weight:700; color:#111827; letter-spacing:-0.01em;">ZENSTRO Technology Studio</div>
+                    <div style="font-size:12px; color:#4b5563; margin-top:2px; line-height:1.5;">
+                      <span style="white-space:nowrap;">Official Client Communications</span>
+                      <span style="color:#9ca3af; margin:0 4px;">&bull;</span>
+                      <span style="white-space:nowrap;">domain:&nbsp;<strong><a href="https://zenstro.space" style="color:#0b57d0; text-decoration:none;">zenstro.space</a></strong></span>
+                    </div>
+                    <div style="font-size:12px; margin-top:4px; line-height:1.5;">
+                      <span style="white-space:nowrap;"><a href="https://zenstro.space" style="color:#0b57d0; text-decoration:none; font-weight:600;">zenstro.space</a></span>
+                      <span style="color:#d1d5db; margin:0 5px;">&bull;</span>
+                      <span style="white-space:nowrap;"><a href="mailto:ceo@zenstro.space" style="color:#0b57d0; text-decoration:none;">ceo@zenstro.space</a></span>
+                      <span style="color:#d1d5db; margin:0 5px;">&bull;</span>
+                      <span style="white-space:nowrap;"><a href="mailto:support@zenstro.space" style="color:#0b57d0; text-decoration:none;">support@zenstro.space</a></span>
                     </div>
                   </td>
                 </tr>
               </table>
-              <div style="margin-top:16px; padding-top:14px; border-top:1px solid #e2e8f0; font-size:11px; color:#94a3b8; line-height:1.5;">
-                7-Day MVP Delivery Guarantee &bull; Milestone-Driven Escrow (30/30/40) &bull; Confidential &amp; Protected Communication
+              <div style="margin-top:14px; padding-top:12px; border-top:1px solid #e5e7eb; font-size:11px; color:#9ca3af; line-height:1.4;">
+                <span style="white-space:nowrap;">7-Day MVP Delivery Guarantee</span> &bull; <span style="white-space:nowrap;">Milestone-Driven Escrow (30/30/40)</span> &bull; <span style="white-space:nowrap;">Confidential Communication</span>
               </div>
             </td>
           </tr>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Inbox — EaseYourFiling Gmail Workspace</title>
+  <title>Inbox &mdash; EaseYourFiling Gmail Workspace</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=4">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=4">
@@ -377,9 +377,17 @@
       border-bottom: 1px solid var(--gm-border);
       background: #ffffff;
       flex-shrink: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .category-tabs::-webkit-scrollbar {
+      display: none;
     }
     .cat-tab {
-      flex: 1;
+      flex: 0 0 auto;
+      min-width: 150px;
       max-width: 250px;
       display: flex;
       align-items: center;
@@ -390,6 +398,7 @@
       border-bottom: 3px solid transparent;
       transition: background 0.15s ease;
       position: relative;
+      white-space: nowrap;
     }
     .cat-tab:hover {
       background: #f8fafc;
@@ -443,16 +452,20 @@
       background: #ffffff;
     }
     .email-row {
-      display: flex;
+      display: grid;
+      grid-template-columns: 20px 20px clamp(120px, 18vw, 190px) minmax(0, 1fr) 80px;
       align-items: center;
+      column-gap: 12px;
       height: 40px;
-      padding: 0 16px 0 12px;
+      padding: 0 16px 0 14px;
       border-bottom: 1px solid var(--gm-border-subtle);
       cursor: pointer;
       user-select: none;
       font-size: 14px;
-      gap: 12px;
       background: #ffffff;
+      box-sizing: border-box;
+      width: 100%;
+      transition: background 0.1s ease;
     }
     .email-row:hover {
       background: var(--gm-surface-hover);
@@ -467,44 +480,68 @@
       background: #ffffff;
       font-weight: 700;
     }
+    .gm-cb {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: var(--gm-primary);
+      margin: 0;
+      align-self: center;
+    }
     .star-icon {
       color: #c4c7c5;
-      font-size: 16px;
+      font-size: 18px;
+      line-height: 1;
       cursor: pointer;
+      text-align: center;
+      display: inline-block;
+      user-select: none;
+      transition: color 0.1s ease;
     }
-    .star-icon:hover {
+    .star-icon:hover, .star-icon.starred {
       color: #fbbc04;
     }
     .sender-cell {
-      width: 190px;
-      min-width: 190px;
-      white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      white-space: nowrap;
       color: var(--gm-text-main);
+      min-width: 0;
     }
     .content-cell {
-      flex: 1;
-      white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      white-space: nowrap;
       min-width: 0;
+      display: flex;
+      align-items: center;
     }
     .subject-text {
       color: var(--gm-text-main);
-      margin-right: 4px;
+      margin-right: 6px;
+      flex-shrink: 0;
+      max-width: 65%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .snippet-text {
       color: var(--gm-text-sub);
       font-weight: 400;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex: 1;
+      min-width: 0;
     }
     .date-cell {
       font-size: 12px;
       color: var(--gm-text-sub);
       white-space: nowrap;
-      margin-left: auto;
-      padding-left: 12px;
+      text-align: right;
       font-weight: 500;
+      width: 80px;
+      flex-shrink: 0;
     }
 
     /* Email Reader Overlay (Gmail Thread View) */
@@ -765,6 +802,160 @@
       z-index: 3000;
       display: none;
     }
+
+    /* ================= 7. Split View Mode ================= */
+    .mail-card.split-view-active {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      position: relative;
+    }
+    .mail-card.split-view-active .category-tabs {
+      grid-column: 1 / -1;
+    }
+    .mail-card.split-view-active .action-bar {
+      grid-column: 1 / -1;
+    }
+    .mail-card.split-view-active .email-table-pane {
+      border-right: 1px solid var(--gm-border);
+    }
+    .mail-card.split-view-active .email-row {
+      grid-template-columns: 20px minmax(90px, 110px) minmax(0, 1fr) 55px;
+      column-gap: 8px;
+      padding: 0 10px;
+      height: 48px;
+    }
+    .mail-card.split-view-active .star-icon {
+      display: none;
+    }
+    .mail-card.split-view-active .snippet-text {
+      display: none;
+    }
+    .mail-card.split-view-active .reader-pane {
+      position: relative !important;
+      top: auto; left: auto; right: auto; bottom: auto;
+      display: flex;
+      border-left: none;
+      height: 100%;
+    }
+
+    /* ================= 8. Responsive Design & View Modes ================= */
+    @media (max-width: 1120px) {
+      .side-rail {
+        display: none !important;
+      }
+      .main-viewport {
+        grid-template-columns: 220px 1fr;
+        padding: 0 12px 12px 10px;
+        gap: 10px;
+      }
+      .search-box-wrap {
+        max-width: 480px;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .mail-card.split-view-active {
+        display: flex;
+        flex-direction: column;
+      }
+      .mail-card.split-view-active .reader-pane {
+        position: absolute !important;
+        top: 0; left: 0; right: 0; bottom: 0;
+      }
+      .appbar {
+        height: 56px;
+        padding: 0 12px;
+        gap: 8px;
+      }
+      .appbar-left {
+        min-width: auto;
+        gap: 8px;
+      }
+      .brand-logo-img {
+        height: 28px;
+        max-width: 120px;
+      }
+      .search-box-wrap {
+        height: 40px;
+        padding: 0 12px;
+        margin: 0 4px;
+      }
+      .btn-upgrade-pill {
+        display: none !important;
+      }
+      .main-viewport {
+        display: flex;
+        flex-direction: column;
+        height: calc(100% - 56px);
+        padding: 0 8px 8px;
+        gap: 0;
+      }
+      .sidebar {
+        position: fixed;
+        top: 56px;
+        left: -290px;
+        bottom: 0;
+        width: 270px;
+        background: #ffffff;
+        z-index: 1200;
+        box-shadow: 4px 0 20px rgba(0,0,0,0.2);
+        padding: 16px 8px;
+        transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .sidebar.mobile-open {
+        left: 0;
+      }
+      .sidebar-backdrop {
+        display: none;
+        position: fixed;
+        top: 56px; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.35);
+        z-index: 1150;
+      }
+      .sidebar-backdrop.active {
+        display: block;
+      }
+      .mail-card {
+        border-radius: 8px;
+        flex: 1;
+        height: 100%;
+      }
+      .category-tabs {
+        height: 46px;
+      }
+      .cat-tab {
+        min-width: 120px;
+        padding: 0 12px;
+        gap: 8px;
+      }
+      .cat-tab-snippet {
+        display: none;
+      }
+      .email-row {
+        grid-template-columns: 20px clamp(80px, 24vw, 110px) minmax(0, 1fr) 55px;
+        column-gap: 8px;
+        padding: 0 10px;
+        font-size: 13px;
+        height: 46px;
+      }
+      .star-icon {
+        display: none;
+      }
+      .snippet-text {
+        display: none;
+      }
+      .date-cell {
+        width: 55px;
+        font-size: 11px;
+      }
+      .compose-modal {
+        right: 0;
+        left: 0;
+        width: 100vw;
+        max-width: 100vw;
+        border-radius: 12px 12px 0 0;
+      }
+    }
   </style>
 </head>
 <body>
@@ -772,7 +963,7 @@
   <!-- 1. Google App Bar -->
   <header class="appbar">
     <div class="appbar-left">
-      <button type="button" class="btn-hamburger" title="Main menu">
+      <button type="button" class="btn-hamburger" title="Main menu" onclick="toggleSidebar()">
         <svg class="icon" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
       </button>
 
@@ -924,13 +1115,17 @@
           </button>
         </div>
 
-        <div class="action-bar-right">
+                <div class="action-bar-right">
           <span id="counter-range-text">1–50 of 50</span>
           <button type="button" class="action-btn" title="Newer">
             <svg class="icon" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
           </button>
           <button type="button" class="action-btn" title="Older">
             <svg class="icon" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </button>
+          <div style="width:1px; height:18px; background:var(--gm-border); margin:0 2px;"></div>
+          <button type="button" class="action-btn" id="btn-toggle-split" title="Toggle Split View Mode" onclick="toggleSplitView()">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"/><path d="M12 5h2v14h-2z"/></svg>
           </button>
         </div>
       </div>
@@ -1064,7 +1259,7 @@
     <div class="compose-header">
       <div class="compose-title">New Message</div>
       <div class="compose-ctrls">
-        <button type="button" class="compose-btn-ctrl" onclick="closeCompose()">✕</button>
+        <button type="button" class="compose-btn-ctrl" onclick="closeCompose()">&times;</button>
       </div>
     </div>
 
@@ -1267,7 +1462,7 @@
           return `
             <div class="email-row unread" onclick="openMessage('${e.id}')">
               <input type="checkbox" class="gm-cb" onclick="event.stopPropagation()">
-              <span class="star-icon" onclick="toggleStar(event, this)">☆</span>
+              <span class="star-icon" onclick="toggleStar(event, this)">&#9734;</span>
               <span class="sender-cell">${escapeHtml(sender)}</span>
               <div class="content-cell">
                 <span class="subject-text">${subj}</span>
@@ -1298,12 +1493,43 @@
 
       window.toggleStar = function(e, el) {
         e.stopPropagation();
-        if (el.textContent === '☆') {
-          el.textContent = '★';
-          el.style.color = '#fbbc04';
+        el.classList.toggle('starred');
+        if (el.classList.contains('starred')) {
+          el.innerHTML = '&#9733;';
         } else {
-          el.textContent = '☆';
-          el.style.color = '#c4c7c5';
+          el.innerHTML = '&#9734;';
+        }
+      };
+
+      // Toggle Sidebar for mobile drawer / desktop collapse
+      window.toggleSidebar = function(force) {
+        const sidebar = document.querySelector('.sidebar');
+        const backdrop = document.getElementById('sidebar-backdrop');
+        if (!sidebar) return;
+        const isOpen = typeof force === 'boolean' ? force : !sidebar.classList.contains('mobile-open');
+        if (isOpen) {
+          sidebar.classList.add('mobile-open');
+          if (backdrop) backdrop.classList.add('active');
+        } else {
+          sidebar.classList.remove('mobile-open');
+          if (backdrop) backdrop.classList.remove('active');
+        }
+      };
+
+      // Toggle Split View Mode
+      window.toggleSplitView = function() {
+        const card = document.querySelector('.mail-card');
+        card.classList.toggle('split-view-active');
+        const btn = document.getElementById('btn-toggle-split');
+        if (card.classList.contains('split-view-active')) {
+          if (btn) btn.style.color = 'var(--gm-primary)';
+          showToast('Split View mode enabled.');
+          if (!activeEmail && allInboxEmails.length > 0) {
+            openMessage(allInboxEmails[0].id);
+          }
+        } else {
+          if (btn) btn.style.color = '';
+          showToast('Default full-width table view.');
         }
       };
 
