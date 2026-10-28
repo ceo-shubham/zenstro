@@ -24,7 +24,8 @@ const CLIENT_CONFIGS = {
     domain: 'easeyourfiling.com',
     phone: '+91 62027 35213',
     phoneRaw: '+916202735213',
-    websiteUrl: 'https://easeyourfiling.com',
+    displayDomain: 'www.easeyourfiling.com',
+    websiteUrl: 'https://www.easeyourfiling.com',
     // Fallback base64 key to satisfy GitHub secret scanning rules
     keyB64: 'cmVfVktHZWRmaDZfN1B4cUtKUTNWNHZSaUpxRDRCMmlmVDVF',
     allowedFromAddresses: [
@@ -548,7 +549,7 @@ ${escapeHtml(message)}
                     <div style="font-size:12px; color:#4b5563; margin-top:2px; line-height:1.5;">
                       <span style="white-space:nowrap;">Official Communications</span>
                       <span style="color:#9ca3af; margin:0 4px;">&bull;</span>
-                      <span style="white-space:nowrap;">Website:&nbsp;<strong><a href="${escapeHtml(config.websiteUrl)}" style="color:#0b57d0; text-decoration:none;">${escapeHtml(config.domain)}</a></strong></span>
+                      <span style="white-space:nowrap;">Website:&nbsp;<strong><a href="${escapeHtml(config.websiteUrl)}" style="color:#0b57d0; text-decoration:none;">${escapeHtml(config.displayDomain || ('www.' + config.domain))}</a></strong></span>
                     </div>
                     <div style="font-size:12px; margin-top:4px; line-height:1.5;">
                       <span style="white-space:nowrap;"><a href="mailto:official@${escapeHtml(config.domain)}" style="color:#0b57d0; text-decoration:none; font-weight:500;">official@${escapeHtml(config.domain)}</a></span>

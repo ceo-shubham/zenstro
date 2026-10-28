@@ -33,7 +33,7 @@ window.ZENSTRO_CONFIG = {
       name: "EaseYourFiling",
       tagline: "Corporate Filings, Taxation & Legal Compliance Suite",
       domain: "easeyourfiling.com",
-      websiteUrl: "https://easeyourfiling.com",
+      websiteUrl: "https://www.easeyourfiling.com",
       phone: "+91 62027 35213",
       businessEmails: [
         "official@easeyourfiling.com",
