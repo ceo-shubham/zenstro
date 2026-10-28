@@ -534,14 +534,84 @@
       flex: 1;
       min-width: 0;
     }
+    .date-or-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      width: 80px;
+      position: relative;
+      flex-shrink: 0;
+    }
     .date-cell {
       font-size: 12px;
       color: var(--gm-text-sub);
       white-space: nowrap;
       text-align: right;
       font-weight: 500;
-      width: 80px;
+      width: 100%;
+      display: block;
+    }
+    .row-hover-actions {
+      display: none;
+      align-items: center;
+      gap: 4px;
+      position: absolute;
+      right: 0;
+      background: inherit;
+    }
+    .email-row:hover .date-cell {
+      display: none;
+    }
+    .email-row:hover .row-hover-actions {
+      display: flex;
+    }
+    .btn-row-action {
+      background: none;
+      border: none;
+      color: #5f6368;
+      cursor: pointer;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      transition: background 0.1s ease, color 0.1s ease;
+    }
+    .btn-row-action:hover {
+      background: rgba(60,64,67,0.12);
+      color: #1f1f1f;
+    }
+    .btn-row-action.delete:hover {
+      color: #d93025;
+    }
+    .btn-row-action.restore:hover {
+      color: #0b57d0;
+    }
+    .bin-notice-bar {
+      padding: 10px 18px;
+      background: #fef3c7;
+      border-bottom: 1px solid #fde68a;
+      font-size: 13px;
+      color: #92400e;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       flex-shrink: 0;
+    }
+    .btn-empty-bin {
+      background: #dc2626;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-empty-bin:hover {
+      background: #b91c1c;
     }
 
     /* Email Reader Overlay (Gmail Thread View) */
@@ -1184,6 +1254,13 @@
             <span>Drafts</span>
           </div>
         </li>
+        <li class="nav-item" id="nav-trash" onclick="switchFolder('trash')">
+          <div class="nav-item-left">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M15 4V3H9v1H4v2h1v13c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6h1V4h-5zm2 15H7V6h10v13zM9 8h2v9H9zm4 0h2v9h-2z"/></svg>
+            <span>Bin</span>
+          </div>
+          <span class="nav-badge" id="badge-trash">0</span>
+        </li>
       </ul>
 
 
@@ -1202,16 +1279,20 @@
       <div class="action-bar" id="action-bar">
         <div class="action-bar-left">
           <div class="checkbox-select-wrap">
-            <input type="checkbox" class="gm-cb" title="Select" onclick="toggleSelectAll(this)">
+            <input type="checkbox" class="gm-cb" id="master-cb" title="Select" onclick="toggleSelectAll(this)">
             <svg class="icon" style="width:14px; height:14px; color:var(--gm-text-sub);" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
           </div>
 
-          <button type="button" class="action-btn" title="Refresh" onclick="fetchInbox(true)">
+          <button type="button" class="action-btn" title="Refresh" onclick="refreshCurrentFolder()">
             <svg class="icon" viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
           </button>
 
-          <button type="button" class="action-btn" title="More">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+          <button type="button" class="action-btn" id="btn-action-delete" title="Delete selected" onclick="deleteSelected()" style="display:none; color:#d93025;">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M15 4V3H9v1H4v2h1v13c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6h1V4h-5zm2 15H7V6h10v13zM9 8h2v9H9zm4 0h2v9h-2z"/></svg>
+          </button>
+
+          <button type="button" class="action-btn" id="btn-action-restore" title="Restore selected to Inbox" onclick="restoreSelected()" style="display:none; color:#0b57d0;">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
           </button>
         </div>
 
@@ -1276,6 +1357,10 @@
       </div>
 
       <!-- Email List Container (Gmail Rows) -->
+      <div class="bin-notice-bar" id="bin-notice-bar" style="display:none;">
+        <span>Messages in Bin can be restored or deleted forever.</span>
+        <button type="button" class="btn-empty-bin" onclick="emptyBinPermanently()">Empty Bin now</button>
+      </div>
       <div class="email-table-pane" id="email-table-pane">
         <!-- Rendered dynamically -->
       </div>
@@ -1286,8 +1371,11 @@
           <button type="button" class="action-btn" title="Back to inbox" onclick="closeReader()">
             <svg class="icon" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
           </button>
-          <button type="button" class="action-btn" title="Delete">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+          <button type="button" class="action-btn" id="btn-reader-delete" title="Delete" onclick="deleteCurrentFromReader()">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M15 4V3H9v1H4v2h1v13c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6h1V4h-5zm2 15H7V6h10v13zM9 8h2v9H9zm4 0h2v9h-2z"/></svg>
+          </button>
+          <button type="button" class="action-btn" id="btn-reader-restore" title="Restore" onclick="restoreCurrentFromReader()" style="display:none; color:#0b57d0;">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
           </button>
           <button type="button" class="action-btn" title="Mark as unread">
             <svg class="icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/></svg>
@@ -1440,11 +1528,33 @@
       const initialLetter = (activeUser.name || activeUser.email || 'Z').charAt(0).toUpperCase();
       document.getElementById('user-avatar-btn').textContent = initialLetter;
 
-      let currentFolder = 'inbox'; // 'inbox' or 'sent'
+      let currentFolder = 'inbox'; // 'inbox', 'sent', or 'trash'
       let currentCategory = 'primary'; // 'primary', 'official', 'help', 'info'
       let allInboxEmails = [];
       let allSentEmails = [];
+      let allTrashEmails = [];
       let activeEmail = null;
+      let selectedIds = new Set();
+
+      function updateBadges() {
+        const bIn = document.getElementById('badge-inbox');
+        const bSent = document.getElementById('badge-sent');
+        const bTrash = document.getElementById('badge-trash');
+        if (bIn) bIn.textContent = allInboxEmails.length;
+        if (bSent) bSent.textContent = allSentEmails.length;
+        if (bTrash) bTrash.textContent = allTrashEmails.length;
+      }
+
+      // 0ms INSTANT LOAD FROM CACHE
+      try {
+        const cIn = JSON.parse(localStorage.getItem('zenstro_cache_inbox_' + clientId) || '[]');
+        const cOut = JSON.parse(localStorage.getItem('zenstro_cache_sent_' + clientId) || '[]');
+        const cTr = JSON.parse(localStorage.getItem('zenstro_cache_trash_' + clientId) || '[]');
+        if (Array.isArray(cIn) && cIn.length) allInboxEmails = cIn;
+        if (Array.isArray(cOut) && cOut.length) allSentEmails = cOut;
+        if (Array.isArray(cTr) && cTr.length) allTrashEmails = cTr;
+        updateBadges();
+      } catch (e) {}
 
       function showToast(msg) {
         const t = document.getElementById('gm-toast');
@@ -1464,16 +1574,31 @@
       // Navigation & Folder switching
       window.switchFolder = function(folder) {
         currentFolder = folder;
+        selectedIds.clear();
+        updateActionBarSelection();
         document.querySelectorAll('.nav-list .nav-item').forEach(i => i.classList.remove('active'));
         const navEl = document.getElementById(`nav-${folder}`);
         if (navEl) navEl.classList.add('active');
 
+        const catTabs = document.getElementById('category-tabs');
+        const binNotice = document.getElementById('bin-notice-bar');
+
         closeReader();
+
         if (folder === 'sent') {
-          document.getElementById('category-tabs').style.display = 'none';
+          if (catTabs) catTabs.style.display = 'none';
+          if (binNotice) binNotice.style.display = 'none';
+          renderTable();
           fetchSent();
+        } else if (folder === 'trash') {
+          if (catTabs) catTabs.style.display = 'none';
+          if (binNotice) binNotice.style.display = 'flex';
+          renderTable();
+          fetchTrash();
         } else {
-          document.getElementById('category-tabs').style.display = 'flex';
+          if (catTabs) catTabs.style.display = 'flex';
+          if (binNotice) binNotice.style.display = 'none';
+          renderTable();
           fetchInbox();
         }
       };
@@ -1502,8 +1627,9 @@
           const data = await res.json();
           if (data.success && Array.isArray(data.emails)) {
             allInboxEmails = data.emails;
-            document.getElementById('badge-inbox').textContent = allInboxEmails.length;
-            renderTable();
+            try { localStorage.setItem('zenstro_cache_inbox_' + clientId, JSON.stringify(data.emails)); } catch (e) {}
+            updateBadges();
+            if (currentFolder === 'inbox') renderTable();
             if (manualSync) showToast('Inbox updated.');
           }
         } catch (e) {
@@ -1520,18 +1646,221 @@
           const data = await res.json();
           if (data.success && Array.isArray(data.emails)) {
             allSentEmails = data.emails;
-            document.getElementById('badge-sent').textContent = allSentEmails.length;
-            renderTable();
+            try { localStorage.setItem('zenstro_cache_sent_' + clientId, JSON.stringify(data.emails)); } catch (e) {}
+            updateBadges();
+            if (currentFolder === 'sent') renderTable();
           }
         } catch (e) {
           console.error(e);
         }
       };
 
+      // Fetch Trash (Bin)
+      window.fetchTrash = async function() {
+        try {
+          const res = await fetch(`/api/client-hub?action=trash&client=${clientId}`, {
+            headers: { 'X-Zenstro-User': currentUserEmail }
+          });
+          const data = await res.json();
+          if (data.success && Array.isArray(data.emails)) {
+            allTrashEmails = data.emails;
+            try { localStorage.setItem('zenstro_cache_trash_' + clientId, JSON.stringify(data.emails)); } catch (e) {}
+            updateBadges();
+            if (currentFolder === 'trash') renderTable();
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      };
+
+      window.refreshCurrentFolder = function() {
+        if (currentFolder === 'inbox') fetchInbox(true);
+        else if (currentFolder === 'sent') fetchSent();
+        else if (currentFolder === 'trash') fetchTrash();
+      };
+
+      // Move to Bin
+      window.moveToTrash = async function(id) {
+        const ids = Array.isArray(id) ? id : [id];
+        // Optimistic UI update
+        if (currentFolder === 'sent') {
+          const moved = allSentEmails.filter(e => ids.includes(e.id || e.emailId));
+          allSentEmails = allSentEmails.filter(e => !ids.includes(e.id || e.emailId));
+          moved.forEach(m => { m.originalFolder = 'sent'; allTrashEmails.unshift(m); });
+        } else {
+          const moved = allInboxEmails.filter(e => ids.includes(e.id || e.emailId));
+          allInboxEmails = allInboxEmails.filter(e => !ids.includes(e.id || e.emailId));
+          moved.forEach(m => { m.originalFolder = 'inbox'; allTrashEmails.unshift(m); });
+        }
+        ids.forEach(i => selectedIds.delete(String(i)));
+        updateActionBarSelection();
+        updateBadges();
+        renderTable();
+        showToast('Moved to Bin.');
+
+        try {
+          await fetch(`/api/client-hub?action=delete&client=${clientId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Zenstro-User': currentUserEmail },
+            body: JSON.stringify({ ids, folder: currentFolder, permanent: false })
+          });
+          fetchInbox();
+          fetchSent();
+          fetchTrash();
+        } catch (err) {
+          console.error(err);
+        }
+      };
+
+      // Restore from Bin
+      window.restoreMessage = async function(id) {
+        const ids = Array.isArray(id) ? id : [id];
+        const toRestore = allTrashEmails.filter(e => ids.includes(e.id || e.emailId));
+        allTrashEmails = allTrashEmails.filter(e => !ids.includes(e.id || e.emailId));
+        toRestore.forEach(item => {
+          if (item.originalFolder === 'sent') allSentEmails.unshift(item);
+          else allInboxEmails.unshift(item);
+        });
+        ids.forEach(i => selectedIds.delete(String(i)));
+        updateActionBarSelection();
+        updateBadges();
+        renderTable();
+        showToast('Restored to ' + (currentFolder === 'sent' ? 'Sent' : 'Inbox') + '.');
+
+        try {
+          await fetch(`/api/client-hub?action=delete&client=${clientId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Zenstro-User': currentUserEmail },
+            body: JSON.stringify({ ids, restore: true })
+          });
+          fetchInbox();
+          fetchSent();
+          fetchTrash();
+        } catch (err) {
+          console.error(err);
+        }
+      };
+
+      // Delete Forever (Permanent)
+      window.deletePermanently = async function(id) {
+        if (!confirm('Delete this message forever? This cannot be undone.')) return;
+        const ids = Array.isArray(id) ? id : [id];
+        allTrashEmails = allTrashEmails.filter(e => !ids.includes(e.id || e.emailId));
+        ids.forEach(i => selectedIds.delete(String(i)));
+        updateActionBarSelection();
+        updateBadges();
+        renderTable();
+        showToast('Deleted forever.');
+
+        try {
+          await fetch(`/api/client-hub?action=delete&client=${clientId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Zenstro-User': currentUserEmail },
+            body: JSON.stringify({ ids, folder: 'trash', permanent: true })
+          });
+          fetchTrash();
+        } catch (err) {
+          console.error(err);
+        }
+      };
+
+      // Empty Bin Now
+      window.emptyBinPermanently = async function() {
+        if (!allTrashEmails.length) {
+          showToast('Bin is already empty.');
+          return;
+        }
+        if (!confirm('Empty all messages in Bin? They will be deleted permanently.')) return;
+        allTrashEmails = [];
+        selectedIds.clear();
+        updateActionBarSelection();
+        updateBadges();
+        renderTable();
+        showToast('Bin emptied.');
+
+        try {
+          await fetch(`/api/client-hub?action=empty_trash&client=${clientId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Zenstro-User': currentUserEmail }
+          });
+          fetchTrash();
+        } catch (err) {
+          console.error(err);
+        }
+      };
+
+      // Bulk actions
+      window.toggleItemSelect = function(cb, id) {
+        const strId = String(id);
+        if (cb.checked) {
+          selectedIds.add(strId);
+        } else {
+          selectedIds.delete(strId);
+        }
+        updateActionBarSelection();
+      };
+
+      function updateActionBarSelection() {
+        const btnDel = document.getElementById('btn-action-delete');
+        const btnRestore = document.getElementById('btn-action-restore');
+        const masterCb = document.getElementById('master-cb');
+
+        if (selectedIds.size > 0) {
+          if (btnDel) {
+            btnDel.style.display = 'inline-flex';
+            btnDel.title = currentFolder === 'trash' ? `Delete (${selectedIds.size}) forever` : `Move (${selectedIds.size}) to Bin`;
+          }
+          if (btnRestore) {
+            btnRestore.style.display = currentFolder === 'trash' ? 'inline-flex' : 'none';
+            btnRestore.title = `Restore (${selectedIds.size}) to original folder`;
+          }
+          if (masterCb) masterCb.indeterminate = true;
+        } else {
+          if (btnDel) btnDel.style.display = 'none';
+          if (btnRestore) btnRestore.style.display = 'none';
+          if (masterCb) {
+            masterCb.checked = false;
+            masterCb.indeterminate = false;
+          }
+        }
+      }
+
+      window.deleteSelected = function() {
+        if (!selectedIds.size) return;
+        const ids = Array.from(selectedIds);
+        if (currentFolder === 'trash') {
+          deletePermanently(ids);
+        } else {
+          moveToTrash(ids);
+        }
+      };
+
+      window.restoreSelected = function() {
+        if (!selectedIds.size) return;
+        restoreMessage(Array.from(selectedIds));
+      };
+
+      window.deleteCurrentFromReader = function() {
+        if (!activeEmail) return;
+        const id = activeEmail.id || activeEmail.emailId;
+        if (currentFolder === 'trash') {
+          deletePermanently(id);
+        } else {
+          moveToTrash(id);
+        }
+        closeReader();
+      };
+
+      window.restoreCurrentFromReader = function() {
+        if (!activeEmail) return;
+        restoreMessage(activeEmail.id || activeEmail.emailId);
+        closeReader();
+      };
+
       // Render Gmail Row Table
       function renderTable() {
         const pane = document.getElementById('email-table-pane');
-        const rawList = currentFolder === 'sent' ? allSentEmails : allInboxEmails;
+        const rawList = currentFolder === 'sent' ? allSentEmails : (currentFolder === 'trash' ? allTrashEmails : allInboxEmails);
 
         let filtered = rawList;
         if (currentFolder === 'inbox' && currentCategory !== 'primary') {
@@ -1558,7 +1887,7 @@
               <div style="font-size:13.5px; max-width:440px; margin:0 auto; line-height:1.5;">
                 ${currentFolder === 'inbox'
                   ? 'Messages sent to official@, help@, or info@easeyourfiling.com will appear here in real time.'
-                  : 'Messages dispatched from this mailbox will be archived here.'}
+                  : (currentFolder === 'trash' ? 'No deleted messages in your Bin.' : 'Messages dispatched from this mailbox will be archived here.')}
               </div>
             </div>
           `;
@@ -1566,21 +1895,39 @@
         }
 
         pane.innerHTML = filtered.map(e => {
+          const id = e.id || e.emailId;
           const sender = currentFolder === 'sent' ? `To: ${cleanSender(e.to)}` : cleanSender(e.from);
           const subj = escapeHtml(e.subject || '(no subject)');
           const snippet = escapeHtml((e.message || '').substring(0, 110));
-          const dateStr = formatGmailDate(e.createdAt || e.sentAt);
+          const dateStr = formatGmailDate(e.createdAt || e.sentAt || e.deletedAt);
+          const isChecked = selectedIds.has(String(id));
 
           return `
-            <div class="email-row unread" onclick="openMessage('${e.id}')">
-              <input type="checkbox" class="gm-cb" onclick="event.stopPropagation()">
+            <div class="email-row unread" onclick="openMessage('${id}')" data-id="${id}">
+              <input type="checkbox" class="gm-cb" data-id="${id}" ${isChecked ? 'checked' : ''} onclick="event.stopPropagation(); toggleItemSelect(this, '${id}')">
               <span class="star-icon" onclick="toggleStar(event, this)">&#9734;</span>
               <span class="sender-cell">${escapeHtml(sender)}</span>
               <div class="content-cell">
                 <span class="subject-text">${subj}</span>
                 <span class="snippet-text">- ${snippet}</span>
               </div>
-              <span class="date-cell">${dateStr}</span>
+              <div class="date-or-actions">
+                <span class="date-cell">${dateStr}</span>
+                <div class="row-hover-actions">
+                  ${currentFolder === 'trash' ? `
+                    <button type="button" class="btn-row-action restore" title="Restore" onclick="event.stopPropagation(); restoreMessage('${id}')">
+                      <svg class="icon" style="width:16px; height:16px;" viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+                    </button>
+                    <button type="button" class="btn-row-action delete" title="Delete forever" onclick="event.stopPropagation(); deletePermanently('${id}')">
+                      <svg class="icon" style="width:16px; height:16px;" viewBox="0 0 24 24"><path d="M15 4V3H9v1H4v2h1v13c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6h1V4h-5zm2 15H7V6h10v13zM9 8h2v9H9zm4 0h2v9h-2z"/></svg>
+                    </button>
+                  ` : `
+                    <button type="button" class="btn-row-action delete" title="Move to Bin" onclick="event.stopPropagation(); moveToTrash('${id}')">
+                      <svg class="icon" style="width:16px; height:16px;" viewBox="0 0 24 24"><path d="M15 4V3H9v1H4v2h1v13c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6h1V4h-5zm2 15H7V6h10v13zM9 8h2v9H9zm4 0h2v9h-2z"/></svg>
+                    </button>
+                  `}
+                </div>
+              </div>
             </div>
           `;
         }).join('');
@@ -1647,12 +1994,16 @@
 
       // Message Thread Reader
       window.openMessage = function(id) {
-        const rawList = currentFolder === 'sent' ? allSentEmails : allInboxEmails;
+        const rawList = currentFolder === 'sent' ? allSentEmails : (currentFolder === 'trash' ? allTrashEmails : allInboxEmails);
         activeEmail = rawList.find(e => (e.id === id || e.emailId === id));
         if (!activeEmail) return;
 
         const reader = document.getElementById('reader-pane');
         reader.style.display = 'flex';
+        const btnRestore = document.getElementById('btn-reader-restore');
+        if (btnRestore) btnRestore.style.display = currentFolder === 'trash' ? 'inline-flex' : 'none';
+        const btnDel = document.getElementById('btn-reader-delete');
+        if (btnDel) btnDel.title = currentFolder === 'trash' ? 'Delete forever' : 'Move to Bin';
 
         document.getElementById('reader-subject').textContent = activeEmail.subject || '(no subject)';
         document.getElementById('reader-sender-name').textContent = activeEmail.from || 'Unknown';
@@ -1840,9 +2191,13 @@
       };
 
       window.toggleSelectAll = function(master) {
+        selectedIds.clear();
         document.querySelectorAll('.email-table-pane .gm-cb').forEach(cb => {
           cb.checked = master.checked;
+          const id = cb.getAttribute('data-id');
+          if (master.checked && id) selectedIds.add(String(id));
         });
+        updateActionBarSelection();
       };
 
       window.handleSearch = function() {
@@ -1862,6 +2217,7 @@
       // Initial Load
       fetchInbox();
       fetchSent();
+      fetchTrash();
     })();
   </script>
 </body>

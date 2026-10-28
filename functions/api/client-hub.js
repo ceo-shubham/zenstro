@@ -179,7 +179,7 @@ export async function onRequestGet(context) {
     }
 
     // B. Also sync directly with Resend Receiving API if requested or if inbox is empty
-    const shouldSync = url.searchParams.get('sync') === 'true' || emails.length === 0;
+    const shouldSync = url.searchParams.get('sync') === 'true';
     if (shouldSync && resendApiKey) {
       try {
         const resendRes = await fetch('https://api.resend.com/emails/receiving', {
@@ -310,6 +310,23 @@ export async function onRequestGet(context) {
       client: clientId,
       total: sentEmails.length,
       emails: sentEmails
+    }), { status: 200, headers: CORS_HEADERS });
+  }
+
+  // 4b. TRASH: FETCH DELETED EMAILS (BIN)
+  if (action === 'trash') {
+    let trashEmails = [];
+    if (env && env.ZENSTRO_KV) {
+      try {
+        const raw = await env.ZENSTRO_KV.get(`client_${clientId}_trash`);
+        if (raw) trashEmails = JSON.parse(raw);
+      } catch (e) {}
+    }
+    return new Response(JSON.stringify({
+      success: true,
+      client: clientId,
+      total: trashEmails.length,
+      emails: trashEmails
     }), { status: 200, headers: CORS_HEADERS });
   }
 
@@ -655,6 +672,101 @@ ${Array.isArray(body.attachments) && body.attachments.length > 0 ? `
     } catch (err) {
       return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: CORS_HEADERS });
     }
+  }
+
+  // 2b. DELETE / MOVE TO BIN / RESTORE / PERMANENT DELETE
+  if (action === 'delete') {
+    let body = {};
+    try {
+      body = await request.json();
+    } catch (e) {
+      return new Response(JSON.stringify({ error: 'Invalid JSON' }), { status: 400, headers: CORS_HEADERS });
+    }
+
+    const emailIds = Array.isArray(body.ids) ? body.ids : (body.id ? [body.id] : []);
+    const fromFolder = String(body.folder || 'inbox').toLowerCase();
+    const permanent = body.permanent === true;
+    const restore = body.restore === true;
+
+    if (!emailIds.length) {
+      return new Response(JSON.stringify({ error: 'No email IDs provided' }), { status: 400, headers: CORS_HEADERS });
+    }
+
+    if (!env || !env.ZENSTRO_KV) {
+      return new Response(JSON.stringify({ success: true, count: emailIds.length }), { status: 200, headers: CORS_HEADERS });
+    }
+
+    try {
+      let inboxList = [];
+      let outboxList = [];
+      let trashList = [];
+
+      const rawIn = await env.ZENSTRO_KV.get(`client_${clientId}_inbox`);
+      if (rawIn) inboxList = JSON.parse(rawIn);
+
+      const rawOut = await env.ZENSTRO_KV.get(`client_${clientId}_outbox`);
+      if (rawOut) outboxList = JSON.parse(rawOut);
+
+      const rawTrash = await env.ZENSTRO_KV.get(`client_${clientId}_trash`);
+      if (rawTrash) trashList = JSON.parse(rawTrash);
+
+      const idSet = new Set(emailIds.map(String));
+
+      if (restore) {
+        // Restore from trash back to original folder
+        const toRestore = trashList.filter(e => idSet.has(String(e.id || e.emailId)));
+        trashList = trashList.filter(e => !idSet.has(String(e.id || e.emailId)));
+
+        for (const item of toRestore) {
+          if (item.originalFolder === 'sent') {
+            outboxList.unshift(item);
+          } else {
+            inboxList.unshift(item);
+          }
+        }
+      } else if (permanent || fromFolder === 'trash') {
+        // Permanently delete from Bin
+        trashList = trashList.filter(e => !idSet.has(String(e.id || e.emailId)));
+      } else {
+        // Move from inbox/outbox into Bin
+        let movedItems = [];
+        if (fromFolder === 'sent') {
+          movedItems = outboxList.filter(e => idSet.has(String(e.id || e.emailId)));
+          outboxList = outboxList.filter(e => !idSet.has(String(e.id || e.emailId)));
+        } else {
+          movedItems = inboxList.filter(e => idSet.has(String(e.id || e.emailId)));
+          inboxList = inboxList.filter(e => !idSet.has(String(e.id || e.emailId)));
+        }
+
+        for (const item of movedItems) {
+          item.deletedAt = new Date().toISOString();
+          item.originalFolder = fromFolder;
+          trashList.unshift(item);
+        }
+      }
+
+      await env.ZENSTRO_KV.put(`client_${clientId}_inbox`, JSON.stringify(inboxList.slice(0, 300)));
+      await env.ZENSTRO_KV.put(`client_${clientId}_outbox`, JSON.stringify(outboxList.slice(0, 300)));
+      await env.ZENSTRO_KV.put(`client_${clientId}_trash`, JSON.stringify(trashList.slice(0, 300)));
+
+      return new Response(JSON.stringify({
+        success: true,
+        restored: restore,
+        permanent: permanent || fromFolder === 'trash',
+        count: emailIds.length
+      }), { status: 200, headers: CORS_HEADERS });
+
+    } catch (err) {
+      return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: CORS_HEADERS });
+    }
+  }
+
+  // 2c. EMPTY TRASH
+  if (action === 'empty_trash') {
+    if (env && env.ZENSTRO_KV) {
+      await env.ZENSTRO_KV.put(`client_${clientId}_trash`, JSON.stringify([]));
+    }
+    return new Response(JSON.stringify({ success: true, message: 'Bin emptied' }), { status: 200, headers: CORS_HEADERS });
   }
 
   // 3. MANAGE AUTHORIZED EMAILS (Restricted to Super Admin)
