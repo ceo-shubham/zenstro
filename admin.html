@@ -1272,6 +1272,10 @@
         <button class="view-tab-btn" data-tab="cloudflare" type="button">
           Cloudflare <span class="tab-counter" id="tab-count-cf">8</span>
         </button>
+        
+        <button class="view-tab-btn" data-tab="notepot" type="button">
+          NotePot ✍️ <span class="tab-counter" id="tab-count-notepot">...</span>
+        </button>
         <button class="view-tab-btn" data-tab="storage" type="button">
           Storage (B2) <span class="tab-counter" id="tab-count-storage">10GB</span>
         </button>
@@ -2842,6 +2846,11 @@
         }
 
         // ============ TAB: CLOUD STORAGE (B2) ============
+        if (currentTab === 'notepot') {
+          renderNotePotManager(search);
+          return;
+        }
+
         if (currentTab === 'storage') {
           renderB2StorageManager(search);
           return;
@@ -4439,6 +4448,170 @@
         listEl.innerHTML = html;
       }
 
-  </script>
+  
+
+      // =========================================================================
+      // NOTEPOT ASSIGNMENTS & USERS MANAGER (INTEGRATION WITH notepot.zenstro.space)
+      // =========================================================================
+      let notepotDataCache = null;
+
+      async function fetchNotePotData() {
+        try {
+          const res = await fetch('https://notepot.zenstro.space/api/admin?adminEmail=ceo.shubhampathak@gmail.com');
+          if (res.ok) {
+            notepotDataCache = await res.json();
+            const counterEl = document.getElementById('tab-count-notepot');
+            if (counterEl && notepotDataCache.stats) {
+              counterEl.textContent = notepotDataCache.stats.totalAssignments || '0';
+            }
+            return notepotDataCache;
+          }
+        } catch (e) {
+          console.warn('NotePot fetch warning:', e);
+        }
+        return null;
+      }
+
+      // Initial background count fetch
+      fetchNotePotData();
+
+      async function renderNotePotManager(searchQuery) {
+        const tableContainer = document.getElementById('inquiries-table');
+        if (!tableContainer) return;
+
+        if (!notepotDataCache) {
+          tableContainer.innerHTML = '<div style="padding:48px; text-align:center; color:#71717a;">Loading NotePot users and assignments from Backblaze B2...</div>';
+          await fetchNotePotData();
+        }
+
+        const data = notepotDataCache || { stats: {}, system: {}, users: [], allDocuments: [] };
+        const sys = data.system || {};
+        const stats = data.stats || {};
+        const docs = (data.allDocuments || []).filter(d => {
+          if (!searchQuery) return true;
+          const q = searchQuery.toLowerCase();
+          return (d.title || '').toLowerCase().includes(q) ||
+                 (d.userEmail || '').toLowerCase().includes(q) ||
+                 (d.userName || '').toLowerCase().includes(q);
+        });
+
+        const usedPercent = sys.usedPercent || 0;
+        const barColor = usedPercent >= 90 ? '#ef4444' : (usedPercent >= 75 ? '#f59e0b' : '#10b981');
+
+        let html = `
+          <div style="background:#ffffff; border:1px solid #e4e4e7; border-radius:8px; overflow:hidden; margin-bottom:24px;">
+            <!-- NotePot Ecosystem Banner & Stats -->
+            <div style="background:#fafafa; border-bottom:1px solid #e4e4e7; padding:24px;">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; margin-bottom:16px;">
+                <div>
+                  <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                    <h3 style="font-size:18px; font-weight:800; color:#09090b; margin:0;">✍️ NotePot - Handwritten Notebook Assignments</h3>
+                    <span style="display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:700; background:#fef3c7; color:#b45309; padding:2px 8px; border-radius:4px; font-family:var(--mono);">
+                      LIVE ECOSYSTEM
+                    </span>
+                  </div>
+                  <p style="font-size:13px; color:#52525b; margin:0; max-width:650px;">
+                    Authentic Hindi & English handwritten assignment web platform with 38+ fonts, ruled line alignment, PDF download, and 10GB Backblaze B2 storage.
+                  </p>
+                </div>
+                <div style="display:flex; gap:10px; align-items:center;">
+                  <button onclick="fetchNotePotData().then(() => renderNotePotManager(''))" class="btn-micro" style="padding:6px 12px; font-size:12px;">
+                    ↻ Refresh
+                  </button>
+                  <a href="https://notepot.zenstro.space" target="_blank" class="btn-micro" style="background:#09090b; color:#ffffff; border-color:#09090b; padding:6px 14px; font-size:12px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+                    Launch NotePot ↗
+                  </a>
+                </div>
+              </div>
+
+              <!-- Storage & Metric Highlights -->
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-top:16px;">
+                <div style="background:#ffffff; border:1px solid #e4e4e7; border-radius:6px; padding:14px;">
+                  <span style="font-size:11px; color:#71717a; text-transform:uppercase; font-family:var(--mono); letter-spacing:0.5px;">B2 Storage (10 GB Tier)</span>
+                  <div style="font-size:20px; font-weight:800; color:#09090b; margin-top:4px;">${sys.usedFormatted || '0 B'} <span style="font-size:12px; color:#71717a; font-weight:400;">/ 10 GB</span></div>
+                  <div style="width:100%; height:6px; background:#e4e4e7; border-radius:3px; overflow:hidden; margin-top:8px;">
+                    <div style="width:${Math.max(2, usedPercent)}%; height:100%; background:${barColor}; border-radius:3px;"></div>
+                  </div>
+                  <div style="font-size:11px; color:#71717a; margin-top:6px; display:flex; justify-content:space-between;">
+                    <span>Bucket: <strong>zenstro</strong></span>
+                    <span>Free: <strong>${sys.freeFormatted || '10 GB'}</strong></span>
+                  </div>
+                </div>
+
+                <div style="background:#ffffff; border:1px solid #e4e4e7; border-radius:6px; padding:14px;">
+                  <span style="font-size:11px; color:#71717a; text-transform:uppercase; font-family:var(--mono); letter-spacing:0.5px;">Registered Creators</span>
+                  <div style="font-size:20px; font-weight:800; color:#0284c7; margin-top:4px;">${stats.totalUsers || 0}</div>
+                  <p style="font-size:11px; color:#71717a; margin:4px 0 0 0;">Active student and user accounts</p>
+                </div>
+
+                <div style="background:#ffffff; border:1px solid #e4e4e7; border-radius:6px; padding:14px;">
+                  <span style="font-size:11px; color:#71717a; text-transform:uppercase; font-family:var(--mono); letter-spacing:0.5px;">Total Assignments</span>
+                  <div style="font-size:20px; font-weight:800; color:#7c3aed; margin-top:4px;">${stats.totalAssignments || 0}</div>
+                  <p style="font-size:11px; color:#71717a; margin:4px 0 0 0;">Multi-page handwritten files</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Assignments Table -->
+            <div style="padding:16px 20px 8px; border-bottom:1px solid #e4e4e7; display:flex; justify-content:space-between; align-items:center;">
+              <h4 style="font-size:13px; font-weight:700; color:#09090b; margin:0;">All User Assignments & Notes</h4>
+              <span style="font-size:11px; color:#71717a; font-family:var(--mono);">Showing ${docs.length} of ${(data.allDocuments || []).length} assignments</span>
+            </div>
+
+            <div style="overflow-x:auto;">
+              <table class="ledger-table" style="width:100%; border-collapse:collapse; font-size:12px;">
+                <thead>
+                  <tr style="background:#fafafa; border-bottom:1px solid #e4e4e7; text-align:left; color:#71717a; font-family:var(--mono); font-size:11px;">
+                    <th style="padding:10px 16px;">User Email</th>
+                    <th style="padding:10px 16px;">Assignment Title</th>
+                    <th style="padding:10px 16px;">Paper & Font</th>
+                    <th style="padding:10px 16px;">Pages</th>
+                    <th style="padding:10px 16px;">Last Updated</th>
+                    <th style="padding:10px 16px; text-align:right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${docs.length === 0 ? `
+                    <tr>
+                      <td colspan="6" style="padding:32px; text-align:center; color:#a1a1aa;">
+                        No assignments matching search or no assignments created yet.
+                      </td>
+                    </tr>
+                  ` : docs.map(d => `
+                    <tr style="border-bottom:1px solid #f4f4f5;">
+                      <td style="padding:12px 16px;">
+                        <strong style="color:#09090b; display:block;">${d.userName || 'Student'}</strong>
+                        <span style="color:#71717a; font-size:11px; font-family:var(--mono);">${d.userEmail}</span>
+                      </td>
+                      <td style="padding:12px 16px; font-weight:600; color:#09090b;">
+                        ${d.title || 'Untitled Assignment'}
+                      </td>
+                      <td style="padding:12px 16px; color:#52525b;">
+                        <span style="background:#f4f4f5; padding:2px 6px; border-radius:4px; font-size:11px; font-family:var(--mono);">${d.paperType || 'hindi-notebook'}</span>
+                        <span style="display:block; font-size:11px; color:#71717a; margin-top:2px;">${d.fontFamily || 'Kalam'}</span>
+                      </td>
+                      <td style="padding:12px 16px;">
+                        <span style="font-weight:700; color:#09090b; font-family:var(--mono);">${d.pageCount || 1}</span> ${d.pageCount === 1 ? 'page' : 'pages'}
+                      </td>
+                      <td style="padding:12px 16px; color:#71717a; font-size:11px; font-family:var(--mono);">
+                        ${new Date(d.updatedAt || Date.now()).toLocaleString()}
+                      </td>
+                      <td style="padding:12px 16px; text-align:right;">
+                        <a href="https://notepot.zenstro.space" target="_blank" class="btn-micro" style="text-decoration:none; padding:4px 8px; font-size:11px;">
+                          Open in NotePot ↗
+                        </a>
+                      </td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+
+        tableContainer.innerHTML = html;
+      }
+    
+</script>
 </body>
 </html>
