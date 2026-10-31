@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=8.7">
+  <link rel="stylesheet" href="styles.css?v=9.0">
   <script src="config.js?v=9.2"></script>
   <script defer data-cfasync="false" src="https://mqleads.zenstro.space/mqleads.js" data-site-id="6ad4a0d013eaf75f9ee43c9b"></script>
   <style>
@@ -775,34 +775,49 @@
       box-shadow: 0 0 0 1px #09090b;
     }
 
+    /* Responsive Layout for Tablet & Mobile */
     @media (max-width: 1024px) {
-      .metrics-strip {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-    }
-    @media (max-width: 640px) {
-      .metrics-strip {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-      .metric-cell {
-        padding: 10px 12px;
-      }
-      .metric-value {
-        font-size: 18px;
-      }
+      .admin-bar { padding: 0 12px; }
+      .metrics-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .status-badge-inline { display: none; }
+      .user-info-role { display: none; }
+      .showcase-banner { flex-direction: column; align-items: flex-start; }
+      .showcase-banner-actions { width: 100%; justify-content: flex-start; }
     }
     @media (max-width: 768px) {
-      .toolbar-bar {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .toolbar-search {
-        max-width: none;
-      }
-      .views-tabs {
-        overflow-x: auto;
-        width: 100%;
-      }
+      .admin-bar { height: auto; padding: 10px 12px; flex-wrap: wrap; gap: 10px; }
+      .admin-brand-group { gap: 8px; }
+      .admin-user-group { gap: 8px; flex-wrap: wrap; }
+      .user-info-text { display: none; }
+      .btn-console-primary, .btn-console-outline { padding: 6px 10px; font-size: 11.5px; }
+      .views-nav-bar { margin-bottom: 12px; overflow: hidden; }
+      .views-tabs { overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 2px; gap: 12px; }
+      .views-tabs::-webkit-scrollbar { display: none; }
+      .view-tab-btn { padding: 8px 10px; font-size: 12.5px; flex-shrink: 0; }
+      .domain-inboxes-bar { flex-direction: column; align-items: stretch; gap: 10px; padding: 10px 12px; }
+      .inbox-filter-chips { overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; display: flex; gap: 6px; }
+      .inbox-filter-chips::-webkit-scrollbar { display: none; }
+      .inbox-chip { flex-shrink: 0; }
+      .inbox-sync-group { flex-wrap: wrap; gap: 6px; }
+      .toolbar-bar { flex-direction: column; align-items: stretch; gap: 10px; }
+      .toolbar-search { width: 100%; max-width: none; }
+      .toolbar-actions { width: 100%; display: flex; flex-wrap: wrap; gap: 8px; }
+      .toolbar-select { flex: 1 1 calc(50% - 4px); min-width: 120px; }
+      .toolbar-actions .btn-console-primary, .toolbar-actions .btn-console-outline { flex: 1 1 auto; justify-content: center; text-align: center; }
+      .ledger-container { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; }
+      .ledger-table { min-width: 720px; }
+      .modal-overlay { padding: 10px; align-items: flex-end; }
+      .modal-dialog, .modal-dialog-lg { max-width: 100% !important; width: 100% !important; max-height: 90vh !important; border-radius: 14px 14px 0 0 !important; display: flex; flex-direction: column; }
+      .modal-dialog .modal-body, .modal-dialog > form { overflow-y: auto; -webkit-overflow-scrolling: touch; max-height: calc(90vh - 110px); }
+    }
+    @media (max-width: 640px) {
+      .wrap { padding: 0 12px; }
+      .metrics-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .metric-cell:last-child { grid-column: span 2; }
+      .metric-cell { padding: 10px 12px; }
+      .metric-header { font-size: 10px; }
+      .metric-value { font-size: 19px; }
+      .metric-note { font-size: 10px; }
     }
 
     /* Precision Showcase & Cloudflare Management Console */
@@ -4372,7 +4387,7 @@
               <a href="https://resend.com/domains" target="_blank" rel="noopener" class="btn-console-outline" style="font-size:12px;">Resend Domains ↗</a>
             </div>
           </div>
-          <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(380px, 1fr)); gap:20px;">
+          <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap:20px;">
         `;
 
         filtered.forEach(c => {

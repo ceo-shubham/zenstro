@@ -1067,12 +1067,14 @@
       }
       .brand-logo-img {
         height: 28px;
-        max-width: 120px;
+        max-width: 110px;
       }
       .search-box-wrap {
         height: 40px;
         padding: 0 12px;
         margin: 0 4px;
+        flex: 1;
+        max-width: none;
       }
       .btn-upgrade-pill {
         display: none !important;
@@ -1086,15 +1088,17 @@
       }
       .sidebar {
         position: fixed;
-        top: 56px;
+        top: 0;
         left: -290px;
         bottom: 0;
         width: 270px;
         background: #ffffff;
         z-index: 1200;
-        box-shadow: 4px 0 20px rgba(0,0,0,0.2);
-        padding: 16px 8px;
+        box-shadow: 4px 0 24px rgba(0,0,0,0.25);
+        padding: 20px 12px;
         transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
       }
       .sidebar.mobile-open {
         left: 0;
@@ -1102,8 +1106,9 @@
       .sidebar-backdrop {
         display: none;
         position: fixed;
-        top: 56px; left: 0; right: 0; bottom: 0;
-        background: rgba(0,0,0,0.35);
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(15, 23, 42, 0.5);
+        backdrop-filter: blur(2px);
         z-index: 1150;
       }
       .sidebar-backdrop.active {
@@ -1113,24 +1118,35 @@
         border-radius: 8px;
         flex: 1;
         height: 100%;
+        overflow: hidden;
+        position: relative;
       }
       .category-tabs {
-        height: 46px;
+        height: 44px;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        display: flex;
+      }
+      .category-tabs::-webkit-scrollbar {
+        display: none;
       }
       .cat-tab {
-        min-width: 120px;
-        padding: 0 12px;
-        gap: 8px;
+        min-width: auto;
+        padding: 0 14px;
+        gap: 6px;
+        flex-shrink: 0;
       }
       .cat-tab-snippet {
         display: none;
       }
       .email-row {
-        grid-template-columns: 20px clamp(80px, 24vw, 110px) minmax(0, 1fr) 55px;
-        column-gap: 8px;
-        padding: 0 10px;
+        grid-template-columns: 20px clamp(75px, 22vw, 110px) minmax(0, 1fr) 52px;
+        column-gap: 6px;
+        padding: 0 8px;
         font-size: 13px;
-        height: 46px;
+        height: 48px;
       }
       .star-icon {
         display: none;
@@ -1139,15 +1155,74 @@
         display: none;
       }
       .date-cell {
-        width: 55px;
+        width: 52px;
         font-size: 11px;
+        text-align: right;
       }
       .compose-modal {
         right: 0;
         left: 0;
+        bottom: 0;
         width: 100vw;
         max-width: 100vw;
-        border-radius: 12px 12px 0 0;
+        border-radius: 14px 14px 0 0;
+        max-height: 90vh;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .appbar {
+        padding: 0 8px;
+        gap: 6px;
+      }
+      .appbar-right .appbar-icon-btn {
+        display: none !important;
+      }
+      .brand-logo-img {
+        max-width: 85px;
+        height: 24px;
+      }
+      .search-box-wrap {
+        height: 38px;
+        padding: 0 10px;
+        margin: 0 2px;
+      }
+      .search-box-wrap input {
+        font-size: 13px;
+      }
+      .btn-search-slider {
+        display: none !important;
+      }
+      .avatar-circle {
+        width: 32px;
+        height: 32px;
+        font-size: 13px;
+      }
+      #btn-toggle-split {
+        display: none !important;
+      }
+      #counter-range-text {
+        font-size: 11px;
+      }
+      .reader-pane {
+        padding: 0;
+      }
+      .reader-subject-title {
+        font-size: 17px !important;
+        line-height: 1.35 !important;
+      }
+      .reader-sender-meta {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 6px !important;
+      }
+      .reader-message-body {
+        padding: 14px 10px !important;
+        font-size: 13.5px !important;
+      }
+      .compose-modal {
+        height: 85vh !important;
+        max-height: 85vh !important;
       }
     }
   </style>
@@ -1270,6 +1345,9 @@
         <div style="margin-top:4px;"><a href="admin.html" id="link-admin-console" style="color:var(--gm-primary); text-decoration:none; display:none;">Admin Console &rarr;</a></div>
       </div>
     </aside>
+
+    <!-- Mobile Drawer Backdrop Overlay -->
+    <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="toggleSidebar(false)"></div>
 
     <!-- 4. Center Mail Card -->
     <main class="mail-card">
@@ -1657,6 +1735,9 @@
         currentFolder = folder;
         selectedIds.clear();
         updateActionBarSelection();
+        if (window.innerWidth <= 860 && typeof window.toggleSidebar === 'function') {
+          window.toggleSidebar(false);
+        }
         document.querySelectorAll('.nav-list .nav-item').forEach(i => i.classList.remove('active'));
         const navEl = document.getElementById(`nav-${folder}`);
         if (navEl) navEl.classList.add('active');
@@ -2184,6 +2265,9 @@
 
       // Compose Modal
       window.openCompose = function() {
+        if (window.innerWidth <= 860 && typeof window.toggleSidebar === 'function') {
+          window.toggleSidebar(false);
+        }
         document.getElementById('compose-modal').style.display = 'flex';
         document.getElementById('compose-to').focus();
       };

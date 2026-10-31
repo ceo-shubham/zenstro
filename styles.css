@@ -2721,8 +2721,8 @@ html.js .reveal.in {
     top: calc(100% + 6px);
     right: 0;
     left: auto;
-    width: 210px;
-    max-width: calc(100vw - 32px);
+    width: 236px;
+    max-width: calc(100vw - 28px);
     background: #ffffff;
     border: 1px solid var(--border-default);
     border-radius: 8px;
@@ -2742,7 +2742,7 @@ html.js .reveal.in {
     to { opacity: 1; transform: scale(1) translateY(0); }
   }
   .site-header nav.open { display: flex; }
-  .site-header nav a:not(.nav-cta):not(.nav-login-link) {
+  .site-header nav a:not(.nav-cta):not(.nav-login-link):not(.nav-auth-pill) {
     font-size: 13px;
     font-weight: 600;
     color: #334155;
@@ -2752,25 +2752,28 @@ html.js .reveal.in {
     border-bottom: none !important;
     transition: background 0.15s, color 0.15s;
     text-align: left;
+    box-sizing: border-box;
   }
-  .site-header nav a:not(.nav-cta):not(.nav-login-link):hover {
+  .site-header nav a:not(.nav-cta):not(.nav-login-link):not(.nav-auth-pill):hover {
     background: #f1f5f9;
     color: #0f172a;
   }
-  .site-header nav a[aria-current="page"]:not(.nav-cta):not(.nav-login-link) {
+  .site-header nav a[aria-current="page"]:not(.nav-cta):not(.nav-login-link):not(.nav-auth-pill) {
     background: #eff6ff;
     color: #1d4ed8;
     font-weight: 700;
   }
-  .site-header nav a.nav-login-link {
+  .site-header nav a.nav-login-link,
+  .site-header nav a.nav-auth-pill {
     width: 100%;
     justify-content: center;
     margin-top: 6px;
-    padding: 6px 10px !important;
-    font-size: 12px !important;
+    padding: 7px 10px !important;
+    font-size: 12.5px !important;
     border-radius: 6px !important;
-    border: 1px solid #e2e8f0 !important;
-    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    background: #ffffff !important;
+    box-sizing: border-box !important;
   }
   .nav-cta {
     width: 100%;
