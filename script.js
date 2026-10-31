@@ -99,19 +99,38 @@
 
   /* ----- Global Navigation Auth State ----- */
   function updateNavAuthState() {
-    var rawAdmin = localStorage.getItem('zenstro_admin_session');
-    var rawUser = localStorage.getItem('zenstro_user_session');
-    var user = null;
+    var rawAdmin = localStorage.getItem('zenstro_admin_session') || sessionStorage.getItem('zenstro_admin_session');
+    var rawClient = localStorage.getItem('zenstro_client_session') || sessionStorage.getItem('zenstro_client_session');
+    var rawUser = localStorage.getItem('zenstro_user_session') || sessionStorage.getItem('zenstro_user_session');
+
+    var adminUser = null;
+    var clientUser = null;
+
     try {
-      if (rawAdmin) user = JSON.parse(rawAdmin);
-      else if (rawUser) user = JSON.parse(rawUser);
+      if (rawAdmin) adminUser = JSON.parse(rawAdmin);
+    } catch (e) {}
+
+    try {
+      if (rawClient) {
+        clientUser = JSON.parse(rawClient);
+      } else if (rawUser) {
+        var parsedUser = JSON.parse(rawUser);
+        if (parsedUser) {
+          if (parsedUser.isAdmin) {
+            if (!adminUser) adminUser = parsedUser;
+          } else {
+            clientUser = parsedUser;
+          }
+        }
+      }
     } catch (e) {}
 
     var loginBtn = document.getElementById('global-login-btn');
     if (!loginBtn) return;
 
+    var SOLE_ADMIN_EMAIL = "ceo.shubhampathak@gmail.com";
     var adminEmails = (window.ZENSTRO_CONFIG && window.ZENSTRO_CONFIG.adminEmails) || [
-      "ceo.shubhampathak@gmail.com"
+      SOLE_ADMIN_EMAIL
     ];
 
     /* ----- MQLeads Visitor Identification ----- */
@@ -138,24 +157,34 @@
       }
     }
 
-    if (user && user.email) {
-      identifyMQLeadsUser(user, "login");
-      var SOLE_ADMIN_EMAIL = "ceo.shubhampathak@gmail.com";
-      var userEmail = String(user.email || '').trim().toLowerCase();
+    // 1. Admin Logged In: "Admin Dashboard ↗" (no profile pic)
+    if (adminUser && adminUser.email) {
+      var adminEmail = String(adminUser.email || '').trim().toLowerCase();
+      var isAdmin = (adminEmail === SOLE_ADMIN_EMAIL) || 
+        (adminEmails.map(function(e) { return e.toLowerCase(); }).indexOf(adminEmail) !== -1);
 
-      if (userEmail !== SOLE_ADMIN_EMAIL) {
-        localStorage.removeItem('zenstro_user_session');
-        sessionStorage.removeItem('zenstro_user_session');
-        localStorage.removeItem('zenstro_admin_session');
-        sessionStorage.removeItem('zenstro_admin_session');
+      if (isAdmin) {
+        identifyMQLeadsUser(adminUser, "login");
+        loginBtn.innerHTML = 
+          '<span class="nav-auth-name">Admin Dashboard</span> <span class="nav-auth-arrow">↗</span>';
+        loginBtn.href = 'admin.html';
+        loginBtn.className = 'nav-auth-pill nav-auth-admin';
         return;
       }
+    }
 
+    // 2. Regular User / Client Logged In: "Dashboard ↗" (no profile pic)
+    if (clientUser && clientUser.email) {
+      identifyMQLeadsUser(clientUser, "login");
+      var targetUrl = 'portal.html';
+      if (clientUser.clientId) {
+        targetUrl = 'portal.html?client=' + encodeURIComponent(clientUser.clientId);
+      }
       loginBtn.innerHTML = 
-        '<span class="nav-auth-avatar">' + (user.name ? user.name.charAt(0).toUpperCase() : 'S') + '</span>' +
-        '<span class="nav-auth-name">Admin Console</span> <span class="nav-auth-arrow">↗</span>';
-      loginBtn.href = 'admin.html';
+        '<span class="nav-auth-name">Dashboard</span> <span class="nav-auth-arrow">↗</span>';
+      loginBtn.href = targetUrl;
       loginBtn.className = 'nav-auth-pill nav-auth-admin';
+      return;
     }
   }
 

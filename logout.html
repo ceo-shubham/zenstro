@@ -23,6 +23,8 @@
         sessionStorage.removeItem('zenstro_user_session');
         localStorage.removeItem('zenstro_admin_session');
         sessionStorage.removeItem('zenstro_admin_session');
+        localStorage.removeItem('zenstro_client_session');
+        sessionStorage.removeItem('zenstro_client_session');
         if (window.google && window.google.accounts && window.google.accounts.id) {
           window.google.accounts.id.disableAutoSelect();
         }

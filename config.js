@@ -10,7 +10,7 @@ window.ZENSTRO_CONFIG = {
   adminEmails: [
     "ceo.shubhampathak@gmail.com"
   ],
-
+ 
   /* Google OAuth 2.0 Client ID for Google Identity Services */
   googleClientId: "193810371236-jli2ml7qh8qedqmat8o0hrms8uavhr6s.apps.googleusercontent.com",
 
@@ -46,6 +46,26 @@ window.ZENSTRO_CONFIG = {
         "info@easeyourfiling.com",
         "easeyourfiling@gmail.com",
         "csshrikantdubey@gmail.com"
+      ]
+    },
+    {
+      id: "zenstro",
+      name: "ZENSTRO",
+      tagline: "Digital Engineering Studio · Production Email Systems",
+      domain: "zenstro.space",
+      websiteUrl: "https://zenstro.space",
+      logo: "logo.png",
+      phone: "",
+      businessEmails: [
+        "admin@zenstro.space",
+        "admin@mail.zenstro.space",
+        "ceo@zenstro.space"
+      ],
+      authorizedEmails: [
+        "official.zenstro@gmail.com",
+        "admin@zenstro.space",
+        "ceo@zenstro.space",
+        "ceo.shubhampathak@gmail.com"
       ]
     }
   ]

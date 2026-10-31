@@ -308,6 +308,8 @@
 
           localStorage.setItem('zenstro_client_session', JSON.stringify(clientSession));
           sessionStorage.setItem('zenstro_client_session', JSON.stringify(clientSession));
+          localStorage.setItem('zenstro_user_session', JSON.stringify(clientSession));
+          sessionStorage.setItem('zenstro_user_session', JSON.stringify(clientSession));
 
           showAlert(`Welcome to ${matchedClient.name} Portal! Redirecting...`, false);
           setTimeout(() => {

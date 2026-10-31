@@ -48,6 +48,35 @@ const CLIENT_CONFIGS = {
       status: 'Protected & Online',
       uptime: '99.98%'
     }
+  },
+  zenstro: {
+    id: 'zenstro',
+    name: 'ZENSTRO',
+    tagline: 'Digital Engineering Studio · Production Email Systems',
+    domain: 'zenstro.space',
+    phone: '',
+    phoneRaw: '',
+    displayDomain: 'zenstro.space',
+    websiteUrl: 'https://zenstro.space',
+    allowedFromAddresses: [
+      { id: 'official', name: 'ZENSTRO Official', email: 'admin@zenstro.space' },
+      { id: 'support', name: 'ZENSTRO Support', email: 'admin@mail.zenstro.space' },
+      { id: 'ceo', name: 'ZENSTRO Executive', email: 'ceo@zenstro.space' }
+    ],
+    defaultAuthorizedEmails: [
+      'official.zenstro@gmail.com',
+      'ceo.shubhampathak@gmail.com',
+      'admin@zenstro.space',
+      'ceo@zenstro.space'
+    ],
+    hosting: {
+      provider: 'Cloudflare Pages / Global Edge Network',
+      dns: 'Cloudflare Anycast DNS',
+      ssl: 'Enterprise Strict TLS 1.3 (Active)',
+      ddos: 'Layer 7 Cloudflare Shield Active',
+      status: 'Protected & Online',
+      uptime: '100.00%'
+    }
   }
 };
 
@@ -58,7 +87,7 @@ export async function onRequestOptions() {
 // Safely retrieve Resend API Key for a client
 async function getClientResendKey(env, clientId, config) {
   // 1. Check environment variable
-  const envVar = env && (env[`RESEND_KEY_${clientId.toUpperCase()}`] || env.RESEND_API_KEY_EASEYOURFILING);
+  const envVar = env && (env[`RESEND_KEY_${clientId.toUpperCase()}`] || env.RESEND_API_KEY || env.RESEND_API_KEY_EASEYOURFILING);
   if (envVar) return envVar;
 
   // 2. Check Cloudflare KV store
