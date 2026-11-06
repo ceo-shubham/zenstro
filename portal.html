@@ -2104,8 +2104,8 @@
           <div class="reader-timestamp" id="reader-date">11:08 PM</div>
         </div>
 
-        <div class="reader-body-content" id="reader-body">
-          Message body
+        <div class="reader-body-content" id="reader-body" style="padding:0; border-bottom:1px solid var(--gm-border-subtle);">
+          <iframe id="reader-email-frame" sandbox="allow-same-origin allow-popups" style="width:100%; border:none; background:#ffffff; display:block; min-height:260px; overflow:hidden;"></iframe>
         </div>
 
         <div id="reader-attachments-zone" style="margin-top:16px; display:none;"></div>
@@ -3344,13 +3344,54 @@
           readerStar.classList.toggle('starred', isStarred);
         }
 
-        const bodyContainer = document.getElementById('reader-body');
-        if (activeEmail.htmlContent || activeEmail.html) {
-          bodyContainer.style.whiteSpace = 'normal';
-          bodyContainer.innerHTML = activeEmail.htmlContent || activeEmail.html;
-        } else {
-          bodyContainer.style.whiteSpace = 'pre-wrap';
-          bodyContainer.textContent = activeEmail.message || '(Empty message body)';
+        const frame = document.getElementById('reader-email-frame');
+        const rawHtml = isDraft
+          ? generateCorporateEmailHtml(activeEmail.message, { from: activeEmail.from, to: activeEmail.to, subject: activeEmail.subject })
+          : (activeEmail.htmlContent || activeEmail.html);
+
+        if (frame) {
+          if (rawHtml) {
+            frame.srcdoc = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>
+              body {
+                margin: 0;
+                padding: 16px 8px 24px;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+                font-size: 14.5px;
+                line-height: 1.65;
+                color: #202124;
+                word-break: break-word;
+                background: #ffffff;
+              }
+              img { max-width: 100% !important; height: auto !important; }
+              table { max-width: 100% !important; }
+              a { color: #0b57d0; text-decoration: underline; }
+            </style></head><body>${rawHtml}</body></html>`;
+          } else {
+            const formattedMsg = escapeHtml(activeEmail.message || '(Empty message body)').replace(/\n/g, '<br>');
+            frame.srcdoc = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>
+              body {
+                margin: 0;
+                padding: 16px 8px 24px;
+                font-family: 'Google Sans', Roboto, -apple-system, BlinkMacSystemFont, sans-serif;
+                font-size: 14.5px;
+                line-height: 1.7;
+                color: #1f1f1f;
+                word-break: break-word;
+                background: #ffffff;
+              }
+              a { color: #0b57d0; text-decoration: underline; }
+            </style></head><body><div style="white-space:pre-wrap;">${formattedMsg}</div></body></html>`;
+          }
+
+          frame.onload = function() {
+            try {
+              const doc = frame.contentDocument || frame.contentWindow.document;
+              if (doc && doc.body) {
+                const scrollH = doc.body.scrollHeight || doc.documentElement.scrollHeight;
+                if (scrollH) frame.style.height = Math.max(300, scrollH + 30) + 'px';
+              }
+            } catch(e) {}
+          };
         }
 
         // Render Attachments
