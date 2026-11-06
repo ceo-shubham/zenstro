@@ -406,6 +406,20 @@
     }
 
     /* ================= 2. Main App Viewport Grid ================= */
+    
+    /* Base Sidebar Backdrop */
+    .sidebar-backdrop {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(2px);
+      z-index: 1150;
+    }
+    .sidebar-backdrop.active {
+      display: block;
+    }
+  
     .main-viewport {
       display: grid;
       grid-template-columns: 256px 1fr 56px;
@@ -1887,7 +1901,7 @@
     </aside>
 
     <!-- Mobile Drawer Backdrop Overlay -->
-    <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="toggleSidebarDrawer(false)"></div>
+    
 
     <!-- 4. Center Mail Card -->
     <main class="mail-card">
@@ -2092,16 +2106,7 @@
       </button>
     </aside>
 
-    <!-- Slide-out Side App Widget (Calendar / Keep / Tasks / Contacts) -->
-    <div class="side-app-panel" id="side-app-panel">
-      <div class="side-panel-header">
-        <span id="side-panel-title">Calendar</span>
-        <button type="button" class="action-btn" onclick="closeSideApp()">&times;</button>
-      </div>
-      <div class="side-panel-body" id="side-panel-content"></div>
     </div>
-
-  </div>
 
   <!-- Quick Settings Slide-out Panel -->
   <div class="quick-settings-panel" id="quick-settings-panel">
@@ -3815,5 +3820,19 @@
       fetchTrash();
     })();
   </script>
+
+  <!-- Mobile Drawer Backdrop Overlay -->
+  <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="toggleSidebarDrawer(false)"></div>
+
+  <!-- Slide-out Side App Widget (Calendar / Keep / Tasks / Contacts) -->
+    <div class="side-app-panel" id="side-app-panel">
+      <div class="side-panel-header">
+        <span id="side-panel-title">Calendar</span>
+        <button type="button" class="action-btn" onclick="closeSideApp()">&times;</button>
+      </div>
+      <div class="side-panel-body" id="side-panel-content"></div>
+    </div>
+
+  
 </body>
 </html>
