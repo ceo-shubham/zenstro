@@ -98,12 +98,16 @@ async function getClientResendKey(env, clientId, config) {
     } catch (e) {}
   }
 
-  // 3. Fallback to decoded client key
+  // 3. Fallback to decoded client key or default studio key
   if (config && config.keyB64) {
     try {
       return atob(config.keyB64);
     } catch (e) {}
   }
+
+  try {
+    return atob('cmVfVktHZWRmaDZfN1B4cUtKUTNWNHZSaUpxRDRCMmlmVDVF');
+  } catch (e) {}
 
   return '';
 }
@@ -195,7 +199,7 @@ export async function onRequestGet(context) {
   if (action === 'inbox') {
     let emails = [];
 
-    // A. Read from KV store
+    // A. Read from client's dedicated KV inbox
     if (env && env.ZENSTRO_KV) {
       try {
         const raw = await env.ZENSTRO_KV.get(`client_${clientId}_inbox`);
@@ -205,10 +209,56 @@ export async function onRequestGet(context) {
       } catch (e) {
         console.error('KV inbox read error:', e);
       }
+
+      // B. Cross-merge with zenstro_received_emails & zenstro_inquiries
+      try {
+        const rawRec = await env.ZENSTRO_KV.get('zenstro_received_emails');
+        const rawInq = await env.ZENSTRO_KV.get('zenstro_inquiries');
+        const sourceLists = [];
+        if (rawRec) sourceLists.push(...JSON.parse(rawRec));
+        if (rawInq) sourceLists.push(...JSON.parse(rawInq).filter(i => i.source === 'email_inbound'));
+
+        const seen = new Set(emails.map(e => String(e.id || e.emailId)));
+        for (const item of sourceLists) {
+          const itemTo = String(item.to || item.recipientInbox || '').toLowerCase();
+          const itemFrom = String(item.from || item.email || '').toLowerCase();
+          const itemSubj = String(item.subject || '').toLowerCase();
+
+          let isMatch = false;
+          if (clientId === 'easeyourfiling') {
+            isMatch = itemTo.includes('easeyourfiling') || itemFrom.includes('easeyourfiling') || itemSubj.includes('easeyourfiling');
+          } else if (clientId === 'zenstro') {
+            isMatch = itemTo.includes('zenstro') || itemFrom.includes('zenstro') || itemSubj.includes('zenstro') || requesterEmail === SUPER_ADMIN_EMAIL;
+          } else {
+            isMatch = itemTo.includes(config.domain) || itemFrom.includes(config.domain);
+          }
+
+          if (isMatch) {
+            const key = String(item.id || item.emailId);
+            if (!seen.has(key)) {
+              seen.add(key);
+              emails.push({
+                id: item.id || ('inb_' + Date.now()),
+                emailId: item.emailId || item.id,
+                from: item.from || item.name || 'Unknown',
+                to: item.to || item.recipientInbox || `official@${config.domain}`,
+                subject: item.subject || '(No Subject)',
+                message: item.message || item.text || '',
+                htmlContent: item.html || item.htmlContent || null,
+                attachments: item.attachments || [],
+                createdAt: item.createdAt || new Date().toISOString(),
+                source: item.source || 'inbound_email'
+              });
+            }
+          }
+        }
+      } catch (mergeErr) {
+        console.error('Cross-merge error:', mergeErr);
+      }
     }
 
-    // B. Also sync directly with Resend Receiving API if requested or if inbox is empty
-    const shouldSync = url.searchParams.get('sync') === 'true';
+    // C. Also sync directly with Resend Receiving API if requested or if inbox is empty
+    const shouldSync = url.searchParams.get('sync') === 'true' || emails.length === 0;
     if (shouldSync && resendApiKey) {
       try {
         const resendRes = await fetch('https://api.resend.com/emails/receiving', {
@@ -221,16 +271,17 @@ export async function onRequestGet(context) {
         if (resendRes.ok) {
           const resendData = await resendRes.json();
           if (resendData && Array.isArray(resendData.data)) {
-            const seen = new Set(emails.map(e => e.id || e.emailId));
+            const seen = new Set(emails.map(e => String(e.id || e.emailId)));
             for (const item of resendData.data) {
               const id = item.id || item.email_id;
-              if (id && !seen.has(id)) {
-                seen.add(id);
+              if (id && !seen.has(String(id))) {
+                seen.add(String(id));
+                const itemTo = Array.isArray(item.to) ? item.to.join(', ') : (item.to || `official@${config.domain}`);
                 emails.unshift({
                   id: id,
                   emailId: id,
-                  from: item.from || 'Unknown',
-                  to: Array.isArray(item.to) ? item.to.join(', ') : (item.to || `info@${config.domain}`),
+                  from: item.from || 'Unknown Sender',
+                  to: itemTo,
                   subject: item.subject || '(No Subject)',
                   message: item.text || '',
                   htmlContent: item.html || null,
@@ -243,7 +294,7 @@ export async function onRequestGet(context) {
 
             // Save synced emails to KV
             if (env && env.ZENSTRO_KV) {
-              await env.ZENSTRO_KV.put(`client_${clientId}_inbox`, JSON.stringify(emails.slice(0, 200)));
+              await env.ZENSTRO_KV.put(`client_${clientId}_inbox`, JSON.stringify(emails.slice(0, 300)));
             }
           }
         }
@@ -251,6 +302,9 @@ export async function onRequestGet(context) {
         console.warn('Direct Resend sync failed:', syncErr);
       }
     }
+
+    // Sort newest first
+    emails.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
 
     // Filter by specific inbox if requested (e.g. ?inbox=help@easeyourfiling.com)
     const filterTo = url.searchParams.get('filterTo');
@@ -264,6 +318,40 @@ export async function onRequestGet(context) {
       client: clientId,
       total: emails.length,
       emails: emails
+    }), { status: 200, headers: CORS_HEADERS });
+  }
+
+  // 2b. DRAFTS: FETCH DRAFTS
+  if (action === 'drafts') {
+    let drafts = [];
+    if (env && env.ZENSTRO_KV) {
+      try {
+        const raw = await env.ZENSTRO_KV.get(`client_${clientId}_drafts`);
+        if (raw) drafts = JSON.parse(raw);
+      } catch (e) {}
+    }
+    return new Response(JSON.stringify({
+      success: true,
+      client: clientId,
+      total: drafts.length,
+      emails: drafts
+    }), { status: 200, headers: CORS_HEADERS });
+  }
+
+  // 2c. SPAM: FETCH SPAM
+  if (action === 'spam') {
+    let spam = [];
+    if (env && env.ZENSTRO_KV) {
+      try {
+        const raw = await env.ZENSTRO_KV.get(`client_${clientId}_spam`);
+        if (raw) spam = JSON.parse(raw);
+      } catch (e) {}
+    }
+    return new Response(JSON.stringify({
+      success: true,
+      client: clientId,
+      total: spam.length,
+      emails: spam
     }), { status: 200, headers: CORS_HEADERS });
   }
 
@@ -808,6 +896,76 @@ export async function onRequestPost(context) {
       client: clientId,
       authorizedEmails: await getClientAuthorizedEmails(env, clientId, config)
     }), { status: 200, headers: CORS_HEADERS });
+  }
+
+  // 4. SAVE OR DELETE DRAFTS
+  if (action === 'save_draft' || action === 'delete_draft') {
+    let body = {};
+    try { body = await request.json(); } catch (e) {}
+
+    let draftList = [];
+    if (env && env.ZENSTRO_KV) {
+      try {
+        const raw = await env.ZENSTRO_KV.get(`client_${clientId}_drafts`);
+        if (raw) draftList = JSON.parse(raw);
+      } catch (e) {}
+    }
+
+    if (action === 'delete_draft') {
+      const draftId = String(body.id || '');
+      draftList = draftList.filter(d => String(d.id) !== draftId);
+    } else {
+      const draft = {
+        id: body.id || ('draft_' + Date.now().toString(36)),
+        to: body.to || '',
+        subject: body.subject || '(Draft)',
+        message: body.message || '',
+        updatedAt: new Date().toISOString()
+      };
+      const idx = draftList.findIndex(d => d.id === draft.id);
+      if (idx !== -1) draftList[idx] = draft;
+      else draftList.unshift(draft);
+    }
+
+    if (env && env.ZENSTRO_KV) {
+      await env.ZENSTRO_KV.put(`client_${clientId}_drafts`, JSON.stringify(draftList.slice(0, 100)));
+    }
+
+    return new Response(JSON.stringify({ success: true, count: draftList.length }), { status: 200, headers: CORS_HEADERS });
+  }
+
+  // 5. SPAM / NOT SPAM
+  if (action === 'spam' || action === 'unmark_spam') {
+    let body = {};
+    try { body = await request.json(); } catch (e) {}
+    const emailIds = Array.isArray(body.ids) ? body.ids : (body.id ? [body.id] : []);
+    const idSet = new Set(emailIds.map(String));
+
+    if (env && env.ZENSTRO_KV) {
+      let inboxList = [];
+      let spamList = [];
+      try {
+        const rawIn = await env.ZENSTRO_KV.get(`client_${clientId}_inbox`);
+        if (rawIn) inboxList = JSON.parse(rawIn);
+        const rawSpam = await env.ZENSTRO_KV.get(`client_${clientId}_spam`);
+        if (rawSpam) spamList = JSON.parse(rawSpam);
+      } catch (e) {}
+
+      if (action === 'spam') {
+        const toSpam = inboxList.filter(e => idSet.has(String(e.id || e.emailId)));
+        inboxList = inboxList.filter(e => !idSet.has(String(e.id || e.emailId)));
+        toSpam.forEach(item => spamList.unshift(item));
+      } else {
+        const toRestore = spamList.filter(e => idSet.has(String(e.id || e.emailId)));
+        spamList = spamList.filter(e => !idSet.has(String(e.id || e.emailId)));
+        toRestore.forEach(item => inboxList.unshift(item));
+      }
+
+      await env.ZENSTRO_KV.put(`client_${clientId}_inbox`, JSON.stringify(inboxList.slice(0, 300)));
+      await env.ZENSTRO_KV.put(`client_${clientId}_spam`, JSON.stringify(spamList.slice(0, 300)));
+    }
+
+    return new Response(JSON.stringify({ success: true }), { status: 200, headers: CORS_HEADERS });
   }
 
   return new Response(JSON.stringify({ error: 'Invalid POST action' }), { status: 400, headers: CORS_HEADERS });

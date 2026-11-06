@@ -318,6 +318,24 @@ export async function onRequestPost(context) {
           if (inqList.length > 1000) inqList = inqList.slice(0, 1000);
           await env.ZENSTRO_KV.put('zenstro_inquiries', JSON.stringify(inqList));
         }
+
+        // C. Route Directly into Client Workspace Inbox
+        const lowerTo = String(to || '').toLowerCase();
+        const clientTarget = lowerTo.includes('easeyourfiling.com') ? 'easeyourfiling' : 'zenstro';
+        const rawClientInbox = await env.ZENSTRO_KV.get(`client_${clientTarget}_inbox`);
+        let clientInboxList = rawClientInbox ? JSON.parse(rawClientInbox) : [];
+
+        const existsInClient = clientInboxList.some(item =>
+          item.id === inboundItem.id ||
+          (emailId && item.emailId === emailId) ||
+          (item.email === senderEmail && item.subject === subject && Math.abs(new Date(item.createdAt) - new Date(createdAt)) < 60000)
+        );
+
+        if (!existsInClient) {
+          clientInboxList.unshift(inboundItem);
+          if (clientInboxList.length > 500) clientInboxList = clientInboxList.slice(0, 500);
+          await env.ZENSTRO_KV.put(`client_${clientTarget}_inbox`, JSON.stringify(clientInboxList));
+        }
       } catch (kvErr) {
         console.error('KV write error in inbound-email:', kvErr);
       }
@@ -527,6 +545,20 @@ async function syncResendInbound(env) {
 
         recList.unshift(newInbound);
         inqList.unshift(newInbound);
+
+        // Also route into client inbox
+        try {
+          const lowerTo = String(to || '').toLowerCase();
+          const clientTarget = lowerTo.includes('easeyourfiling.com') ? 'easeyourfiling' : 'zenstro';
+          const rawCli = await env.ZENSTRO_KV.get(`client_${clientTarget}_inbox`);
+          let cliList = rawCli ? JSON.parse(rawCli) : [];
+          if (!cliList.some(c => c.id === newInbound.id || c.emailId === newInbound.emailId)) {
+            cliList.unshift(newInbound);
+            if (cliList.length > 500) cliList = cliList.slice(0, 500);
+            await env.ZENSTRO_KV.put(`client_${clientTarget}_inbox`, JSON.stringify(cliList));
+          }
+        } catch (cliErr) {}
+
         addedCount++;
       }
     }
