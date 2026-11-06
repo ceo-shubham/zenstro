@@ -13,6 +13,40 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&family=Google+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <script src="config.js?v=9.2"></script>
+  <script>
+    (function() {
+      const SUPER_ADMIN = "ceo.shubhampathak@gmail.com";
+      const params = new URLSearchParams(window.location.search);
+      const targetClient = (params.get('client') || 'easeyourfiling').toLowerCase();
+
+      let admin = null;
+      let client = null;
+      try {
+        admin = JSON.parse(localStorage.getItem('zenstro_admin_session') || sessionStorage.getItem('zenstro_admin_session') || 'null');
+        client = JSON.parse(localStorage.getItem('zenstro_client_session') || sessionStorage.getItem('zenstro_client_session') || 'null');
+      } catch (e) {}
+
+      const userEmail = ((admin && admin.email) || (client && client.email) || '').trim().toLowerCase();
+
+      // STRICT AUTH GATE: If no session, immediately bounce to login
+      if (!userEmail) {
+        window.location.replace('login.html?redirect=portal&client=' + encodeURIComponent(targetClient));
+        return;
+      }
+
+      // If not super admin, ensure user is authorized for this client
+      if (userEmail !== SUPER_ADMIN) {
+        if (!client || !client.clientId) {
+          window.location.replace('login.html?error=unauthorized');
+          return;
+        }
+        if (client.clientId.toLowerCase() !== targetClient) {
+          window.location.replace('portal.html?client=' + encodeURIComponent(client.clientId.toLowerCase()));
+          return;
+        }
+      }
+    })();
+  </script>
   <style>
     :root {
       --gm-bg: #f6f8fc;
@@ -2255,18 +2289,24 @@
         clientSession = JSON.parse(localStorage.getItem('zenstro_client_session') || sessionStorage.getItem('zenstro_client_session') || 'null');
       } catch (e) {}
 
-      // Auto-fallback session for direct portal testing so user is never locked out
-      if (!adminSession && !clientSession) {
-        clientSession = {
-          email: "official@easeyourfiling.com",
-          name: "EaseYourFiling Team",
-          clientId: "easeyourfiling"
-        };
+      const currentUserEmail = ((adminSession && adminSession.email) || (clientSession && clientSession.email) || '').trim().toLowerCase();
+      const clientId = (urlParams.get('client') || (clientSession && clientSession.clientId) || 'easeyourfiling').toLowerCase();
+
+      // Strict verification: Reject if unauthenticated
+      if ((!adminSession && !clientSession) || !currentUserEmail) {
+        window.location.replace('login.html?redirect=portal&client=' + encodeURIComponent(clientId));
+        return;
       }
 
-      const currentUserEmail = (adminSession && adminSession.email) || (clientSession && clientSession.email) || 'official@easeyourfiling.com';
+      // Client workspace authorization check
+      if (currentUserEmail !== SUPER_ADMIN_EMAIL) {
+        if (!clientSession || !clientSession.clientId || clientSession.clientId.toLowerCase() !== clientId) {
+          window.location.replace('login.html?error=unauthorized');
+          return;
+        }
+      }
+
       const isSuperAdmin = currentUserEmail === SUPER_ADMIN_EMAIL;
-      const clientId = (urlParams.get('client') || (clientSession && clientSession.clientId) || 'easeyourfiling').toLowerCase();
 
       // Multi-Tenant Configurations
       const CLIENT_WORKSPACES = {
@@ -2591,6 +2631,10 @@
           const res = await fetch(`/api/client-hub?action=inbox&client=${clientId}${syncParam}`, {
             headers: { 'X-Zenstro-User': currentUserEmail }
           });
+          if (res.status === 401) {
+            window.location.replace("login.html?redirect=portal&client=" + encodeURIComponent(clientId));
+            return;
+          }
           const data = await res.json();
           if (data.success && Array.isArray(data.emails)) {
             if (data.emails.length > 0) {

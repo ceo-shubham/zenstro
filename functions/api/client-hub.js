@@ -187,10 +187,13 @@ export async function onRequestGet(context) {
     }), { status: 200, headers: CORS_HEADERS });
   }
 
-  // Authorization check for data endpoints
-  if (requesterEmail && !isUserAuthorized(requesterEmail, authorizedList)) {
-    return new Response(JSON.stringify({ error: 'Unauthorized: You do not have access to this client portal.' }), {
-      status: 403,
+  // Strict Authorization check for all sensitive data endpoints
+  if (!requesterEmail || !isUserAuthorized(requesterEmail, authorizedList)) {
+    return new Response(JSON.stringify({
+      error: 'Unauthorized: Valid authenticated session required. Please sign in.',
+      authenticated: false
+    }), {
+      status: 401,
       headers: CORS_HEADERS
     });
   }
@@ -621,6 +624,18 @@ export async function onRequestPost(context) {
     });
   }
 
+  // Global Strict Auth Check for all POST operations (except inbound webhook)
+  if (action !== 'webhook') {
+    const requesterEmail = (request.headers.get('X-Zenstro-User') || '').toLowerCase();
+    const authorizedList = await getClientAuthorizedEmails(env, clientId, config);
+    if (!requesterEmail || !isUserAuthorized(requesterEmail, authorizedList)) {
+      return new Response(JSON.stringify({
+        error: 'Unauthorized: Valid authenticated session required to execute operations on this client workspace.',
+        authenticated: false
+      }), { status: 401, headers: CORS_HEADERS });
+    }
+  }
+
   // 2. SEND EMAIL VIA RESEND API
   if (action === 'send') {
     let body = {};
@@ -633,7 +648,7 @@ export async function onRequestPost(context) {
     const requesterEmail = (request.headers.get('X-Zenstro-User') || body.requesterEmail || '').toLowerCase();
     const authorizedList = await getClientAuthorizedEmails(env, clientId, config);
 
-    if (requesterEmail && !isUserAuthorized(requesterEmail, authorizedList)) {
+    if (!requesterEmail || !isUserAuthorized(requesterEmail, authorizedList)) {
       return new Response(JSON.stringify({ error: 'Unauthorized to send emails from this client domain.' }), {
         status: 403,
         headers: CORS_HEADERS
