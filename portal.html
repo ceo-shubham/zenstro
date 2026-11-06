@@ -407,6 +407,24 @@
 
     /* ================= 2. Main App Viewport Grid ================= */
     
+    /* Compose Mode Pill Switcher */
+    .btn-compose-mode {
+      border: none;
+      background: transparent;
+      padding: 3px 10px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.85);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-compose-mode.active {
+      background: #ffffff;
+      color: #001d35;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+    
     /* Base Sidebar Backdrop */
     .sidebar-backdrop {
       display: none;
@@ -2021,6 +2039,29 @@
 
       <!-- Full Message Thread Reader Pane -->
       <div class="reader-pane" id="reader-pane">
+        <!-- Draft Client Delivery Notice Banner -->
+        <div id="reader-draft-banner" style="display:none; background:#eff6ff; border:1px solid #bfdbfe; border-radius:10px; padding:12px 18px; margin:16px 20px 0; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+          <div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="background:#2563eb; color:#ffffff; font-size:11px; font-weight:700; padding:2px 8px; border-radius:4px; text-transform:uppercase; letter-spacing:0.04em;">DRAFT &mdash; CLIENT INTERFACE PREVIEW</span>
+              <span style="font-size:13.5px; font-weight:600; color:#1e3a8a;">Exact branded email interface that will be sent to recipient.</span>
+            </div>
+            <div style="font-size:12px; color:#475569; margin-top:3px;" id="reader-draft-meta-text">Recipient &bull; Sender</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <button type="button" class="btn-send-primary" style="height:34px; padding:0 16px; font-size:13px;" onclick="sendActiveDraftNow()">
+              <svg style="width:14px; height:14px; fill:currentColor; margin-right:6px;" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+              Send to Client
+            </button>
+            <button type="button" class="btn-gmail-reply" style="height:34px; padding:0 14px; font-size:13px;" onclick="openDraftInCompose(activeEmail ? activeEmail.id : '')">
+              <svg style="width:14px; height:14px; fill:currentColor; margin-right:6px;" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+              Edit Text
+            </button>
+            <button type="button" class="btn-gmail-reply" style="height:34px; padding:0 14px; font-size:13px; color:#dc2626;" onclick="deleteCurrentDraftFromReader()">
+              Discard
+            </button>
+          </div>
+        </div>
         <div class="reader-top-nav">
           <button type="button" class="action-btn" title="Back to inbox" onclick="closeReader()">
             <svg class="icon" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
@@ -2459,6 +2500,87 @@
       }
 
       // Seed realistic emails if inbox is initially empty so interface is vibrant
+      function getFallbackSeedDrafts() {
+        const domain = (clientId === 'zenstro') ? 'zenstro.space' : 'easeyourfiling.com';
+        const name = (clientId === 'zenstro') ? 'ZENSTRO Executive Office' : 'EaseYourFiling Corporate Services';
+        return [
+          {
+            id: 'draft_roc_compliance_' + clientId,
+            to: 'client.director@zenfinance.in',
+            from: `${name} <official@${domain}>`,
+            subject: 'Draft: ROC Annual Return & Corporate Compliance Confirmation',
+            message: 'Dear Director,\n\nWe have prepared the draft annual compliance filing for your entity in accordance with the Companies Act, 2013 and MCA guidelines.\n\nPlease review the attached summary statement and approve the schedule so our compliance team can finalize the digital submission on the MCA registry.\n\nShould you need any modifications to the registered office address or shareholder records, please reply directly to this thread.\n\nWarm regards,\nCorporate Advisory & MCA Desk\nEaseYourFiling Corporate Services',
+            createdAt: new Date(Date.now() - 1800000).toISOString(),
+            isDraft: true
+          },
+          {
+            id: 'draft_gst_reconciliation_' + clientId,
+            to: 'accounts@innovatetech.co',
+            from: `${name} <help@${domain}>`,
+            subject: 'Draft: Q3 GST Reconciliation & Input Tax Credit Review',
+            message: 'Hello Accounts Team,\n\nFollowing up on our monthly ledger audit, we have reconciled your GSTR-1 outward supplies against GSTR-2B inward credit records for the preceding quarter.\n\nKindly confirm if the pending e-invoices have been accepted so we can lodge the final return before the statutory due date.\n\nBest regards,\nTax & GST Compliance Cell',
+            createdAt: new Date(Date.now() - 7200000).toISOString(),
+            isDraft: true
+          }
+        ];
+      }
+
+      function generateCorporateEmailHtml(message, options = {}) {
+        const domain = (clientId === 'zenstro') ? 'zenstro.space' : 'easeyourfiling.com';
+        const name = (clientId === 'zenstro') ? 'ZENSTRO' : 'EaseYourFiling';
+        const logo = (clientId === 'zenstro') ? 'https://zenstro.space/logo.png' : 'https://zenstro.space/easeyourfilinglogo.png';
+        const website = (clientId === 'zenstro') ? 'https://zenstro.space' : 'https://easeyourfiling.com';
+        const displayDomain = (clientId === 'zenstro') ? 'zenstro.space' : 'www.easeyourfiling.com';
+        const phone = '+91 62027 35213';
+        const fromAddress = options.from || `official@${domain}`;
+        const toAddress = options.to || 'Client';
+
+        const cleanMsg = escapeHtml(message || '(No draft content entered yet)').replace(/\n/g, '<br>');
+
+        return `
+          <div style="background:#f8fafc; padding:20px 14px; min-height:100%; box-sizing:border-box; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+            <div style="max-width:620px; margin:0 auto; background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+              <!-- Top Delivery Brand Header -->
+              <div style="padding:16px 20px; border-bottom:1px solid #f1f5f9; background:#fafbfc; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <img src="${logo}" alt="${name}" style="height:28px; max-width:125px; object-fit:contain; display:block;" onerror="this.style.display='none'">
+                  <span style="font-size:11px; font-weight:700; color:#0b57d0; background:#e8f0fe; padding:2px 8px; border-radius:4px; letter-spacing:0.04em;">CLIENT INTERFACE VIEW</span>
+                </div>
+                <div style="font-size:11.5px; color:#64748b; font-family:'DM Mono',monospace;">
+                  Delivered via Resend TLS 1.3
+                </div>
+              </div>
+
+              <!-- Email Body -->
+              <div style="padding:24px 22px 18px; font-size:14.5px; line-height:1.7; color:#1e293b; word-break:break-word;">
+                ${cleanMsg}
+              </div>
+
+              <!-- Corporate Signature Table -->
+              <div style="margin:8px 22px 22px; padding-top:18px; border-top:1px solid #e2e8f0;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse; margin:0; width:100%;">
+                  <tr>
+                    <td width="52" valign="middle" style="padding-right:12px; vertical-align:middle; width:52px;">
+                      <img src="${logo}" alt="${name}" width="44" height="44" style="display:block; width:44px; height:44px; border-radius:6px; object-fit:contain; background:#ffffff; border:1px solid #e2e8f0; padding:2px;" onerror="this.style.display='none'" />
+                    </td>
+                    <td valign="middle" style="vertical-align:middle; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+                      <div style="font-size:14px; font-weight:700; color:#0f172a; line-height:1.3; margin-bottom:2px;">${name}</div>
+                      <div style="font-size:12px; color:#475569; line-height:1.5;">Official Corporate Communications &bull; Website: <a href="${website}" style="color:#0b57d0; text-decoration:none; font-weight:600;" target="_blank">${displayDomain}</a></div>
+                      <div style="font-size:12px; color:#475569; line-height:1.5; margin-top:2px;">
+                        <a href="mailto:${fromAddress}" style="color:#0b57d0; text-decoration:none; font-weight:500;">${fromAddress}</a> &bull; <a href="tel:+916202735213" style="color:#0b57d0; text-decoration:none; font-weight:500;">${phone}</a>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+                <div style="margin-top:16px; padding:10px 12px; background:#f8fafc; border-radius:6px; font-size:11px; color:#64748b; line-height:1.5; border:1px solid #edf2f7;">
+                  <strong>Confidentiality Notice:</strong> This message and any files transmitted with it are confidential and intended solely for the use of the individual or entity to whom they are addressed.
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
       function getFallbackSeedEmails() {
         const domain = currentWorkspace.name === 'ZENSTRO' ? 'zenstro.space' : 'easeyourfiling.com';
         return [
@@ -3353,10 +3475,116 @@
       let attachedFiles = [];
       let currentDraftId = null;
 
+      let composeCurrentMode = 'edit';
+
+      window.setComposeMode = function(mode) {
+        composeCurrentMode = mode;
+        const btnEdit = document.getElementById('btn-mode-edit');
+        const btnPrev = document.getElementById('btn-mode-preview');
+        const editZone = document.getElementById('compose-edit-zone');
+        const prevZone = document.getElementById('compose-preview-zone');
+
+        if (mode === 'preview') {
+          if (btnEdit) btnEdit.classList.remove('active');
+          if (btnPrev) btnPrev.classList.add('active');
+          if (editZone) editZone.style.display = 'none';
+          if (prevZone) {
+            prevZone.style.display = 'block';
+            updateComposeClientPreview();
+          }
+        } else {
+          if (btnPrev) btnPrev.classList.remove('active');
+          if (btnEdit) btnEdit.classList.add('active');
+          if (prevZone) prevZone.style.display = 'none';
+          if (editZone) editZone.style.display = 'block';
+          const txt = document.getElementById('compose-body');
+          if (txt) txt.focus();
+        }
+      };
+
+      window.updateComposeClientPreview = function() {
+        const prevZone = document.getElementById('compose-preview-zone');
+        if (!prevZone) return;
+        const msg = document.getElementById('compose-body') ? document.getElementById('compose-body').value : '';
+        const to = document.getElementById('compose-to') ? document.getElementById('compose-to').value : '';
+        const fromSelect = document.getElementById('compose-from');
+        const fromVal = fromSelect ? fromSelect.options[fromSelect.selectedIndex].text : '';
+        prevZone.innerHTML = generateCorporateEmailHtml(msg, { to, from: fromVal });
+      };
+
+      window.handleComposeInput = function() {
+        autoSaveDraft();
+        if (composeCurrentMode === 'preview') {
+          updateComposeClientPreview();
+        }
+      };
+
       window.openCompose = function() {
         document.getElementById('compose-modal').style.display = 'flex';
+        setComposeMode('edit');
         document.getElementById('compose-to').focus();
         currentDraftId = 'draft_' + Date.now().toString(36);
+      };
+
+      window.sendActiveDraftNow = async function() {
+        if (!activeEmail) return;
+        const btn = event ? event.target.closest('button') : null;
+        if (btn) {
+          btn.disabled = true;
+          btn.textContent = 'Sending...';
+        }
+        showToast('Delivering branded email to client...');
+
+        const payload = {
+          from: activeEmail.from || 'official',
+          to: activeEmail.to,
+          subject: activeEmail.subject,
+          message: activeEmail.message,
+          attachments: activeEmail.attachments || [],
+          requesterEmail: currentUserEmail
+        };
+
+        try {
+          const res = await fetch(`/api/client-hub?action=send&client=${clientId}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Zenstro-User': currentUserEmail
+            },
+            body: JSON.stringify(payload)
+          });
+          const result = await res.json();
+          if (res.ok && result.success) {
+            showToast('Email successfully delivered to client in official branded format.');
+            allDraftEmails = allDraftEmails.filter(d => String(d.id) !== String(activeEmail.id));
+            saveDraftsState();
+            updateBadges();
+            closeReader();
+            fetchSent();
+          } else {
+            showToast(result.error || 'Failed to send.');
+            if (btn) {
+              btn.disabled = false;
+              btn.innerHTML = '<svg style="width:14px; height:14px; fill:currentColor; margin-right:6px;" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg> Send to Client';
+            }
+          }
+        } catch (err) {
+          showToast(err && err.message ? err.message : 'Error sending email.');
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '<svg style="width:14px; height:14px; fill:currentColor; margin-right:6px;" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg> Send to Client';
+          }
+        }
+      };
+
+      window.deleteCurrentDraftFromReader = function() {
+        if (!activeEmail) return;
+        allDraftEmails = allDraftEmails.filter(d => String(d.id) !== String(activeEmail.id));
+        saveDraftsState();
+        updateBadges();
+        closeReader();
+        if (currentFolder === 'drafts') renderTable();
+        showToast('Draft discarded.');
       };
 
       window.openDraftInCompose = function(id) {
