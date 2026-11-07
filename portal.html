@@ -15,7 +15,7 @@
   <script src="config.js?v=9.2"></script>
   <script>
     (function() {
-      const SUPER_ADMIN = "ceo.shubhampathak@gmail.com";
+      const SUPER_ADMINS = ["ceo.shubhampathak@gmail.com", "parpita2008@gmail.com"];
       const params = new URLSearchParams(window.location.search);
       const targetClient = (params.get('client') || 'easeyourfiling').toLowerCase();
 
@@ -35,7 +35,7 @@
       }
 
       // If not super admin, ensure user is authorized for this client
-      if (userEmail !== SUPER_ADMIN) {
+      if (!SUPER_ADMINS.includes(userEmail)) {
         if (!client || !client.clientId) {
           window.location.replace('login.html?error=unauthorized');
           return;
@@ -688,6 +688,32 @@
       background: rgba(60,64,67,0.08);
       color: var(--gm-text-main);
     }
+    
+    .email-row.selected {
+      background: #c2e7ff !important;
+    }
+    .btn-action-bin-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+      border-radius: 16px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      margin-left: 6px;
+      height: 32px;
+      box-sizing: border-box;
+    }
+    .btn-action-bin-pill:hover {
+      background: #fca5a5;
+      color: #991b1b;
+    }
+
     .btn-page-nav:disabled {
       opacity: 0.35;
       cursor: default;
@@ -1944,6 +1970,12 @@
             <svg class="icon" viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
           </button>
 
+          <!-- Empty Bin Pill Button beside Refresh (visible in Bin/Spam) -->
+          <button type="button" class="btn-action-bin-pill" id="btn-action-empty-bin" style="display:none;" onclick="emptyCurrentNoticeFolder()" title="Empty Bin">
+            <svg class="icon" style="width:14px; height:14px;" viewBox="0 0 24 24"><path d="M15 4V3H9v1H4v2h1v13c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6h1V4h-5zm2 15H7V6h10v13zM9 8h2v9H9zm4 0h2v9h-2z"/></svg>
+            <span id="btn-empty-bin-text">Empty Bin now</span>
+          </button>
+
           <!-- Bulk Actions (Shown when items selected) -->
           <div id="bulk-actions-group" style="display:none; align-items:center; gap:4px;">
             <button type="button" class="action-btn" title="Archive" onclick="archiveSelected()">
@@ -2026,12 +2058,6 @@
             <div class="cat-tab-snippet">General requests &amp; partnerships</div>
           </div>
         </div>
-      </div>
-
-      <!-- Trash / Spam Notice Bar -->
-      <div class="bin-notice-bar" id="bin-notice-bar" style="display:none;">
-        <span id="bin-notice-text">Messages in Bin can be restored or deleted forever.</span>
-        <button type="button" class="btn-empty-bin" id="btn-empty-folder" onclick="emptyCurrentNoticeFolder()">Empty Bin now</button>
       </div>
 
       <!-- Email Rows List -->
@@ -2324,7 +2350,7 @@
 
   <script>
     (function() {
-      const SUPER_ADMIN_EMAIL = "ceo.shubhampathak@gmail.com";
+      const SUPER_ADMIN_EMAILS = ["ceo.shubhampathak@gmail.com", "parpita2008@gmail.com"];
       const urlParams = new URLSearchParams(window.location.search);
 
       // Session Detection
@@ -2345,14 +2371,14 @@
       }
 
       // Client workspace authorization check
-      if (currentUserEmail !== SUPER_ADMIN_EMAIL) {
+      const isSuperAdmin = SUPER_ADMIN_EMAILS.includes(currentUserEmail);
+
+      if (!isSuperAdmin) {
         if (!clientSession || !clientSession.clientId || clientSession.clientId.toLowerCase() !== clientId) {
           window.location.replace('login.html?error=unauthorized');
           return;
         }
       }
-
-      const isSuperAdmin = currentUserEmail === SUPER_ADMIN_EMAIL;
 
       // Multi-Tenant Configurations
       const CLIENT_WORKSPACES = {
@@ -3213,7 +3239,7 @@
           const hasAtt = Array.isArray(e.attachments) && e.attachments.length > 0;
 
           return `
-            <div class="email-row ${isRead ? 'read' : 'unread'}" onclick="openMessage('${id}')" data-id="${id}">
+            <div class="email-row ${isRead ? 'read' : 'unread'} ${isChecked ? 'selected' : ''}" onclick="openMessage('${id}')" data-id="${id}">
               <input type="checkbox" class="gm-cb" data-id="${id}" ${isChecked ? 'checked' : ''} onclick="event.stopPropagation(); toggleItemSelect(this, '${id}')">
               <span class="star-icon ${isStarred ? 'starred' : ''}" onclick="toggleRowStar(event, '${id}')">${isStarred ? '&#9733;' : '&#9734;'}</span>
               <span class="sender-cell">${escapeHtml(sender)}</span>

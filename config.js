@@ -6,9 +6,10 @@ window.ZENSTRO_CONFIG = {
   linkedinCompanyUrl: "https://www.linkedin.com/company/134694292",
   linkedinProfileUrl: "https://www.linkedin.com/in/ceo-shubham/",
 
-  /* Authorized Admin Emails for Google Login (Admin Panel) - strictly ceo.shubhampathak@gmail.com */
+  /* Authorized Admin Emails for Google Login (Admin Panel) */
   adminEmails: [
-    "ceo.shubhampathak@gmail.com"
+    "ceo.shubhampathak@gmail.com",
+    "parpita2008@gmail.com"
   ],
  
   /* Google OAuth 2.0 Client ID for Google Identity Services */
@@ -65,7 +66,8 @@ window.ZENSTRO_CONFIG = {
         "official.zenstro@gmail.com",
         "admin@zenstro.space",
         "ceo@zenstro.space",
-        "ceo.shubhampathak@gmail.com"
+        "ceo.shubhampathak@gmail.com",
+        "parpita2008@gmail.com"
       ]
     }
   ]

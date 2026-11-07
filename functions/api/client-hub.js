@@ -13,7 +13,16 @@ const CORS_HEADERS = {
   'Content-Type': 'application/json'
 };
 
+const SUPER_ADMIN_EMAILS = [
+  'ceo.shubhampathak@gmail.com',
+  'parpita2008@gmail.com'
+];
 const SUPER_ADMIN_EMAIL = 'ceo.shubhampathak@gmail.com';
+
+function isSuperAdmin(email) {
+  if (!email) return false;
+  return SUPER_ADMIN_EMAILS.includes(String(email).trim().toLowerCase());
+}
 
 // Built-in registered client configurations (No raw credentials checked into git)
 const CLIENT_CONFIGS = {
@@ -125,7 +134,7 @@ function escapeHtml(str) {
 
 // Fetch dynamic authorized emails from KV merged with defaults
 async function getClientAuthorizedEmails(env, clientId, config) {
-  const base = [...config.defaultAuthorizedEmails, SUPER_ADMIN_EMAIL];
+  const base = [...config.defaultAuthorizedEmails, ...SUPER_ADMIN_EMAILS];
   if (!env || !env.ZENSTRO_KV) return base;
   try {
     const raw = await env.ZENSTRO_KV.get(`client_${clientId}_authorized_emails`);
@@ -150,7 +159,7 @@ async function getClientAuthorizedEmails(env, clientId, config) {
 function isUserAuthorized(userEmail, authorizedList) {
   const clean = String(userEmail || '').trim().toLowerCase();
   if (!clean) return false;
-  if (clean === SUPER_ADMIN_EMAIL) return true;
+  if (isSuperAdmin(clean)) return true;
   return authorizedList.includes(clean);
 }
 
@@ -182,8 +191,8 @@ export async function onRequestGet(context) {
       websiteUrl: config.websiteUrl,
       allowedFromAddresses: config.allowedFromAddresses,
       hosting: config.hosting,
-      authorizedEmails: authorizedList.filter(e => e !== SUPER_ADMIN_EMAIL),
-      isSuperAdmin: requesterEmail === SUPER_ADMIN_EMAIL
+      authorizedEmails: authorizedList.filter(e => !SUPER_ADMIN_EMAILS.includes(e)),
+      isSuperAdmin: isSuperAdmin(requesterEmail)
     }), { status: 200, headers: CORS_HEADERS });
   }
 
@@ -231,7 +240,7 @@ export async function onRequestGet(context) {
           if (clientId === 'easeyourfiling') {
             isMatch = itemTo.includes('easeyourfiling') || itemFrom.includes('easeyourfiling') || itemSubj.includes('easeyourfiling');
           } else if (clientId === 'zenstro') {
-            isMatch = itemTo.includes('zenstro') || itemFrom.includes('zenstro') || itemSubj.includes('zenstro') || requesterEmail === SUPER_ADMIN_EMAIL;
+            isMatch = itemTo.includes('zenstro') || itemFrom.includes('zenstro') || itemSubj.includes('zenstro') || isSuperAdmin(requesterEmail);
           } else {
             isMatch = itemTo.includes(config.domain) || itemFrom.includes(config.domain);
           }
@@ -876,7 +885,7 @@ export async function onRequestPost(context) {
     }
 
     const requesterEmail = (request.headers.get('X-Zenstro-User') || body.requesterEmail || '').toLowerCase();
-    if (requesterEmail !== SUPER_ADMIN_EMAIL) {
+    if (!isSuperAdmin(requesterEmail)) {
       return new Response(JSON.stringify({ error: 'Only Super Admin can manage user logins.' }), {
         status: 403,
         headers: CORS_HEADERS

@@ -130,7 +130,8 @@
 
     var SOLE_ADMIN_EMAIL = "ceo.shubhampathak@gmail.com";
     var adminEmails = (window.ZENSTRO_CONFIG && window.ZENSTRO_CONFIG.adminEmails) || [
-      SOLE_ADMIN_EMAIL
+      SOLE_ADMIN_EMAIL,
+      "parpita2008@gmail.com"
     ];
 
     /* ----- MQLeads Visitor Identification ----- */
