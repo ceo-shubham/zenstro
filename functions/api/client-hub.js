@@ -99,6 +99,11 @@ async function getClientResendKey(env, clientId, config) {
   const envVar = env && (env[`RESEND_KEY_${clientId.toUpperCase()}`] || env.RESEND_API_KEY || env.RESEND_API_KEY_EASEYOURFILING);
   if (envVar) return envVar;
 
+  // Check direct client config resendApiKey
+  if (config && config.resendApiKey && config.resendApiKey.startsWith('re_')) {
+    return config.resendApiKey.trim();
+  }
+
   // 2. Check Cloudflare KV store
   if (env && env.ZENSTRO_KV) {
     try {
@@ -130,6 +135,66 @@ function escapeHtml(str) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
+}
+
+// Dynamic Client Storage Helper (Built-in + KV custom clients)
+async function getFullClientConfig(env, clientId) {
+  if (!clientId) return null;
+  const cleanId = String(clientId).trim().toLowerCase();
+
+  // 1. Check built-in statically declared configs
+  if (CLIENT_CONFIGS[cleanId]) {
+    return CLIENT_CONFIGS[cleanId];
+  }
+
+  // 2. Check Cloudflare KV for dynamically provisioned client config
+  if (env && env.ZENSTRO_KV) {
+    try {
+      const raw = await env.ZENSTRO_KV.get(`client_${cleanId}_config`);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        return parsed;
+      }
+    } catch (e) {
+      console.error('Error fetching custom client config from KV:', e);
+    }
+  }
+  return null;
+}
+
+// Retrieve master list of all clients (built-in + KV provisioned)
+async function getAllClientsList(env) {
+  const list = [
+    { ...CLIENT_CONFIGS.easeyourfiling, isBuiltin: true },
+    { ...CLIENT_CONFIGS.zenstro, isBuiltin: true }
+  ];
+
+  if (env && env.ZENSTRO_KV) {
+    try {
+      const raw = await env.ZENSTRO_KV.get('zenstro_custom_clients');
+      if (raw) {
+        const customIds = JSON.parse(raw);
+        if (Array.isArray(customIds)) {
+          for (const item of customIds) {
+            const cId = typeof item === 'string' ? item : (item && item.id);
+            if (cId && !list.some(c => c.id === cId)) {
+              let full = typeof item === 'object' && item.name ? item : null;
+              if (!full) {
+                const rawConfig = await env.ZENSTRO_KV.get(`client_${cId}_config`);
+                if (rawConfig) full = JSON.parse(rawConfig);
+              }
+              if (full) {
+                list.push({ ...full, isBuiltin: false });
+              }
+            }
+          }
+        }
+      }
+    } catch (e) {
+      console.error('Error fetching custom clients list from KV:', e);
+    }
+  }
+  return list;
 }
 
 // Fetch dynamic authorized emails from KV merged with defaults

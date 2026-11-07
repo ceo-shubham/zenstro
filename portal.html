@@ -2420,6 +2420,78 @@
         }
       };
 
+      // Dynamic fallback for custom provisioned clients
+      if (!CLIENT_WORKSPACES[clientId]) {
+        CLIENT_WORKSPACES[clientId] = {
+          name: clientId.charAt(0).toUpperCase() + clientId.slice(1),
+          suiteTitle: (clientId.charAt(0).toUpperCase() + clientId.slice(1)) + " Suite",
+          logo: "",
+          logoAlt: clientId,
+          domain: clientId + ".com",
+          fromOptions: [
+            { value: "official", label: `Official <official@${clientId}.com>` }
+          ],
+          categories: {
+            official: { badge: "official@", snippet: "Corporate & operations" },
+            help: { badge: "help@", snippet: "Support desk" },
+            info: { badge: "info@", snippet: "General inquiries" }
+          },
+          readerTo: `to official@${clientId}.com`,
+          emptyNotice: `Messages sent to your inboxes will appear here in real time.`
+        };
+
+        // Fetch dynamic configuration from API
+        fetch(`/api/client-hub?action=config&client=${encodeURIComponent(clientId)}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data && data.name) {
+              const ws = CLIENT_WORKSPACES[clientId];
+              ws.name = data.name;
+              ws.suiteTitle = `${data.name} Suite`;
+              ws.domain = data.domain || ws.domain;
+              ws.emptyNotice = `Messages sent to ${data.domain} inboxes will appear here in real time.`;
+
+              const fromList = Array.isArray(data.allowedFromAddresses) ? data.allowedFromAddresses : [];
+              if (fromList.length) {
+                ws.fromOptions = fromList.map((f, i) => {
+                  const email = typeof f === 'string' ? f : f.email;
+                  const label = typeof f === 'string' ? f : (f.name ? `${f.name} <${f.email}>` : f.email);
+                  return { value: f.id || ('from_' + i), label: label };
+                });
+              }
+
+              document.title = `Inbox — ${data.name} Mail Workspace`;
+              const suiteEl = document.getElementById('portal-suite-title');
+              if (suiteEl) suiteEl.innerHTML = `<strong>${escapeHtml(data.name)} Suite</strong>`;
+
+              const composeFrom = document.getElementById('compose-from');
+              if (composeFrom && ws.fromOptions.length) {
+                composeFrom.innerHTML = ws.fromOptions.map(opt => `<option value="${escapeHtml(opt.value)}">${escapeHtml(opt.label)}</option>`).join('');
+              }
+
+              const brandLogo = document.getElementById('portal-brand-logo');
+              if (brandLogo) {
+                if (data.logo) {
+                  brandLogo.src = data.logo;
+                  brandLogo.alt = data.name;
+                  brandLogo.style.display = 'block';
+                } else {
+                  brandLogo.style.display = 'none';
+                  const brandLink = document.getElementById('portal-brand-link');
+                  if (brandLink && !document.getElementById('portal-dynamic-name-badge')) {
+                    const badge = document.createElement('div');
+                    badge.id = 'portal-dynamic-name-badge';
+                    badge.style.cssText = 'font-size:17px; font-weight:800; color:#0f172a; letter-spacing:-0.02em; padding:2px 4px;';
+                    badge.textContent = data.name;
+                    brandLink.appendChild(badge);
+                  }
+                }
+              }
+            }
+          })
+          .catch(err => console.error('Error fetching dynamic client config:', err));
+      }
+
       const currentWorkspace = CLIENT_WORKSPACES[clientId] || CLIENT_WORKSPACES.zenstro;
 
       // Apply Branding
@@ -2608,7 +2680,7 @@
       }
 
       function getFallbackSeedEmails() {
-        const domain = currentWorkspace.name === 'ZENSTRO' ? 'zenstro.space' : 'easeyourfiling.com';
+        const domain = currentWorkspace.domain || (currentWorkspace.name === 'ZENSTRO' ? 'zenstro.space' : 'easeyourfiling.com');
         return [
           {
             id: 'seed_1_' + clientId,

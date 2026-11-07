@@ -229,7 +229,7 @@
         return null;
       }
 
-      function attemptLogin(email, displayName, avatarUrl) {
+      async function attemptLogin(email, displayName, avatarUrl) {
         const cleanEmail = String(email || '').trim().toLowerCase();
         if (!cleanEmail) {
           showAlert('No valid email received from Google account.', true);
@@ -237,7 +237,21 @@
         }
 
         const isSuperAdmin = isUserAdmin(cleanEmail);
-        const matchedClient = !isSuperAdmin ? findClientForEmail(cleanEmail) : null;
+        let matchedClient = !isSuperAdmin ? findClientForEmail(cleanEmail) : null;
+
+        if (!isSuperAdmin && !matchedClient) {
+          try {
+            const checkRes = await fetch('/api/client-hub?action=find_client&email=' + encodeURIComponent(cleanEmail));
+            if (checkRes.ok) {
+              const checkData = await checkRes.json();
+              if (checkData && checkData.found && checkData.client) {
+                matchedClient = checkData.client;
+              }
+            }
+          } catch (e) {
+            console.error('Dynamic client verification error:', e);
+          }
+        }
 
         if (!isSuperAdmin && !matchedClient) {
           localStorage.removeItem('zenstro_admin_session');
