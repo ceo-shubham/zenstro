@@ -235,9 +235,61 @@ export async function onRequestGet(context) {
   const clientId = (url.searchParams.get('client') || 'easeyourfiling').toLowerCase();
   const requesterEmail = (request.headers.get('X-Zenstro-User') || url.searchParams.get('user') || '').toLowerCase();
 
-  const config = CLIENT_CONFIGS[clientId];
+  // A. Public or Admin Action: List all available clients
+  if (action === 'list_clients') {
+    const all = await getAllClientsList(env);
+    return new Response(JSON.stringify({
+      success: true,
+      clients: all.map(c => ({
+        id: c.id,
+        name: c.name,
+        tagline: c.tagline || '',
+        domain: c.domain,
+        websiteUrl: c.websiteUrl,
+        phone: c.phone || '',
+        logo: c.logo || '',
+        businessEmails: Array.isArray(c.allowedFromAddresses) 
+          ? c.allowedFromAddresses.map(a => typeof a === 'string' ? a : a.email)
+          : [],
+        authorizedEmails: c.defaultAuthorizedEmails || [],
+        hosting: c.hosting || { status: 'Active & Protected', ssl: 'Strict TLS 1.3 Active', provider: 'Cloudflare Pages / Global Edge' },
+        createdAt: c.createdAt || null,
+        isBuiltin: !!c.isBuiltin
+      }))
+    }), { status: 200, headers: CORS_HEADERS });
+  }
+
+  // B. Find which client workspace matches a user email (Used for dynamic Google Login)
+  if (action === 'find_client') {
+    const searchEmail = (url.searchParams.get('email') || '').trim().toLowerCase();
+    if (!searchEmail) {
+      return new Response(JSON.stringify({ found: false, error: 'Email parameter required' }), { status: 400, headers: CORS_HEADERS });
+    }
+    const all = await getAllClientsList(env);
+    let matched = null;
+    for (const c of all) {
+      const auth = await getClientAuthorizedEmails(env, c.id, c);
+      if (auth.map(e => e.toLowerCase()).includes(searchEmail)) {
+        matched = c;
+        break;
+      }
+      if (c.domain && searchEmail.endsWith('@' + c.domain.toLowerCase())) {
+        matched = c;
+        break;
+      }
+    }
+    if (matched) {
+      return new Response(JSON.stringify({
+        found: true,
+        client: { id: matched.id, name: matched.name, domain: matched.domain }
+      }), { status: 200, headers: CORS_HEADERS });
+    }
+    return new Response(JSON.stringify({ found: false }), { status: 200, headers: CORS_HEADERS });
+  }
+
+  const config = await getFullClientConfig(env, clientId);
   if (!config) {
-    return new Response(JSON.stringify({ error: `Unknown client: ${clientId}` }), {
+    return new Response(JSON.stringify({ error: `Unknown client workspace: ${clientId}` }), {
       status: 404,
       headers: CORS_HEADERS
     });
@@ -574,7 +626,172 @@ export async function onRequestPost(context) {
   const action = url.searchParams.get('action') || 'send';
   const clientId = (url.searchParams.get('client') || 'easeyourfiling').toLowerCase();
 
-  const config = CLIENT_CONFIGS[clientId];
+  // 0. ACTION: CREATE NEW CLIENT WORKSPACE (Admin Only)
+  if (action === 'create_client') {
+    let body = {};
+    try {
+      body = await request.json();
+    } catch (e) {
+      return new Response(JSON.stringify({ error: 'Invalid JSON payload' }), { status: 400, headers: CORS_HEADERS });
+    }
+
+    const requesterEmail = (request.headers.get('X-Zenstro-User') || body.requesterEmail || '').toLowerCase();
+    if (!isSuperAdmin(requesterEmail)) {
+      return new Response(JSON.stringify({ error: 'Forbidden: Super Admin authorization required to provision client panels.' }), {
+        status: 403,
+        headers: CORS_HEADERS
+      });
+    }
+
+    const name = String(body.name || '').trim();
+    const domain = String(body.domain || '').trim().toLowerCase().replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+    const resendApiKey = String(body.resendApiKey || '').trim();
+
+    if (!name) return new Response(JSON.stringify({ error: 'Client Name is required.' }), { status: 400, headers: CORS_HEADERS });
+    if (!domain) return new Response(JSON.stringify({ error: 'Client primary domain is required.' }), { status: 400, headers: CORS_HEADERS });
+    if (!resendApiKey || !resendApiKey.startsWith('re_')) {
+      return new Response(JSON.stringify({ error: 'A valid Resend API Key (starts with re_) is required for this client workspace.' }), { status: 400, headers: CORS_HEADERS });
+    }
+
+    // Slug calculation
+    let slug = String(body.id || body.slug || name).trim().toLowerCase().replace(/[^a-z0-9_-]/g, '');
+    if (!slug) slug = 'client_' + Date.now().toString(36);
+    if (slug === 'easeyourfiling' || slug === 'zenstro') {
+      return new Response(JSON.stringify({ error: 'Cannot overwrite built-in core workspaces.' }), { status: 400, headers: CORS_HEADERS });
+    }
+
+    // Parse Sending Inboxes / Allowed From Addresses
+    let fromList = [];
+    if (Array.isArray(body.allowedFromAddresses) && body.allowedFromAddresses.length) {
+      fromList = body.allowedFromAddresses.map((a, idx) => {
+        if (typeof a === 'string') return { id: 'from_' + idx, name: name, email: a.trim() };
+        return { id: a.id || ('from_' + idx), name: a.name || name, email: a.email.trim() };
+      });
+    } else if (body.inboxes || body.businessEmails) {
+      const rawInboxes = String(body.inboxes || body.businessEmails).split(/[,\n]/).map(s => s.trim()).filter(Boolean);
+      fromList = rawInboxes.map((em, idx) => ({
+        id: em.split('@')[0] || ('from_' + idx),
+        name: name,
+        email: em
+      }));
+    }
+    if (!fromList.length) {
+      fromList = [
+        { id: 'official', name: name, email: `official@${domain}` },
+        { id: 'help', name: `${name} Support`, email: `help@${domain}` },
+        { id: 'info', name: `${name} Info`, email: `info@${domain}` }
+      ];
+    }
+
+    // Parse Authorized User Login Emails
+    let authEmails = [];
+    if (Array.isArray(body.authorizedEmails) && body.authorizedEmails.length) {
+      authEmails = body.authorizedEmails.map(e => String(e).trim().toLowerCase()).filter(Boolean);
+    } else if (body.authorizedEmailsText || body.authEmails) {
+      authEmails = String(body.authorizedEmailsText || body.authEmails).split(/[,\n]/).map(s => s.trim().toLowerCase()).filter(Boolean);
+    }
+    // Always include super admins so owner can manage this portal
+    for (const sa of SUPER_ADMIN_EMAILS) {
+      if (!authEmails.includes(sa)) authEmails.push(sa);
+    }
+
+    const newConfig = {
+      id: slug,
+      name: name,
+      tagline: String(body.tagline || `${name} Enterprise Mail & Compliance Suite`).trim(),
+      domain: domain,
+      websiteUrl: String(body.websiteUrl || `https://${domain}`).trim(),
+      phone: String(body.phone || '').trim(),
+      logo: String(body.logo || '').trim(),
+      resendApiKey: resendApiKey,
+      allowedFromAddresses: fromList,
+      defaultAuthorizedEmails: authEmails,
+      hosting: {
+        provider: 'Cloudflare Pages / Global Edge Network',
+        dns: 'Cloudflare Anycast DNS',
+        ssl: 'Enterprise Strict TLS 1.3 (Active)',
+        ddos: 'Cloudflare Layer 7 Shield Active',
+        status: 'Protected & Online',
+        uptime: '100%'
+      },
+      createdAt: new Date().toISOString()
+    };
+
+    if (env && env.ZENSTRO_KV) {
+      try {
+        await env.ZENSTRO_KV.put(`client_${slug}_config`, JSON.stringify(newConfig));
+        await env.ZENSTRO_KV.put(`client_${slug}_resend_key`, resendApiKey);
+        await env.ZENSTRO_KV.put(`client_${slug}_authorized_emails`, JSON.stringify(authEmails));
+        await env.ZENSTRO_KV.put(`client_${slug}_inbox`, JSON.stringify([]));
+        await env.ZENSTRO_KV.put(`client_${slug}_outbox`, JSON.stringify([]));
+        await env.ZENSTRO_KV.put(`client_${slug}_trash`, JSON.stringify([]));
+        await env.ZENSTRO_KV.put(`client_${slug}_drafts`, JSON.stringify([]));
+
+        let customList = [];
+        const rawCustom = await env.ZENSTRO_KV.get('zenstro_custom_clients');
+        if (rawCustom) {
+          try { customList = JSON.parse(rawCustom); } catch(e) {}
+        }
+        if (!Array.isArray(customList)) customList = [];
+        const existingIdx = customList.findIndex(c => (typeof c === 'string' ? c : c.id) === slug);
+        if (existingIdx >= 0) {
+          customList[existingIdx] = newConfig;
+        } else {
+          customList.push(newConfig);
+        }
+        await env.ZENSTRO_KV.put('zenstro_custom_clients', JSON.stringify(customList));
+      } catch (kvErr) {
+        console.error('Error saving new client to KV:', kvErr);
+      }
+    }
+
+    return new Response(JSON.stringify({
+      success: true,
+      message: `Client Workspace "${name}" provisioned successfully.`,
+      client: newConfig,
+      portalUrl: `/portal.html?client=${slug}`,
+      webhookUrl: `https://zenstro.space/api/client-hub?action=webhook&client=${slug}`
+    }), { status: 200, headers: CORS_HEADERS });
+  }
+
+  // ACTION: DELETE CLIENT WORKSPACE (Admin Only)
+  if (action === 'delete_client') {
+    let body = {};
+    try { body = await request.json(); } catch (e) {}
+    const requesterEmail = (request.headers.get('X-Zenstro-User') || body.requesterEmail || '').toLowerCase();
+    if (!isSuperAdmin(requesterEmail)) {
+      return new Response(JSON.stringify({ error: 'Forbidden' }), { status: 403, headers: CORS_HEADERS });
+    }
+    const targetSlug = String(body.id || body.client || clientId).toLowerCase().trim();
+    if (targetSlug === 'easeyourfiling' || targetSlug === 'zenstro') {
+      return new Response(JSON.stringify({ error: 'Cannot delete built-in system workspaces.' }), { status: 400, headers: CORS_HEADERS });
+    }
+
+    if (env && env.ZENSTRO_KV) {
+      try {
+        await env.ZENSTRO_KV.delete(`client_${targetSlug}_config`);
+        await env.ZENSTRO_KV.delete(`client_${targetSlug}_resend_key`);
+        await env.ZENSTRO_KV.delete(`client_${targetSlug}_authorized_emails`);
+        const rawCustom = await env.ZENSTRO_KV.get('zenstro_custom_clients');
+        if (rawCustom) {
+          let customList = JSON.parse(rawCustom);
+          if (Array.isArray(customList)) {
+            customList = customList.filter(c => (typeof c === 'string' ? c : c.id) !== targetSlug);
+            await env.ZENSTRO_KV.put('zenstro_custom_clients', JSON.stringify(customList));
+          }
+        }
+      } catch(e) {
+        console.error('Error deleting client from KV:', e);
+      }
+    }
+
+    return new Response(JSON.stringify({
+      success: true,
+      message: `Client workspace "${targetSlug}" deleted successfully.`
+    }), { status: 200, headers: CORS_HEADERS });
+  }
+
+  const config = await getFullClientConfig(env, clientId);
   if (!config) {
     return new Response(JSON.stringify({ error: `Unknown client: ${clientId}` }), {
       status: 404,
